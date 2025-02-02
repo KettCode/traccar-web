@@ -126,6 +126,12 @@ const SettingsMenu = () => {
                 icon={<HelpIcon />}
               />
             )}
+            <MenuItem
+              title={'Locations'}
+              link="/settings/locations"
+              icon={<CreateIcon />}
+              selected={location.pathname.startsWith('/settings/locations')}
+            />
           </>
         )}
       </List>
