@@ -15,7 +15,7 @@ import useSettingsStyles from './common/useSettingsStyles';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
-const LocationsPage = () => {
+const ManhuntsPage = () => {
 const classes = useSettingsStyles();
   const t = useTranslation();
 
@@ -29,7 +29,7 @@ const classes = useSettingsStyles();
   useEffectAsync(async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/locations?all=true');
+      const response = await fetch('/api/manhunts?all=true');
       if (response.ok) {
         setItems(await response.json());
       } else {
@@ -60,14 +60,14 @@ const classes = useSettingsStyles();
               <TableCell>{dayjs.utc(item.start).local().format('DD.MM.YYYY HH:mm')}</TableCell>
               <TableCell>{item.frequency}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
-                  <CollectionActions itemId={item.id} editPath="/settings/location" endpoint="locations" setTimestamp={setTimestamp} />
+                  <CollectionActions itemId={item.id} editPath="/settings/manhunt" endpoint="manhunts" setTimestamp={setTimestamp} />
                 </TableCell>
             </TableRow>
           )) : (<TableShimmer columns={limitCommands ? 3 : 4} endAction />)}
         </TableBody>
       </Table>
-      <CollectionFab editPath="/settings/location" />
+      <CollectionFab editPath="/settings/manhunt" />
     </PageLayout>;
 }
 
-export default LocationsPage;
+export default ManhuntsPage;

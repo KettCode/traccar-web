@@ -59,8 +59,8 @@ import AnnouncementPage from './settings/AnnouncementPage';
 import EmulatorPage from './other/EmulatorPage';
 import Loader from './common/components/Loader';
 import { generateLoginToken } from './common/components/NativeInterface';
-import LocationsPage from './settings/LocationsPage';
-import LocationPage from './settings/LocationPage';
+import ManhuntsPage from './settings/ManhuntsPage';
+import ManhuntPage from './settings/ManhuntPage';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -160,9 +160,9 @@ const Navigation = () => {
           <Route path="user/:id/connections" element={<UserConnectionsPage />} />
           <Route path="user/:id" element={<UserPage />} />
           <Route path="user" element={<UserPage />} />
-          <Route path="locations" element={<LocationsPage />} />
-          <Route path="location" element={<LocationPage />} />
-          <Route path="location/:id" element={<LocationPage />} />
+          <Route path="manhunts" element={<ManhuntsPage />} />
+          <Route path="manhunt" element={<ManhuntPage />} />
+          <Route path="manhunt/:id" element={<ManhuntPage />} />
         </Route>
 
         <Route path="reports">

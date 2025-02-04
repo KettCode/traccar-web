@@ -21,7 +21,7 @@ import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 
-const LocationPage = () => {
+const ManhuntPage = () => {
   const classes = useSettingsStyles();
   const t = useTranslation();
   const admin = useAdministrator();
@@ -33,7 +33,7 @@ const LocationPage = () => {
 
   return (
     <EditItemView
-      endpoint="locations"
+      endpoint="manhunts"
       item={item}
       setItem={setItem}
       validate={validate}
@@ -89,4 +89,4 @@ const LocationPage = () => {
   );
 };
 
-export default LocationPage;
+export default ManhuntPage;

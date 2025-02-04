@@ -127,10 +127,10 @@ const SettingsMenu = () => {
               />
             )}
             <MenuItem
-              title={'Locations'}
-              link="/settings/locations"
+              title={'Manhunt'}
+              link="/settings/manhunts"
               icon={<CreateIcon />}
-              selected={location.pathname.startsWith('/settings/locations')}
+              selected={location.pathname.startsWith('/settings/manhunts')}
             />
           </>
         )}
