@@ -21,19 +21,19 @@ import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 
-const ManhuntPage = () => {
+const SpeedhuntPage = () => {
   const classes = useSettingsStyles();
   const t = useTranslation();
   const admin = useAdministrator();
   const commonDeviceAttributes = useCommonDeviceAttributes(t);
   const deviceAttributes = useDeviceAttributes(t);
   const [item, setItem] = useState();
-  const validate = () => item && item.groupId && item.targetGroupId;
+  const validate = () => item && item.manhuntsId && item.deviceId && item.userId;
 
 
   return (
     <EditItemView
-      endpoint="manhunts"
+      endpoint="speedhunts"
       item={item}
       setItem={setItem}
       validate={validate}
@@ -49,58 +49,45 @@ const ManhuntPage = () => {
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.details}>
-              <SelectField
-                value={item.groupId}
-                onChange={(event) => setItem({ ...item, groupId: Number(event.target.value) })}
-                endpoint="/api/groups"
-                label={t('groupParent')}
+              {/* <SelectField
+                value={item.manhuntsId}
+                onChange={(event) => setItem({ ...item, manhuntsId: Number(event.target.value) })}
+                endpoint="/api/manhunts"
+                label={'Manhunt'}
+              /> */}
+              <TextField
+                label={'Manhunt'}
+                type="number"
+                value={item.manhuntsId}
+                onChange={(event) => setItem({ ...item, manhuntsId: Number(event.target.value) })}
+                disabled={!admin}
               />
               <SelectField
-                value={item.targetGroupId}
-                onChange={(event) => setItem({ ...item, targetGroupId: Number(event.target.value) })}
-                endpoint="/api/groups"
-                label={'Zielgruppe'}
+                value={item.userId}
+                onChange={(event) => setItem({ ...item, userId: Number(event.target.value) })}
+                endpoint="/api/users"
+                label={'Benutzer'}
+              />
+              <SelectField
+                value={item.deviceId}
+                onChange={(event) => setItem({ ...item, deviceId: Number(event.target.value) })}
+                endpoint="/api/devices"
+                label={'Zielgerät'}
               />
               <TextField
-                label={'Start'}
+                label={'Time'}
                 type="datetime-local"
-                value={dayjs.utc(item.start).local().format('YYYY-MM-DDTHH:mm')}
-                onChange={(event) => setItem({ ...item, start: dayjs(event.target.value).utc().format('YYYY-MM-DDTHH:mm') })}
+                value={dayjs.utc(item.time).local().format('YYYY-MM-DDTHH:mm')}
+                onChange={(event) => setItem({ ...item, time: dayjs(event.target.value).utc().format('YYYY-MM-DDTHH:mm') })}
                 fullWidth
-                disabled={!admin}
-              />
-              <TextField
-                label={'Frequenz'}
-                type="number"
-                value={item.frequency}
-                onChange={(event) => setItem({ ...item, frequency: Number(event.target.value) })}
-                disabled={!admin}
-              />
-              <TextField
-                label={'Speedhunt limit'}
-                type="number"
-                value={item.speedHuntLimit}
-                onChange={(event) => setItem({ ...item, speedHuntLimit: Number(event.target.value) })}
-                disabled={!admin}
-              />
-              <TextField
-                label={'Speedhunt anfragen'}
-                type="number"
-                value={item.speedHuntRequests}
-                onChange={(event) => setItem({ ...item, speedHuntRequests: Number(event.target.value) })}
                 disabled={!admin}
               />
             </AccordionDetails>
           </Accordion>
-          <EditAttributesAccordion
-            attributes={item.attributes}
-            setAttributes={(attributes) => setItem({ ...item, attributes })}
-            definitions={{ ...commonDeviceAttributes, ...deviceAttributes }}
-          />
         </>
       )}
     </EditItemView>
   );
 };
 
-export default ManhuntPage;
+export default SpeedhuntPage;

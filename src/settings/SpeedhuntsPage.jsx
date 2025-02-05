@@ -15,21 +15,22 @@ import useSettingsStyles from './common/useSettingsStyles';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
-const ManhuntsPage = () => {
+const SpeedhuntsPage = () => {
 const classes = useSettingsStyles();
   const t = useTranslation();
 
-  const groups = useSelector((state) => state.groups.items);
+  const devices = useSelector((state) => state.devices.items);
   const [timestamp, setTimestamp] = useState(Date.now());
   const [items, setItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [loading, setLoading] = useState(false);
   const limitCommands = useRestriction('limitCommands');
+  const [users, setUsers] = useState([]);
 
   useEffectAsync(async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/manhunts?all=true');
+      const response = await fetch('/api/speedhunts?all=true');
       if (response.ok) {
         setItems(await response.json());
       } else {
@@ -40,38 +41,50 @@ const classes = useSettingsStyles();
     }
   }, [timestamp]);
 
+  useEffectAsync(async () => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('/api/users');
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
     return  <PageLayout menu={<SettingsMenu />} breadcrumbs={['settingsTitle', 'sharedSavedCommands']}>
       <SearchHeader keyword={searchKeyword} setKeyword={setSearchKeyword} />
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <TableCell>{'Gruppe'}</TableCell>
-            <TableCell>{'Zielgruppe'}</TableCell>
-            <TableCell>{'Start'}</TableCell>
-            <TableCell>{'Frequenz'}</TableCell>
-            <TableCell>{'Speedhunt limit'}</TableCell>
-            <TableCell>{'Speedhunt anfragen'}</TableCell>
+            <TableCell>{'Ausgelöst von'}</TableCell>
+            <TableCell>{'Zielgerät'}</TableCell>
+            <TableCell>{'Zeitpunkt'}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
         </TableHead>
         <TableBody>
           {!loading ? items.filter(filterByKeyword(searchKeyword)).map((item) => (
             <TableRow key={item.id}>
-              <TableCell>{item.groupId ? groups[item.groupId]?.name : null}</TableCell>
-              <TableCell>{item.targetGroupId ? groups[item.targetGroupId]?.name : null}</TableCell>
-              <TableCell>{dayjs.utc(item.start).local().format('DD.MM.YYYY HH:mm')}</TableCell>
-              <TableCell>{item.frequency}</TableCell>
-              <TableCell>{item.speedHuntLimit}</TableCell>
-              <TableCell>{item.speedHuntRequests}</TableCell>
+              <TableCell>{item.userId ? users.find(x => x.id ==item.userId)?.name : null}</TableCell>
+              <TableCell>{item.deviceId ? devices[item.deviceId].name : null}</TableCell>
+              <TableCell>{dayjs.utc(item.time).local().format('DD.MM.YYYY HH:mm')}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
-                  <CollectionActions itemId={item.id} editPath="/settings/manhunt" endpoint="manhunts" setTimestamp={setTimestamp} />
+                  <CollectionActions itemId={item.id} editPath="/settings/speedhunt" endpoint="speedhunts" setTimestamp={setTimestamp} />
                 </TableCell>
             </TableRow>
           )) : (<TableShimmer columns={limitCommands ? 3 : 4} endAction />)}
         </TableBody>
       </Table>
-      <CollectionFab editPath="/settings/manhunt" />
+      <CollectionFab editPath="/settings/speedhunt" />
     </PageLayout>;
 }
 
-export default ManhuntsPage;
+export default SpeedhuntsPage;
