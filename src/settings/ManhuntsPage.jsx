@@ -45,8 +45,8 @@ const classes = useSettingsStyles();
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
+            <TableCell>{'Id'}</TableCell>
             <TableCell>{'Gruppe'}</TableCell>
-            <TableCell>{'Zielgruppe'}</TableCell>
             <TableCell>{'Start'}</TableCell>
             <TableCell>{'Frequenz'}</TableCell>
             <TableCell>{'Speedhunt limit'}</TableCell>
@@ -57,8 +57,8 @@ const classes = useSettingsStyles();
         <TableBody>
           {!loading ? items.filter(filterByKeyword(searchKeyword)).map((item) => (
             <TableRow key={item.id}>
+              <TableCell>{item.id}</TableCell>
               <TableCell>{item.groupId ? groups[item.groupId]?.name : null}</TableCell>
-              <TableCell>{item.targetGroupId ? groups[item.targetGroupId]?.name : null}</TableCell>
               <TableCell>{dayjs.utc(item.start).local().format('DD.MM.YYYY HH:mm')}</TableCell>
               <TableCell>{item.frequency}</TableCell>
               <TableCell>{item.speedHuntLimit}</TableCell>

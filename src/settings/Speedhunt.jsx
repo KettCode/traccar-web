@@ -49,25 +49,6 @@ const SpeedhuntPage = () => {
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.details}>
-              {/* <SelectField
-                value={item.manhuntsId}
-                onChange={(event) => setItem({ ...item, manhuntsId: Number(event.target.value) })}
-                endpoint="/api/manhunts"
-                label={'Manhunt'}
-              /> */}
-              <TextField
-                label={'Manhunt'}
-                type="number"
-                value={item.manhuntsId}
-                onChange={(event) => setItem({ ...item, manhuntsId: Number(event.target.value) })}
-                disabled={!admin}
-              />
-              <SelectField
-                value={item.userId}
-                onChange={(event) => setItem({ ...item, userId: Number(event.target.value) })}
-                endpoint="/api/users"
-                label={'Benutzer'}
-              />
               <SelectField
                 value={item.deviceId}
                 onChange={(event) => setItem({ ...item, deviceId: Number(event.target.value) })}
@@ -75,7 +56,7 @@ const SpeedhuntPage = () => {
                 label={'Zielgerät'}
               />
               <TextField
-                label={'Time'}
+                label={'Lasttime'}
                 type="datetime-local"
                 value={dayjs.utc(item.time).local().format('YYYY-MM-DDTHH:mm')}
                 onChange={(event) => setItem({ ...item, time: dayjs(event.target.value).utc().format('YYYY-MM-DDTHH:mm') })}

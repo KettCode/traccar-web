@@ -28,7 +28,7 @@ const ManhuntPage = () => {
   const commonDeviceAttributes = useCommonDeviceAttributes(t);
   const deviceAttributes = useDeviceAttributes(t);
   const [item, setItem] = useState();
-  const validate = () => item && item.groupId && item.targetGroupId;
+  const validate = () => item && item.groupId;
 
 
   return (
@@ -54,12 +54,6 @@ const ManhuntPage = () => {
                 onChange={(event) => setItem({ ...item, groupId: Number(event.target.value) })}
                 endpoint="/api/groups"
                 label={t('groupParent')}
-              />
-              <SelectField
-                value={item.targetGroupId}
-                onChange={(event) => setItem({ ...item, targetGroupId: Number(event.target.value) })}
-                endpoint="/api/groups"
-                label={'Zielgruppe'}
               />
               <TextField
                 label={'Start'}
