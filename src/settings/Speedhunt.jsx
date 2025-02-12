@@ -5,6 +5,8 @@ import {
   AccordionDetails,
   Typography,
   TextField,
+  Container,
+  Button,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditItemView from './components/EditItemView';
@@ -18,56 +20,134 @@ import useCommonDeviceAttributes from '../common/attributes/useCommonDeviceAttri
 import useDeviceAttributes from '../common/attributes/useDeviceAttributes';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import PageLayout from '../common/components/PageLayout';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useCatch, useEffectAsync } from '../reactHelper';
 
 dayjs.extend(utc);
 
 const SpeedhuntPage = () => {
   const classes = useSettingsStyles();
   const t = useTranslation();
-  const admin = useAdministrator();
-  const commonDeviceAttributes = useCommonDeviceAttributes(t);
-  const deviceAttributes = useDeviceAttributes(t);
-  const [item, setItem] = useState();
-  const validate = () => item && item.manhuntsId && item.deviceId && item.userId;
+  const [item, setItem] = useState({});
+  const validate = () => item && item.deviceId;
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  // useEffectAsync(async () => {
+  //   if (!item) {
+  //     if (id) {
+  //       const response = await fetch(`/api/${endpoint}/${id}`);
+  //       if (response.ok) {
+  //         setItem(await response.json());
+  //       } else {
+  //         throw Error(await response.text());
+  //       }
+  //     } else {
+  //       setItem(defaultItem || {});
+  //     }
+  //   }
+  // }, [id, item, defaultItem]);
+
+  const create = useCatch(async () => {
+    let url = `/api/speedhunts/create`;
+
+    item.lastTime = dayjs.utc().format();
+    
+    const response = await fetch(url, {
+      method: !id ? 'POST' : 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item),
+    });
+
+    if (response.ok) {
+      // if (onItemSaved) {
+      //   onItemSaved(await response.json());
+      // }
+      //navigate(-1);
+    } else {
+      throw Error(await response.text());
+    }
+  });
+
+  const trigger = useCatch(async () => {
+    let url = `/api/${endpoint}`;
+    if (id) {
+      url += `/${id}`;
+    }
+
+    item.time = dayjs.utc().format();
+
+    const response = await fetch(url, {
+      method: !id ? 'POST' : 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item),
+    });
+
+    if (response.ok) {
+      // if (onItemSaved) {
+      //   onItemSaved(await response.json());
+      // }
+      // navigate(-1);
+    } else {
+      throw Error(await response.text());
+    }
+  });
 
 
   return (
-    <EditItemView
-      endpoint="speedhunts"
-      item={item}
-      setItem={setItem}
-      validate={validate}
-      menu={<SettingsMenu />}
-      breadcrumbs={['settingsTitle', 'sharedDevice']}
-    >
-      {item && (
-        <>
-          <Accordion defaultExpanded>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="subtitle1">
-                {'Standort'}
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails className={classes.details}>
-              <SelectField
-                value={item.deviceId}
-                onChange={(event) => setItem({ ...item, deviceId: Number(event.target.value) })}
-                endpoint="/api/devices"
-                label={'Zielgerät'}
-              />
-              <TextField
-                label={'Lasttime'}
-                type="datetime-local"
-                value={dayjs.utc(item.time).local().format('YYYY-MM-DDTHH:mm')}
-                onChange={(event) => setItem({ ...item, time: dayjs(event.target.value).utc().format('YYYY-MM-DDTHH:mm') })}
-                fullWidth
-                disabled={!admin}
-              />
-            </AccordionDetails>
-          </Accordion>
-        </>
-      )}
-    </EditItemView>
+    <PageLayout menu={<SettingsMenu />} breadcrumbs={['settingsTitle', 'sharedDevice']}>
+      <Container maxWidth="xs" className={classes.container}>
+        {item && (
+          <>
+            <Accordion defaultExpanded>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography variant="subtitle1">
+                  {'Standort'}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails className={classes.details}>
+                <SelectField
+                  value={item.deviceId}
+                  onChange={(event) => setItem({ ...item, deviceId: Number(event.target.value) })}
+                  endpoint="/api/devices"
+                  label={'Zielgerät'}
+                />
+              </AccordionDetails>
+            </Accordion>
+          </>
+        )}
+        <div className={classes.buttons}>
+          <Button
+            type="button"
+            color="primary"
+            variant="outlined"
+            onClick={() => navigate(-1)}
+            disabled={!item}
+          >
+            {t('sharedCancel')}
+          </Button>
+          <Button
+            type="button"
+            color="primary"
+            variant="contained"
+            onClick={create}
+            disabled={!item || !validate()}
+          >
+            {'Starten'}
+          </Button>
+          <Button
+            type="button"
+            color="primary"
+            variant="contained"
+            onClick={create}
+            disabled={!item || !validate()}
+          >
+            {'Triggern'}
+          </Button>
+        </div>
+      </Container>
+    </PageLayout>
   );
 };
 

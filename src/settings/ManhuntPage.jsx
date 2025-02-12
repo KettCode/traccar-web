@@ -28,7 +28,7 @@ const ManhuntPage = () => {
   const commonDeviceAttributes = useCommonDeviceAttributes(t);
   const deviceAttributes = useDeviceAttributes(t);
   const [item, setItem] = useState();
-  const validate = () => item && item.groupId;
+  const validate = () => item && item.start;
 
 
   return (
@@ -49,12 +49,6 @@ const ManhuntPage = () => {
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.details}>
-              <SelectField
-                value={item.groupId}
-                onChange={(event) => setItem({ ...item, groupId: Number(event.target.value) })}
-                endpoint="/api/groups"
-                label={t('groupParent')}
-              />
               <TextField
                 label={'Start'}
                 type="datetime-local"
@@ -64,24 +58,11 @@ const ManhuntPage = () => {
                 disabled={!admin}
               />
               <TextField
-                label={'Frequenz'}
-                type="number"
-                value={item.frequency}
-                onChange={(event) => setItem({ ...item, frequency: Number(event.target.value) })}
-                disabled={!admin}
-              />
-              <TextField
-                label={'Speedhunt limit'}
-                type="number"
-                value={item.speedHuntLimit}
-                onChange={(event) => setItem({ ...item, speedHuntLimit: Number(event.target.value) })}
-                disabled={!admin}
-              />
-              <TextField
-                label={'Speedhunt anfragen'}
-                type="number"
-                value={item.speedHuntRequests}
-                onChange={(event) => setItem({ ...item, speedHuntRequests: Number(event.target.value) })}
+                label={'Ende'}
+                type="datetime-local"
+                value={dayjs.utc(item.finish).local().format('YYYY-MM-DDTHH:mm')}
+                onChange={(event) => setItem({ ...item, finish: dayjs(event.target.value).utc().format('YYYY-MM-DDTHH:mm') })}
+                fullWidth
                 disabled={!admin}
               />
             </AccordionDetails>

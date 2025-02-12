@@ -20,6 +20,7 @@ const classes = useSettingsStyles();
   const t = useTranslation();
 
   const devices = useSelector((state) => state.devices.items);
+  const groups = useSelector((state) => state.groups.items);
   const [timestamp, setTimestamp] = useState(Date.now());
   const [items, setItems] = useState([]);
   const [requestItems, setRequestItems] = useState([]);
@@ -74,8 +75,9 @@ const classes = useSettingsStyles();
           <TableRow>
             <TableCell>{'Id'}</TableCell>
             <TableCell>{'Manhuntid'}</TableCell>
-            <TableCell>{'Pos'}</TableCell>
+            <TableCell>{'Anfragesteller (Gruppe)'}</TableCell>
             <TableCell>{'Zielgerät'}</TableCell>
+            <TableCell>{'Anfragenummer'}</TableCell>
             <TableCell>{'Letzte Anfrage'}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
@@ -85,12 +87,13 @@ const classes = useSettingsStyles();
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
               <TableCell>{item.manhuntsId}</TableCell>
-              <TableCell>{item.pos}</TableCell>
+              <TableCell>{item.hunterGroupId ? groups[item.hunterGroupId]?.name : null}</TableCell>
               <TableCell>{item.deviceId ? devices[item.deviceId].name : null}</TableCell>
+              <TableCell>{item.pos}</TableCell>
               <TableCell>{dayjs.utc(item.lastTime).local().format('DD.MM.YYYY HH:mm')}</TableCell>
-              <TableCell className={classes.columnAction} padding="none">
+              {/* <TableCell className={classes.columnAction} padding="none">
                   <CollectionActions itemId={item.id} editPath="/settings/speedhunt" endpoint="speedhunts" setTimestamp={setTimestamp} />
-                </TableCell>
+              </TableCell> */}
             </TableRow>
           )) : (<TableShimmer columns={limitCommands ? 3 : 4} endAction />)}
         </TableBody>
@@ -101,8 +104,8 @@ const classes = useSettingsStyles();
           <TableRow>
             <TableCell>{'Id'}</TableCell>
             <TableCell>{'Speedhuntid'}</TableCell>
-            <TableCell>{'Pos'}</TableCell>
-            <TableCell>{'Benutzer'}</TableCell>
+            <TableCell>{'Anfragestelle (Benutzer)'}</TableCell>
+            <TableCell>{'Anfragenummer'}</TableCell>
             <TableCell>{'Angefragt am'}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
@@ -111,9 +114,9 @@ const classes = useSettingsStyles();
           {!loading ? requestItems.filter(filterByKeyword(searchKeyword)).map((item) => (
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
-              <TableCell>{item.speedhuntsid}</TableCell>
-              <TableCell>{item.pos}</TableCell>
+              <TableCell>{item.speedHuntsId}</TableCell>
               <TableCell>{item.userId ? users.find(x => x.id ==item.userId)?.name : null}</TableCell>
+              <TableCell>{item.pos}</TableCell>
               <TableCell>{dayjs.utc(item.time).local().format('DD.MM.YYYY HH:mm')}</TableCell>
               {/* <TableCell className={classes.columnAction} padding="none">
                   <CollectionActions itemId={item.id} editPath="/settings/speedhunt" endpoint="speedhunts" setTimestamp={setTimestamp} />
@@ -122,6 +125,7 @@ const classes = useSettingsStyles();
           )) : (<TableShimmer columns={limitCommands ? 3 : 4} endAction />)}
         </TableBody>
       </Table>
+      <CollectionFab editPath="/settings/speedhunt" />
     </PageLayout>;
 }
 

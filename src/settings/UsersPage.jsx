@@ -16,6 +16,7 @@ import TableShimmer from '../common/components/TableShimmer';
 import { useManager } from '../common/util/permissions';
 import SearchHeader, { filterByKeyword } from './components/SearchHeader';
 import useSettingsStyles from './common/useSettingsStyles';
+import { useSelector } from 'react-redux';
 
 const UsersPage = () => {
   const classes = useSettingsStyles();
@@ -24,6 +25,7 @@ const UsersPage = () => {
 
   const manager = useManager();
 
+  const groups = useSelector((state) => state.groups.items);
   const [timestamp, setTimestamp] = useState(Date.now());
   const [items, setItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -78,6 +80,7 @@ const UsersPage = () => {
             <TableCell>{t('userAdmin')}</TableCell>
             <TableCell>{t('sharedDisabled')}</TableCell>
             <TableCell>{t('userExpirationTime')}</TableCell>
+            <TableCell>{t('groupParent')}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
         </TableHead>
@@ -89,6 +92,7 @@ const UsersPage = () => {
               <TableCell>{formatBoolean(item.administrator, t)}</TableCell>
               <TableCell>{formatBoolean(item.disabled, t)}</TableCell>
               <TableCell>{formatTime(item.expirationTime, 'date')}</TableCell>
+              <TableCell>{item.groupId ? groups[item.groupId]?.name : null}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
                 <CollectionActions
                   itemId={item.id}
@@ -103,7 +107,7 @@ const UsersPage = () => {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={6} align="right">
+            <TableCell colSpan={7} align="right">
               <FormControlLabel
                 control={(
                   <Switch

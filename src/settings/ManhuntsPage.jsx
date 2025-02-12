@@ -19,7 +19,6 @@ const ManhuntsPage = () => {
 const classes = useSettingsStyles();
   const t = useTranslation();
 
-  const groups = useSelector((state) => state.groups.items);
   const [timestamp, setTimestamp] = useState(Date.now());
   const [items, setItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -46,11 +45,8 @@ const classes = useSettingsStyles();
         <TableHead>
           <TableRow>
             <TableCell>{'Id'}</TableCell>
-            <TableCell>{'Gruppe'}</TableCell>
             <TableCell>{'Start'}</TableCell>
-            <TableCell>{'Frequenz'}</TableCell>
-            <TableCell>{'Speedhunt limit'}</TableCell>
-            <TableCell>{'Speedhunt anfragen'}</TableCell>
+            <TableCell>{'Ende'}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
         </TableHead>
@@ -58,11 +54,8 @@ const classes = useSettingsStyles();
           {!loading ? items.filter(filterByKeyword(searchKeyword)).map((item) => (
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
-              <TableCell>{item.groupId ? groups[item.groupId]?.name : null}</TableCell>
               <TableCell>{dayjs.utc(item.start).local().format('DD.MM.YYYY HH:mm')}</TableCell>
-              <TableCell>{item.frequency}</TableCell>
-              <TableCell>{item.speedHuntLimit}</TableCell>
-              <TableCell>{item.speedHuntRequests}</TableCell>
+              <TableCell>{dayjs.utc(item.finish).local().format('DD.MM.YYYY HH:mm')}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
                   <CollectionActions itemId={item.id} editPath="/settings/manhunt" endpoint="manhunts" setTimestamp={setTimestamp} />
                 </TableCell>
