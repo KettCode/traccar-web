@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import {
   Table, TableRow, TableCell, TableHead, TableBody,
+  Fab,
 } from '@mui/material';
 import { useEffectAsync } from '../reactHelper';
 import { useTranslation } from '../common/components/LocalizationProvider';
 import PageLayout from '../common/components/PageLayout';
 import SettingsMenu from './components/SettingsMenu';
-import CollectionFab from './components/CollectionFab';
 import CollectionActions from './components/CollectionActions';
 import TableShimmer from '../common/components/TableShimmer';
 import SearchHeader, { filterByKeyword } from './components/SearchHeader';
@@ -14,6 +14,8 @@ import { useRestriction } from '../common/util/permissions';
 import useSettingsStyles from './common/useSettingsStyles';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
+import AddIcon from '@mui/icons-material/Add';
 
 const SpeedhuntsPage = () => {
 const classes = useSettingsStyles();
@@ -28,6 +30,7 @@ const classes = useSettingsStyles();
   const [loading, setLoading] = useState(false);
   const limitCommands = useRestriction('limitCommands');
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
   useEffectAsync(async () => {
     setLoading(true);
@@ -98,7 +101,20 @@ const classes = useSettingsStyles();
           )) : (<TableShimmer columns={limitCommands ? 3 : 4} endAction />)}
         </TableBody>
       </Table>
-
+      <Fab
+          size="medium" 
+          color="primary"
+          onClick={() => {
+            navigate("/settings/speedhunt")
+          }}
+          style={{
+            alignSelf: "end",
+            margin: "1rem"
+          }}
+      >
+          <AddIcon />
+      </Fab>
+      
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
@@ -125,7 +141,19 @@ const classes = useSettingsStyles();
           )) : (<TableShimmer columns={limitCommands ? 3 : 4} endAction />)}
         </TableBody>
       </Table>
-      <CollectionFab editPath="/settings/speedhunttrigger" />
+      <Fab
+          size="medium" 
+          color="primary"
+          onClick={() => {
+            navigate("/settings/speedhuntrequest")
+          }}
+          style={{
+            alignSelf: "end",
+            margin: "1rem"
+          }}
+        >
+          <AddIcon />
+        </Fab>
     </PageLayout>;
 }
 
