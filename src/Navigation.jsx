@@ -62,7 +62,9 @@ import { generateLoginToken } from './common/components/NativeInterface';
 import ManhuntsPage from './settings/ManhuntsPage';
 import ManhuntPage from './settings/ManhuntPage';
 import SpeedhuntsPage from './settings/SpeedhuntsPage';
-import SpeedhuntPage from './settings/Speedhunt';
+import SpeedhuntPage from './settings/SpeedhuntPage';
+import SpeedhuntRequestPage from './settings/SpeedhuntRequestPage';
+import Speedhunt from './settings/Speedhunt';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -168,6 +170,9 @@ const Navigation = () => {
           <Route path="speedhunts" element={<SpeedhuntsPage />} />
           <Route path="speedhunt" element={<SpeedhuntPage />} />
           <Route path="speedhunt/:id" element={<SpeedhuntPage />} />
+          <Route path="speedhuntrequest" element={<SpeedhuntRequestPage />} />
+          <Route path="speedhuntrequest/:id" element={<SpeedhuntRequestPage />} />
+          <Route path="speedhunttrigger" element={<Speedhunt />} />
         </Route>
 
         <Route path="reports">

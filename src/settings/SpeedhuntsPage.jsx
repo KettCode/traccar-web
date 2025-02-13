@@ -91,20 +91,20 @@ const classes = useSettingsStyles();
               <TableCell>{item.deviceId ? devices[item.deviceId].name : null}</TableCell>
               <TableCell>{item.pos}</TableCell>
               <TableCell>{dayjs.utc(item.lastTime).local().format('DD.MM.YYYY HH:mm')}</TableCell>
-              {/* <TableCell className={classes.columnAction} padding="none">
+              <TableCell className={classes.columnAction} padding="none">
                   <CollectionActions itemId={item.id} editPath="/settings/speedhunt" endpoint="speedhunts" setTimestamp={setTimestamp} />
-              </TableCell> */}
+              </TableCell>
             </TableRow>
           )) : (<TableShimmer columns={limitCommands ? 3 : 4} endAction />)}
         </TableBody>
       </Table>
-      {/* <CollectionFab editPath="/settings/speedhunt" /> */}
+
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
             <TableCell>{'Id'}</TableCell>
             <TableCell>{'Speedhuntid'}</TableCell>
-            <TableCell>{'Anfragestelle (Benutzer)'}</TableCell>
+            <TableCell>{'Anfragesteller (Benutzer)'}</TableCell>
             <TableCell>{'Anfragenummer'}</TableCell>
             <TableCell>{'Angefragt am'}</TableCell>
             <TableCell className={classes.columnAction} />
@@ -118,14 +118,14 @@ const classes = useSettingsStyles();
               <TableCell>{item.userId ? users.find(x => x.id ==item.userId)?.name : null}</TableCell>
               <TableCell>{item.pos}</TableCell>
               <TableCell>{dayjs.utc(item.time).local().format('DD.MM.YYYY HH:mm')}</TableCell>
-              {/* <TableCell className={classes.columnAction} padding="none">
-                  <CollectionActions itemId={item.id} editPath="/settings/speedhunt" endpoint="speedhunts" setTimestamp={setTimestamp} />
-                </TableCell> */}
+              <TableCell className={classes.columnAction} padding="none">
+                  <CollectionActions itemId={item.id} editPath="/settings/speedhuntrequest" endpoint="speedhuntrequests" setTimestamp={setTimestamp} />
+                </TableCell>
             </TableRow>
           )) : (<TableShimmer columns={limitCommands ? 3 : 4} endAction />)}
         </TableBody>
       </Table>
-      <CollectionFab editPath="/settings/speedhunt" />
+      <CollectionFab editPath="/settings/speedhunttrigger" />
     </PageLayout>;
 }
 

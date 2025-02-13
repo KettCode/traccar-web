@@ -26,7 +26,7 @@ import { useCatch, useEffectAsync } from '../reactHelper';
 
 dayjs.extend(utc);
 
-const SpeedhuntPage = () => {
+const Speedhunt = () => {
   const classes = useSettingsStyles();
   const t = useTranslation();
   const [item, setItem] = useState({});
@@ -151,4 +151,4 @@ const SpeedhuntPage = () => {
   );
 };
 
-export default SpeedhuntPage;
+export default Speedhunt;
