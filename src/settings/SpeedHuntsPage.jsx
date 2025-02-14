@@ -17,7 +17,7 @@ import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 
-const SpeedhuntsPage = () => {
+const SpeedHuntsPage = () => {
 const classes = useSettingsStyles();
   const t = useTranslation();
 
@@ -35,14 +35,14 @@ const classes = useSettingsStyles();
   useEffectAsync(async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/speedhunts?all=true');
+      const response = await fetch('/api/speedHunts?all=true');
       if (response.ok) {
         setItems(await response.json());
       } else {
         throw Error(await response.text());
       }
 
-      const responseRequests = await fetch('/api/speedhuntrequests?all=true');
+      const responseRequests = await fetch('/api/speedHuntRequests?all=true');
       if (responseRequests.ok) {
         setRequestItems(await responseRequests.json());
       } else {
@@ -95,7 +95,7 @@ const classes = useSettingsStyles();
               <TableCell>{item.pos}</TableCell>
               <TableCell>{dayjs.utc(item.lastTime).local().format('DD.MM.YYYY HH:mm')}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
-                  <CollectionActions itemId={item.id} editPath="/settings/speedhunt" endpoint="speedhunts" setTimestamp={setTimestamp} />
+                  <CollectionActions itemId={item.id} editPath="/settings/speedHunt" endpoint="speedHunts" setTimestamp={setTimestamp} />
               </TableCell>
             </TableRow>
           )) : (<TableShimmer columns={limitCommands ? 3 : 4} endAction />)}
@@ -105,7 +105,7 @@ const classes = useSettingsStyles();
           size="medium" 
           color="primary"
           onClick={() => {
-            navigate("/settings/speedhunt")
+            navigate("/settings/speedHunt")
           }}
           style={{
             alignSelf: "end",
@@ -135,7 +135,7 @@ const classes = useSettingsStyles();
               <TableCell>{item.pos}</TableCell>
               <TableCell>{dayjs.utc(item.time).local().format('DD.MM.YYYY HH:mm')}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
-                  <CollectionActions itemId={item.id} editPath="/settings/speedhuntrequest" endpoint="speedhuntrequests" setTimestamp={setTimestamp} />
+                  <CollectionActions itemId={item.id} editPath="/settings/speedHuntRequest" endpoint="speedHuntRequests" setTimestamp={setTimestamp} />
                 </TableCell>
             </TableRow>
           )) : (<TableShimmer columns={limitCommands ? 3 : 4} endAction />)}
@@ -145,7 +145,7 @@ const classes = useSettingsStyles();
           size="medium" 
           color="primary"
           onClick={() => {
-            navigate("/settings/speedhuntrequest")
+            navigate("/settings/speedHuntRequest")
           }}
           style={{
             alignSelf: "end",
@@ -157,4 +157,4 @@ const classes = useSettingsStyles();
     </PageLayout>;
 }
 
-export default SpeedhuntsPage;
+export default SpeedHuntsPage;

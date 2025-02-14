@@ -134,9 +134,9 @@ const SettingsMenu = () => {
             />
             <MenuItem
               title={'Speedhunt'}
-              link="/settings/speedhunts"
+              link="/settings/speedHunts"
               icon={<CreateIcon />}
-              selected={location.pathname.startsWith('/settings/speedhunts')}
+              selected={location.pathname.startsWith('/settings/speedHunts')}
             />
           </>
         )}

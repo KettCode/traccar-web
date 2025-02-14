@@ -4,29 +4,23 @@ import {
   AccordionSummary,
   AccordionDetails,
   Typography,
-  TextField,
   Container,
   Button,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import EditItemView from './components/EditItemView';
 import SelectField from '../common/components/SelectField';
 import { useTranslation } from '../common/components/LocalizationProvider';
-import { useAdministrator } from '../common/util/permissions';
 import SettingsMenu from './components/SettingsMenu';
 import useSettingsStyles from './common/useSettingsStyles';
-import EditAttributesAccordion from './components/EditAttributesAccordion';
-import useCommonDeviceAttributes from '../common/attributes/useCommonDeviceAttributes';
-import useDeviceAttributes from '../common/attributes/useDeviceAttributes';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import PageLayout from '../common/components/PageLayout';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCatch, useEffectAsync } from '../reactHelper';
+import { useCatch } from '../reactHelper';
 
 dayjs.extend(utc);
 
-const Speedhunt = () => {
+const SpeedHunt = () => {
   const classes = useSettingsStyles();
   const t = useTranslation();
   const [item, setItem] = useState({});
@@ -151,4 +145,4 @@ const Speedhunt = () => {
   );
 };
 
-export default Speedhunt;
+export default SpeedHunt;

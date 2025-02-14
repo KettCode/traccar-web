@@ -61,10 +61,10 @@ import Loader from './common/components/Loader';
 import { generateLoginToken } from './common/components/NativeInterface';
 import ManhuntsPage from './settings/ManhuntsPage';
 import ManhuntPage from './settings/ManhuntPage';
-import SpeedhuntsPage from './settings/SpeedhuntsPage';
-import SpeedhuntPage from './settings/SpeedhuntPage';
-import SpeedhuntRequestPage from './settings/SpeedhuntRequestPage';
-import Speedhunt from './settings/Speedhunt';
+import SpeedhuntsPage from './settings/SpeedHuntsPage';
+import SpeedhuntPage from './settings/SpeedHuntPage';
+import SpeedhuntRequestPage from './settings/SpeedHuntRequestPage';
+import Speedhunt from './settings/SpeedHunt';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -167,12 +167,12 @@ const Navigation = () => {
           <Route path="manhunts" element={<ManhuntsPage />} />
           <Route path="manhunt" element={<ManhuntPage />} />
           <Route path="manhunt/:id" element={<ManhuntPage />} />
-          <Route path="speedhunts" element={<SpeedhuntsPage />} />
-          <Route path="speedhunt" element={<SpeedhuntPage />} />
-          <Route path="speedhunt/:id" element={<SpeedhuntPage />} />
-          <Route path="speedhuntrequest" element={<SpeedhuntRequestPage />} />
-          <Route path="speedhuntrequest/:id" element={<SpeedhuntRequestPage />} />
-          <Route path="speedhunttrigger" element={<Speedhunt />} />
+          <Route path="speedHunts" element={<SpeedhuntsPage />} />
+          <Route path="speedHunt" element={<SpeedhuntPage />} />
+          <Route path="speedHunt/:id" element={<SpeedhuntPage />} />
+          <Route path="speedHuntRequest" element={<SpeedhuntRequestPage />} />
+          <Route path="speedHuntRequest/:id" element={<SpeedhuntRequestPage />} />
+          <Route path="speedHuntTrigger" element={<Speedhunt />} />
         </Route>
 
         <Route path="reports">

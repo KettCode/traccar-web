@@ -21,7 +21,7 @@ import SelectField from '../common/components/SelectField';
 
 dayjs.extend(utc);
 
-const SpeedhuntPage = () => {
+const SpeedHuntPage = () => {
   const classes = useSettingsStyles();
   const t = useTranslation();
   const admin = useAdministrator();
@@ -33,7 +33,7 @@ const SpeedhuntPage = () => {
 
   return (
     <EditItemView
-      endpoint="speedhunts"
+      endpoint="speedHunts"
       item={item}
       setItem={setItem}
       validate={validate}
@@ -96,4 +96,4 @@ const SpeedhuntPage = () => {
   );
 };
 
-export default SpeedhuntPage;
+export default SpeedHuntPage;
