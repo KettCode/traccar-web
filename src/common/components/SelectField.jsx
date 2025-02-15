@@ -14,6 +14,7 @@ const SelectField = ({
   onChange,
   endpoint,
   data,
+  disabled,
   keyGetter = (item) => item.id,
   titleGetter = (item) => item.name,
 }) => {
@@ -68,6 +69,7 @@ const SelectField = ({
             value={value}
             onChange={(_, value) => onChange({ target: { value: value ? keyGetter(value) : emptyValue } })}
             renderInput={(params) => <TextField {...params} label={label} />}
+            disabled={disabled ?? false}
           />
         )}
       </FormControl>

@@ -87,6 +87,9 @@ const BottomMenu = () => {
       case 'settings':
         navigate('/settings/preferences');
         break;
+      case 'speedHunts':
+        navigate('/speedHunts');
+        break;
       case 'account':
         setAnchorEl(event.currentTarget);
         break;
@@ -119,6 +122,7 @@ const BottomMenu = () => {
         ) : (
           <BottomNavigationAction label={t('settingsUser')} icon={<PersonIcon />} value="account" />
         )}
+        <BottomNavigationAction label={'Speedhunts'} icon={<PersonIcon />} value="speedHunts" />
       </BottomNavigation>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
         <MenuItem onClick={handleAccount}>
