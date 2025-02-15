@@ -11,14 +11,12 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SelectField from '../common/components/SelectField';
 import { useTranslation } from '../common/components/LocalizationProvider';
-import SettingsMenu from '../settings/components/SettingsMenu';
 import useSettingsStyles from '../settings/common/useSettingsStyles';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import PageLayout from '../common/components/PageLayout';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCatch, useEffectAsync } from '../reactHelper';
-import { useSelector } from 'react-redux';
 
 dayjs.extend(utc);
 
@@ -32,7 +30,8 @@ const SpeedHunt = () => {
   const [item, setItem] = useState({});
   const [loading, setLoading] = useState(false);
   const [speedHuntInfo, setSpeedHuntInfo] = useState();
-  const validate = () => item && item.deviceId;
+  const validate = () => item && item.deviceId
+    && (!speedHuntInfo.speedHunts || speedHuntInfo.speedHunts.length < speedHuntInfo.group.speedHunts);
 
 
   useEffectAsync(async () => {
@@ -49,7 +48,7 @@ const SpeedHunt = () => {
     }
   }, [timestamp]);
 
-  const create = useCatch(async () => {
+  const createSpeedHunt = useCatch(async () => {
     let url = `/api/speedHunts/create?deviceId=${item.deviceId}`;
 
     const response = await fetch(url, {
@@ -65,13 +64,8 @@ const SpeedHunt = () => {
     }
   });
 
-  const triggerNext = useCatch(async () => {
-    let url = `/api/${endpoint}`;
-    if (id) {
-      url += `/${id}`;
-    }
-
-    item.time = dayjs.utc().format();
+  const createSpeedHuntRequest = useCatch(async () => {
+    let url = `/api/speedHuntRequests/create?speedHuntId=${lastSpeedHunt.id}`;
 
     const response = await fetch(url, {
       method: !id ? 'POST' : 'PUT',
@@ -80,10 +74,7 @@ const SpeedHunt = () => {
     });
 
     if (response.ok) {
-      // if (onItemSaved) {
-      //   onItemSaved(await response.json());
-      // }
-      // navigate(-1);
+      setTimestamp(Date.now());
     } else {
       throw Error(await response.text());
     }
@@ -122,7 +113,7 @@ const SpeedHunt = () => {
                       type="button"
                       color="primary"
                       variant="contained"
-                      onClick={triggerNext}
+                      onClick={createSpeedHuntRequest}
                     >
                       {'Standort anfragen'}
                     </Button>
@@ -151,7 +142,7 @@ const SpeedHunt = () => {
                       type="button"
                       color="primary"
                       variant="contained"
-                      onClick={create}
+                      onClick={createSpeedHunt}
                       disabled={!validate()}
                     >
                       {'Speedhunt starten'}
