@@ -27,12 +27,17 @@ const GroupPage = () => {
 
   const [item, setItem] = useState();
 
-  const onItemSaved = useCatch(async () => {
+  const onItemSaved = useCatch(async (group) => {
     const response = await fetch('/api/groups');
     if (response.ok) {
       dispatch(groupsActions.refresh(await response.json()));
     } else {
       throw Error(await response.text());
+    }
+
+    const responseScheduleUpdates = await fetch('/api/manhunts/scheduleUpdates?groupId=' + group.id);
+    if (!responseScheduleUpdates.ok) {
+      throw Error(await responseScheduleUpdates.text());
     }
   });
 

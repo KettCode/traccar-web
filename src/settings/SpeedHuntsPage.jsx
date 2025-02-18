@@ -153,7 +153,7 @@ const classes = useSettingsStyles();
           }}
         >
           <AddIcon />
-        </Fab>
+      </Fab>
     </PageLayout>;
 }
 
