@@ -34,11 +34,6 @@ const GroupPage = () => {
     } else {
       throw Error(await response.text());
     }
-
-    const responseScheduleUpdates = await fetch('/api/manhunts/scheduleUpdates?groupId=' + group.id);
-    if (!responseScheduleUpdates.ok) {
-      throw Error(await responseScheduleUpdates.text());
-    }
   });
 
   const validate = () => item && item.name;

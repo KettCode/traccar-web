@@ -39,13 +39,6 @@ const classes = useSettingsStyles();
     }
   }, [timestamp]);
 
-  const onScheduleAllUpdates = useCatch(async () => {
-    const responseScheduleUpdates = await fetch('/api/manhunts/scheduleAllUpdates');
-    if (!responseScheduleUpdates.ok) {
-      throw Error(await responseScheduleUpdates.text());
-    }
-  });
-
     return  <PageLayout menu={<SettingsMenu />} breadcrumbs={['settingsTitle', 'sharedSavedCommands']}>
       <SearchHeader keyword={searchKeyword} setKeyword={setSearchKeyword} />
       <Table className={classes.table}>
@@ -70,18 +63,6 @@ const classes = useSettingsStyles();
           )) : (<TableShimmer columns={limitCommands ? 3 : 4} endAction />)}
         </TableBody>
       </Table>
-      <Button
-            type="button"
-            color="primary"
-            variant="contained"
-            onClick={onScheduleAllUpdates}
-            style={{
-              alignSelf: "end",
-              margin: "1rem"
-            }}
-          >
-            {'Tasks aktualisieren'}
-      </Button>
       <CollectionFab editPath="/settings/manhunt" />
     </PageLayout>;
 }
