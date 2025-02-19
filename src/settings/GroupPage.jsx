@@ -27,7 +27,7 @@ const GroupPage = () => {
 
   const [item, setItem] = useState();
 
-  const onItemSaved = useCatch(async (group) => {
+  const onItemSaved = useCatch(async () => {
     const response = await fetch('/api/groups');
     if (response.ok) {
       dispatch(groupsActions.refresh(await response.json()));
