@@ -77,6 +77,10 @@ const LocationItem = ({
                     backgroundColor: '#01579b',
                     boxShadow: 'none',
                 },
+                '&.Mui-disabled': {
+                    color: '#D0D0D0',
+                    opacity: 1
+                },
                 zIndex: 2
             }}
         >

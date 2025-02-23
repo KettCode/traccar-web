@@ -45,7 +45,12 @@ const SpeedHuntSelect = ({
                 background: 'radial-gradient(circle at 100px 100px, #33aaff, #000)',
                 '& .MuiSelect-icon': {
                     color: 'white',
-                }
+                },
+                '& .Mui-disabled': {
+                    color: '#D0D0D0 !important',
+                    opacity: 1,
+                    '-webkit-text-fill-color': '#D0D0D0 !important',
+                },
             }}
             MenuProps={{
                 MenuListProps: {
