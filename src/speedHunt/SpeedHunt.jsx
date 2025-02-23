@@ -32,6 +32,7 @@ const SpeedHunt = () => {
       const response = await fetch(`/api/speedHunts/speedHuntInfo`);
       if (response.ok) {
         setSpeedHuntInfo(await response.json());
+        //setShowAnimation(true);
       } else {
         throw Error(await response.text());
       }
@@ -79,7 +80,6 @@ const SpeedHunt = () => {
                 transition: 'transform 0.3s ease'
               }}
               onAnimationEnd={() => {
-                setTimestamp(Date.now());
                 setShowAnimation(false);
               }}
             >
@@ -88,12 +88,12 @@ const SpeedHunt = () => {
                   <LocationItem
                     speedHuntInfo={speedHuntInfo}
                     onCreated={() => {
-                      setShowAnimation(true);
+                      setTimestamp(Date.now());
                     }} /> :
                   <SpeedHuntItem
                     speedHuntInfo={speedHuntInfo}
                     onCreated={() => {
-                      setShowAnimation(true);
+                      setTimestamp(Date.now());
                     }} />
               }
               <style>
