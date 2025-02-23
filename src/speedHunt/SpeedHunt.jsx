@@ -1,15 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-  Container,
-  Button,
-  TextField,
+  Container
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import SelectField from '../common/components/SelectField';
 import { useTranslation } from '../common/components/LocalizationProvider';
 import useSettingsStyles from '../settings/common/useSettingsStyles';
 import dayjs from 'dayjs';
@@ -17,6 +9,9 @@ import utc from 'dayjs/plugin/utc';
 import PageLayout from '../common/components/PageLayout';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCatch, useEffectAsync } from '../reactHelper';
+import SpeedHuntItem from './SpeedHuntItem';
+import LocationItem from './LocationItem';
+
 
 dayjs.extend(utc);
 
@@ -27,12 +22,9 @@ const SpeedHunt = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [item, setItem] = useState({});
   const [loading, setLoading] = useState(false);
   const [speedHuntInfo, setSpeedHuntInfo] = useState();
-  const validate = () => item && item.deviceId
-    && (!speedHuntInfo.speedHunts || speedHuntInfo.speedHunts.length < speedHuntInfo.group.speedHunts);
-
+  const [showAnimation, setShowAnimation] = useState(false);
 
   useEffectAsync(async () => {
     setLoading(true);
@@ -48,109 +40,86 @@ const SpeedHunt = () => {
     }
   }, [timestamp]);
 
-  const createSpeedHunt = useCatch(async () => {
-    let url = `/api/speedHunts/create?deviceId=${item.deviceId}`;
-
-    const response = await fetch(url, {
-      method: !id ? 'POST' : 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(item),
-    });
-
-    if (response.ok) {
-      setTimestamp(Date.now());
-    } else {
-      throw Error(await response.text());
-    }
-  });
-
-  const createSpeedHuntRequest = useCatch(async () => {
-    let url = `/api/speedHuntRequests/create?speedHuntId=${lastSpeedHunt.id}`;
-
-    const response = await fetch(url, {
-      method: !id ? 'POST' : 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(item),
-    });
-
-    if (response.ok) {
-      setTimestamp(Date.now());
-    } else {
-      throw Error(await response.text());
-    }
-  });
-
-  let lastSpeedHunt = {};
-  if (speedHuntInfo && speedHuntInfo.speedHunts)
-    lastSpeedHunt = speedHuntInfo.speedHunts[speedHuntInfo.speedHunts.length - 1];
-
   return (
-    <PageLayout menu={<></>} breadcrumbs={['settingsTitle', 'sharedDevice']}>
-      <Container maxWidth="xs" className={classes.container}>
+    <PageLayout menu={<></>} breadcrumbs={['', '']}>
+      <Container maxWidth="xs" className={classes.container}
+        style={{
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+        }}>
         {speedHuntInfo && (
           <>
-            {
-              speedHuntInfo.isSpeedHuntRunning ? <>
-                <Accordion defaultExpanded>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="subtitle1">
-                      {'Standort anfragen'}
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails className={classes.details}>
-                    <SelectField
-                      value={lastSpeedHunt.deviceId}
-                      endpoint="/api/manhunts/huntedDevices"
-                      label={'Zielgerät'}
-                      disabled={true}
-                    />
-                    <TextField
-                      label={'Standortanfragen'}
-                      value={`${lastSpeedHunt.speedHuntRequests.length}/${speedHuntInfo.group.speedHuntRequests}`}
-                      disabled={true}
-                    />
-                    <Button
-                      type="button"
-                      color="primary"
-                      variant="contained"
-                      onClick={createSpeedHuntRequest}
-                    >
-                      {'Standort anfragen'}
-                    </Button>
-                  </AccordionDetails>
-                </Accordion>
-              </> : <>
-                <Accordion defaultExpanded>
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="subtitle1">
-                      {'Speedhunt anfragen'}
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails className={classes.details}>
-                    <SelectField
-                      value={item.deviceId}
-                      onChange={(event) => setItem({ ...item, deviceId: Number(event.target.value) })}
-                      endpoint="/api/manhunts/huntedDevices"
-                      label={'Zielgerät'}
-                    />
-                    <TextField
-                      label={'Speedhuntanfragen'}
-                      value={`${speedHuntInfo.speedHunts.length}/${speedHuntInfo.group.speedHunts}`}
-                      disabled={true}
-                    />
-                    <Button
-                      type="button"
-                      color="primary"
-                      variant="contained"
-                      onClick={createSpeedHunt}
-                      disabled={!validate()}
-                    >
-                      {'Speedhunt starten'}
-                    </Button>
-                  </AccordionDetails>
-                </Accordion>
-              </>
-            }
+            <div
+              variant="contained"
+              color="primary"
+              style={{
+                position: "relative",
+                borderRadius: '50%',
+                padding: '20px',
+                fontSize: '14px',
+                width: '300px',
+                height: '300px',
+                marginBottom: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                gap: '5px',
+                alignItems: 'center',
+                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+                color: '#fff',
+                backgroundColor: '#1976d2',
+                background: 'radial-gradient(circle at 100px 100px, #5cabff, #000)',
+                textAlign: 'center',
+                transformStyle: 'preserve-3d',
+                perspective: '1500px',
+                animation: showAnimation ? 'rotateBox 0.5s 1 ease-in-out' : "none",
+                transition: 'transform 0.3s ease'
+              }}
+              onAnimationEnd={() => {
+                setTimestamp(Date.now());
+                setShowAnimation(false);
+              }}
+            >
+              {
+                speedHuntInfo.isSpeedHuntRunning ?
+                  <LocationItem
+                    speedHuntInfo={speedHuntInfo}
+                    onCreated={() => {
+                      setShowAnimation(true);
+                    }} /> :
+                  <SpeedHuntItem
+                    speedHuntInfo={speedHuntInfo}
+                    onCreated={() => {
+                      setShowAnimation(true);
+                    }} />
+              }
+              <style>
+                {
+                  `
+                    @keyframes rotateBox {
+                      0% {
+                        transform: rotate3d(1, 1, 0, 0deg);
+                      }
+                      25% {
+                        transform: rotate3d(1, 1, 0, 90deg);
+                      }
+                      50% {
+                        transform: rotate3d(1, 1, 0, 180deg);
+                      }
+                      75% {
+                        transform: rotate3d(1, 1, 0, 270deg);
+                      }
+                      100% {
+                        transform: rotate3d(1, 1, 0, 360deg);
+                      }
+                    }
+                  `
+                }
+              </style>
+            </div>
           </>
         )}
       </Container>
@@ -159,3 +128,7 @@ const SpeedHunt = () => {
 };
 
 export default SpeedHunt;
+
+
+
+

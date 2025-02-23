@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -10,6 +10,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import MapIcon from '@mui/icons-material/Map';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 
 import { sessionActions } from '../../store';
 import { useTranslation } from './LocalizationProvider';
@@ -26,8 +27,10 @@ const BottomMenu = () => {
   const disableReports = useRestriction('disableReports');
   const user = useSelector((state) => state.session.user);
   const socket = useSelector((state) => state.session.socket);
+  const groups = useSelector((state) => state.groups.items);
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isHunter, setIsHuter] = useState(false);
 
   const currentSelection = () => {
     if (location.pathname === `/settings/user/${user.id}`) {
@@ -46,6 +49,11 @@ const BottomMenu = () => {
     setAnchorEl(null);
     navigate(`/settings/user/${user.id}`);
   };
+
+  useEffect(() => {
+    let group = groups[user.groupId];
+    setIsHuter(group && group.manhuntRole == 1);
+  }, [groups]);
 
   const handleLogout = async () => {
     setAnchorEl(null);
@@ -113,6 +121,9 @@ const BottomMenu = () => {
           )}
           value="map"
         />
+        {isHunter && (
+          <BottomNavigationAction label={'Speedhunts'} icon={<DirectionsRunIcon />} value="speedHunts" />
+        )}
         {!disableReports && (
           <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />
         )}
@@ -122,7 +133,6 @@ const BottomMenu = () => {
         ) : (
           <BottomNavigationAction label={t('settingsUser')} icon={<PersonIcon />} value="account" />
         )}
-        <BottomNavigationAction label={'Speedhunts'} icon={<PersonIcon />} value="speedHunts" />
       </BottomNavigation>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
         <MenuItem onClick={handleAccount}>
