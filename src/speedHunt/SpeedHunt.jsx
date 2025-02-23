@@ -32,13 +32,19 @@ const SpeedHunt = () => {
       const response = await fetch(`/api/speedHunts/speedHuntInfo`);
       if (response.ok) {
         setSpeedHuntInfo(await response.json());
-        //setShowAnimation(true);
       } else {
         throw Error(await response.text());
       }
     } finally {
       setLoading(false);
     }
+  }, [timestamp]);
+
+  useEffect(() => {
+    setShowAnimation(true);
+    setTimeout(() => {
+      setShowAnimation(false);
+    }, 500)
   }, [timestamp]);
 
   return (
@@ -78,9 +84,6 @@ const SpeedHunt = () => {
                 perspective: '1500px',
                 animation: showAnimation ? 'rotateBox 0.5s 1 ease-in-out' : "none",
                 transition: 'transform 0.3s ease'
-              }}
-              onAnimationEnd={() => {
-                setShowAnimation(false);
               }}
             >
               {
