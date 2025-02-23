@@ -40,12 +40,13 @@ const SpeedHunt = () => {
     }
   }, [timestamp]);
 
-  useEffect(() => {
+  const onCreated = useCatch(async () => {
+    setTimestamp(Date.now());
     setShowAnimation(true);
     setTimeout(() => {
       setShowAnimation(false);
     }, 500)
-  }, [timestamp]);
+  });
 
   return (
     <PageLayout menu={<></>} breadcrumbs={['', '']}>
@@ -90,14 +91,10 @@ const SpeedHunt = () => {
                 speedHuntInfo.isSpeedHuntRunning ?
                   <LocationItem
                     speedHuntInfo={speedHuntInfo}
-                    onCreated={() => {
-                      setTimestamp(Date.now());
-                    }} /> :
+                    onCreated={onCreated} /> :
                   <SpeedHuntItem
                     speedHuntInfo={speedHuntInfo}
-                    onCreated={() => {
-                      setTimestamp(Date.now());
-                    }} />
+                    onCreated={onCreated} />
               }
               <style>
                 {
