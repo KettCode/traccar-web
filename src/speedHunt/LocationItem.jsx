@@ -11,7 +11,7 @@ const LocationItem = ({
     const [dialogOpen, setDialogOpen] = useState(false);
     const [showAnimation, setShowAnimation] = useState(false);
 
-    if(!speedHuntInfo || !speedHuntInfo.speedHunts || speedHuntInfo.speedHunts.length <= 0)
+    if (!speedHuntInfo || !speedHuntInfo.speedHunts || speedHuntInfo.speedHunts.length <= 0)
         return null;
 
     const lastSpeedHunt = speedHuntInfo.speedHunts[speedHuntInfo.speedHunts.length - 1];
@@ -52,7 +52,7 @@ const LocationItem = ({
         />
 
         <Typography variant="body2" sx={{
-            fontSize: '12px',
+            fontSize: '14px',
             zIndex: 2,
             animation: showAnimation ? 'popinTextBox 2s 1 ease' : "none"
         }}>
@@ -66,6 +66,7 @@ const LocationItem = ({
             onClick={() => setDialogOpen(true)}
             disabled={!validate()}
             sx={{
+                marginTop: '10px',
                 fontSize: '14px',
                 width: '120px',
                 height: '45px',
@@ -109,27 +110,20 @@ const LocationItem = ({
                 @keyframes popinTextBox {
                     0% {
                         transform: scale(0);
-                        opacity: 0;
-                        text-shadow: 0 0 0 rgba(0, 0, 0, 0);
                     }
                     25% {
                         color: #F0F0F0;
                         transform: scale(2);
-                        opacity: 1;
-                        text-shadow: 3px 10px 5px rgba(0, 0, 0, 0.5);
                     }
                     50% {
                         color: #F0F0F0;
                         transform: scale(1);
-                        opacity: 1;
-                        text-shadow: 1px 0 0 rgba(0, 0, 0, 0);
                     }
                     100% {
+                        color: white;
                         transform: scale(1);
-                        opacity: 1;
-                        text-shadow: 1px 0 0 rgba(0, 0, 0, 0);
                     }
-                    }
+                }
                 `
             }
         </style>

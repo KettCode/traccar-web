@@ -46,7 +46,7 @@ const SpeedHuntItem = ({
             disabled={false}
         />
 
-        <Typography variant="body2" sx={{ fontSize: '12px', zIndex: 2 }}>
+        <Typography variant="body2" sx={{ fontSize: '14px', zIndex: 2 }}>
             {availableSpeedHunts + " Speedhunts verfügbar"}
         </Typography>
 
@@ -57,6 +57,7 @@ const SpeedHuntItem = ({
             onClick={() => setDialogOpen(true)}
             disabled={!validate()}
             sx={{
+                marginTop: '10px',
                 fontSize: '14px',
                 width: '120px',
                 height: '45px',

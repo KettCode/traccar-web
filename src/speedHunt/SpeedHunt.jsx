@@ -101,7 +101,7 @@ const SpeedHunt = () => {
                   width: 300px;
                   height: 300px;
                   position: relative;
-                  transition: all 1s ease;
+                  transition: all 3s ease;
                   transform-style: preserve-3d;
                   box-shadow: 1px 3px 3px rgba(0,0,0,0.2)
                 }
@@ -129,7 +129,7 @@ const SpeedHunt = () => {
                   backface-visibility: hidden;
                 }
                 .card-depth {
-                  transform: translateZ(100px) scale(0.98);
+                  transform: translateZ(120px) scale(0.98);
                   perspective: inherit;
                 }
                 .card-depth-icon {
