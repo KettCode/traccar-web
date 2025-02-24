@@ -12,6 +12,9 @@ const LocationItem = ({
     const [dialogOpen, setDialogOpen] = useState(false);
     const [showAnimation, setShowAnimation] = useState(false);
 
+    if(!speedHuntInfo || speedHuntInfo.speedHunts.length <= 0)
+        return null;
+
     const lastSpeedHunt = speedHuntInfo.speedHunts[speedHuntInfo.speedHunts.length - 1];
     const availableSpeedHuntReqeuests = speedHuntInfo.group.speedHuntRequests - lastSpeedHunt.speedHuntRequests.length;
     const validate = () => lastSpeedHunt && lastSpeedHunt.deviceId && availableSpeedHuntReqeuests > 0;
@@ -39,16 +42,6 @@ const LocationItem = ({
     });
 
     return <>
-        <LocationOnIcon style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            width: '100%',
-            height: '100%',
-            color: 'rgba(255, 255, 255, 0.3',
-            zIndex: 1
-        }} />
-
         <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
             Standort
         </Typography>

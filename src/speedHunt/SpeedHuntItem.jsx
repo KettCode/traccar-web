@@ -33,7 +33,7 @@ const SpeedHuntItem = ({
 
 
     return <>
-        <DirectionsRunIcon style={{
+        {/* <DirectionsRunIcon style={{
             position: 'absolute',
             left: 0,
             top: 0,
@@ -41,7 +41,7 @@ const SpeedHuntItem = ({
             height: '100%',
             color: 'rgba(255, 255, 255, 0.3',
             zIndex: 1
-        }} />
+        }} /> */}
 
         <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
             Speedhunt

@@ -11,6 +11,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useCatch, useEffectAsync } from '../reactHelper';
 import SpeedHuntItem from './SpeedHuntItem';
 import LocationItem from './LocationItem';
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 
 
 dayjs.extend(utc);
@@ -24,7 +26,7 @@ const SpeedHunt = () => {
 
   const [loading, setLoading] = useState(false);
   const [speedHuntInfo, setSpeedHuntInfo] = useState();
-  const [showAnimation, setShowAnimation] = useState(false);
+  const [showBack, setShowBack] = useState(false);
 
   useEffectAsync(async () => {
     setLoading(true);
@@ -44,10 +46,7 @@ const SpeedHunt = () => {
     setTimestamp(Date.now());
     if (!showAnimation)
       return;
-    setShowAnimation(true);
-    setTimeout(() => {
-      setShowAnimation(false);
-    }, 500);
+    setShowBack(!speedHuntInfo.isSpeedHuntRunning);
   });
 
   return (
@@ -62,66 +61,96 @@ const SpeedHunt = () => {
         }}>
         {speedHuntInfo && (
           <>
-            <div
-              variant="contained"
-              color="primary"
-              style={{
-                position: "relative",
-                borderRadius: '50%',
-                padding: '20px',
-                fontSize: '14px',
-                width: '300px',
-                height: '300px',
-                marginBottom: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                gap: '5px',
-                alignItems: 'center',
-                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
-                color: '#fff',
-                backgroundColor: '#1976d2',
-                background: 'radial-gradient(circle at 100px 100px, #5cabff, #000)',
-                textAlign: 'center',
-                transformStyle: 'preserve-3d',
-                perspective: '1500px',
-                animation: showAnimation ? 'rotateBox 0.5s 1 ease-in-out' : "none",
-                transition: 'transform 0.3s ease'
-              }}
-            >
-              {
-                speedHuntInfo.isSpeedHuntRunning ?
-                  <LocationItem
-                    speedHuntInfo={speedHuntInfo}
-                    onCreated={onCreated} /> :
-                  <SpeedHuntItem
-                    speedHuntInfo={speedHuntInfo}
-                    onCreated={onCreated} />
-              }
-              <style>
-                {
-                  `
-                    @keyframes rotateBox {
-                      0% {
-                        transform: rotate3d(1, 1, 0, 0deg);
-                      }
-                      25% {
-                        transform: rotate3d(1, 1, 0, 90deg);
-                      }
-                      50% {
-                        transform: rotate3d(1, 1, 0, 180deg);
-                      }
-                      75% {
-                        transform: rotate3d(1, 1, 0, 270deg);
-                      }
-                      100% {
-                        transform: rotate3d(1, 1, 0, 360deg);
-                      }
-                    }
-                  `
-                }
-              </style>
+            <div class="cards-wrapper">
+              <div class="card-container">
+                <div class="card" style={{
+                  transform: showBack ? "rotateY(-180deg)" : "none"
+                }}>
+                  <div class="card-contents card-front">
+                    <DirectionsRunIcon className='card-depth-icon' />
+                    <div class="card-depth">
+                      <SpeedHuntItem
+                        speedHuntInfo={speedHuntInfo}
+                        onCreated={onCreated} />
+                    </div>
+                  </div>
+                  <div class="card-contents card-back">
+                    <LocationOnIcon className='card-depth-icon' />
+                    <div class="card-depth">
+                      <LocationItem
+                        speedHuntInfo={speedHuntInfo}
+                        onCreated={onCreated} />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+            <style>
+              {
+                `
+                .cards-wrapper {
+                  
+                }
+                .card-container {
+                  perspective: 1200px;
+                }
+                .card {
+                  margin: 0 auto;
+                  border-radius: 50%;
+                  width: 300px;
+                  height: 300px;
+                  position: relative;
+                  transition: all 1s ease;
+                  transform-style: preserve-3d;
+                  box-shadow: 1px 3px 3px rgba(0,0,0,0.2)
+                }
+
+                .card-contents {
+                  border-radius: 50%;
+                  padding: 20px;
+                  font-size: 14px;
+                  width: 300px;
+                  height: 300px;
+                  margin-bottom: 2;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  gap: 5px;
+                  align-items: center;
+                  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+                  color: #fff;
+                  background-color: #1976d2;
+                  background: radial-gradient(circle at 100px 100px, #5cabff, #000);
+                  text-align: center;
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  backface-visibility: hidden;
+                }
+                .card-depth {
+                  transform: translateZ(100px) scale(0.98);
+                  perspective: inherit;
+                }
+                .card-depth-icon {
+                  position: absolute;
+                  left: 0;
+                  top: 0;
+                  width: 100%;
+                  height: 100%;
+                  color: rgba(255, 255, 255, 0.3);
+                  z-index: 1;
+                  transform: translateZ(70px);
+                }
+                .card-front {       
+                  transform-style: preserve-3d;
+                }
+                .card-back {
+                  transform: rotateY(180deg);
+                  transform-style: preserve-3d;
+                }
+                `
+              }
+            </style>
           </>
         )}
       </Container>
