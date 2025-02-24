@@ -25,7 +25,7 @@ const SpeedHuntItem = ({
         });
 
         if (response.ok) {
-            onCreated()
+            onCreated(true)
         } else {
             throw Error(await response.text());
         }

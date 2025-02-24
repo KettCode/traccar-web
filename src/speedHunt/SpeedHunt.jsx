@@ -40,12 +40,14 @@ const SpeedHunt = () => {
     }
   }, [timestamp]);
 
-  const onCreated = useCatch(async () => {
+  const onCreated = useCatch(async (showAnimation) => {
     setTimestamp(Date.now());
+    if (!showAnimation)
+      return;
     setShowAnimation(true);
     setTimeout(() => {
       setShowAnimation(false);
-    }, 500)
+    }, 500);
   });
 
   return (
