@@ -1,7 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import SpeedHuntSelect from "./SpeedHuntSelect";
 import ConfirmationDialog from "./ConfirmationDialog";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useState } from "react";
 import { useCatch } from "../reactHelper";
 

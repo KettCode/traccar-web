@@ -1,7 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import SpeedHuntSelect from "./SpeedHuntSelect";
 import ConfirmationDialog from "./ConfirmationDialog";
-import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import { useState } from "react";
 import { useCatch } from "../reactHelper";
 
@@ -33,16 +32,6 @@ const SpeedHuntItem = ({
 
 
     return <>
-        {/* <DirectionsRunIcon style={{
-            position: 'absolute',
-            left: 0,
-            top: 0,
-            width: '100%',
-            height: '100%',
-            color: 'rgba(255, 255, 255, 0.3',
-            zIndex: 1
-        }} /> */}
-
         <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
             Speedhunt
         </Typography>
