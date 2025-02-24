@@ -11,7 +11,7 @@ const LocationItem = ({
     const [dialogOpen, setDialogOpen] = useState(false);
     const [showAnimation, setShowAnimation] = useState(false);
 
-    if(!speedHuntInfo || speedHuntInfo.speedHunts.length <= 0)
+    if(!speedHuntInfo || !speedHuntInfo.speedHunts || speedHuntInfo.speedHunts.length <= 0)
         return null;
 
     const lastSpeedHunt = speedHuntInfo.speedHunts[speedHuntInfo.speedHunts.length - 1];
@@ -28,12 +28,12 @@ const LocationItem = ({
         });
 
         if (response.ok) {
-            onCreated(availableSpeedHuntReqeuests <= 1);
+            onCreated();
             if (availableSpeedHuntReqeuests > 1) {
                 setShowAnimation(true);
                 setTimeout(() => {
                     setShowAnimation(false);
-                }, 3000);
+                }, 2000);
             }
         } else {
             throw Error(await response.text());
@@ -54,7 +54,7 @@ const LocationItem = ({
         <Typography variant="body2" sx={{
             fontSize: '12px',
             zIndex: 2,
-            animation: showAnimation ? 'popinTextBox 3s 1 ease' : "none"
+            animation: showAnimation ? 'popinTextBox 2s 1 ease' : "none"
         }}>
             {availableSpeedHuntReqeuests + " Standortanfragen verfügbar"}
         </Typography>

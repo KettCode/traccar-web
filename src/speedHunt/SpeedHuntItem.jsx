@@ -11,6 +11,9 @@ const SpeedHuntItem = ({
     const [dialogOpen, setDialogOpen] = useState(false);
     const [item, setItem] = useState({});
 
+    if(!speedHuntInfo || !speedHuntInfo.group || !speedHuntInfo.speedHunts)
+        return null;
+
     const availableSpeedHunts = speedHuntInfo.group.speedHunts - speedHuntInfo.speedHunts.length;
     const validate = () => item && item.deviceId && availableSpeedHunts > 0;
 
@@ -24,7 +27,7 @@ const SpeedHuntItem = ({
         });
 
         if (response.ok) {
-            onCreated(true)
+            onCreated()
         } else {
             throw Error(await response.text());
         }

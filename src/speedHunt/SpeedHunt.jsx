@@ -25,7 +25,7 @@ const SpeedHunt = () => {
   const { id } = useParams();
 
   const [loading, setLoading] = useState(false);
-  const [speedHuntInfo, setSpeedHuntInfo] = useState();
+  const [speedHuntInfo, setSpeedHuntInfo] = useState({});
   const [showBack, setShowBack] = useState(false);
 
   useEffectAsync(async () => {
@@ -42,11 +42,12 @@ const SpeedHunt = () => {
     }
   }, [timestamp]);
 
-  const onCreated = useCatch(async (showAnimation) => {
+  useEffect(() => {
+    setShowBack(speedHuntInfo.isSpeedHuntRunning);
+  }, [speedHuntInfo.isSpeedHuntRunning])
+
+  const onCreated = useCatch(async () => {
     setTimestamp(Date.now());
-    if (!showAnimation)
-      return;
-    setShowBack(!speedHuntInfo.isSpeedHuntRunning);
   });
 
   return (
