@@ -6,12 +6,13 @@ import { useCatch } from "../reactHelper";
 
 const SpeedHuntItem = ({
     speedHuntInfo,
-    onCreated
+    onCreated,
+    reload
 }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [item, setItem] = useState({});
 
-    if(!speedHuntInfo || !speedHuntInfo.group || !speedHuntInfo.speedHunts)
+    if (!speedHuntInfo || !speedHuntInfo.group || !speedHuntInfo.speedHunts)
         return null;
 
     const availableSpeedHunts = speedHuntInfo.group.speedHunts - speedHuntInfo.speedHunts.length;
@@ -29,6 +30,7 @@ const SpeedHuntItem = ({
         if (response.ok) {
             onCreated()
         } else {
+            reload();
             throw Error(await response.text());
         }
     });

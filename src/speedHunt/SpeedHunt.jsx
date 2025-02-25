@@ -72,7 +72,8 @@ const SpeedHunt = () => {
                     <div class="card-depth">
                       <SpeedHuntItem
                         speedHuntInfo={speedHuntInfo}
-                        onCreated={onCreated} />
+                        onCreated={onCreated}
+                        reload={() => setTimestamp(Date.now())} />
                     </div>
                   </div>
                   <div class="card-contents card-back">
@@ -80,7 +81,8 @@ const SpeedHunt = () => {
                     <div class="card-depth">
                       <LocationItem
                         speedHuntInfo={speedHuntInfo}
-                        onCreated={onCreated} />
+                        onCreated={onCreated}
+                        reload={() => setTimestamp(Date.now())} />
                     </div>
                   </div>
                 </div>

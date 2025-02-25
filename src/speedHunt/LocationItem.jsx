@@ -6,7 +6,8 @@ import { useCatch } from "../reactHelper";
 
 const LocationItem = ({
     speedHuntInfo,
-    onCreated
+    onCreated,
+    reload
 }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [showAnimation, setShowAnimation] = useState(false);
@@ -36,6 +37,7 @@ const LocationItem = ({
                 }, 2000);
             }
         } else {
+            reload();
             throw Error(await response.text());
         }
     });
