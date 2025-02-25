@@ -41,7 +41,8 @@ const BottomMenu = () => {
       return 'reports';
     } if (location.pathname === '/') {
       return 'map';
-    }
+    } if (location.pathname.startsWith("/speedHunts"))
+      return 'speedHunts';
     return null;
   };
 
