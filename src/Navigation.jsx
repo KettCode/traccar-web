@@ -65,6 +65,9 @@ import SpeedhuntsPage from './settings/SpeedHuntsPage';
 import SpeedhuntPage from './settings/SpeedHuntPage';
 import SpeedhuntRequestPage from './settings/SpeedHuntRequestPage';
 import Speedhunt from './speedHunt/SpeedHunt';
+import CatchesPage from './settings/CatchesPage';
+import CatchPage from './settings/CatchPage';
+import SpeedHuntRequestsPage from './settings/SpeedHuntRequestsPage';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -170,8 +173,12 @@ const Navigation = () => {
           <Route path="speedHunts" element={<SpeedhuntsPage />} />
           <Route path="speedHunt" element={<SpeedhuntPage />} />
           <Route path="speedHunt/:id" element={<SpeedhuntPage />} />
+          <Route path="speedHuntRequests" element={<SpeedHuntRequestsPage />} />
           <Route path="speedHuntRequest" element={<SpeedhuntRequestPage />} />
           <Route path="speedHuntRequest/:id" element={<SpeedhuntRequestPage />} />
+          <Route path="catches" element={<CatchesPage />} />
+          <Route path="catch" element={<CatchPage />} />
+          <Route path="catch/:id" element={<CatchPage />} />
         </Route>
 
         <Route path="reports">

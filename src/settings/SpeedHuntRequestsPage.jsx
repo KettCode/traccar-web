@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import CollectionFab from './components/CollectionFab';
 
-const SpeedHuntsPage = () => {
+const SpeedHuntRequestsPage = () => {
 const classes = useSettingsStyles();
   const t = useTranslation();
 
@@ -78,32 +78,30 @@ const classes = useSettingsStyles();
         <TableHead>
           <TableRow>
             <TableCell>{'Id'}</TableCell>
-            <TableCell>{'Manhuntid'}</TableCell>
-            <TableCell>{'Anfragesteller (Gruppe)'}</TableCell>
-            <TableCell>{'Zielgerät'}</TableCell>
+            <TableCell>{'Speedhuntid'}</TableCell>
+            <TableCell>{'Anfragesteller (Benutzer)'}</TableCell>
             <TableCell>{'Anfragenummer'}</TableCell>
-            <TableCell>{'Letzte Anfrage'}</TableCell>
+            <TableCell>{'Angefragt am'}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
         </TableHead>
         <TableBody>
-          {!loading ? items.filter(filterByKeyword(searchKeyword)).map((item) => (
+          {!loading ? requestItems.filter(filterByKeyword(searchKeyword)).map((item) => (
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
-              <TableCell>{item.manhuntsId}</TableCell>
-              <TableCell>{item.hunterGroupId ? groups[item.hunterGroupId]?.name : null}</TableCell>
-              <TableCell>{item.deviceId ? devices[item.deviceId].name : null}</TableCell>
+              <TableCell>{item.speedHuntsId}</TableCell>
+              <TableCell>{item.userId ? users.find(x => x.id ==item.userId)?.name : null}</TableCell>
               <TableCell>{item.pos}</TableCell>
-              <TableCell>{dayjs.utc(item.lastTime).local().format('DD.MM.YYYY HH:mm')}</TableCell>
+              <TableCell>{dayjs.utc(item.time).local().format('DD.MM.YYYY HH:mm')}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
-                  <CollectionActions itemId={item.id} editPath="/settings/speedHunt" endpoint="speedHunts" setTimestamp={setTimestamp} />
-              </TableCell>
+                  <CollectionActions itemId={item.id} editPath="/settings/speedHuntRequest" endpoint="speedHuntRequests" setTimestamp={setTimestamp} />
+                </TableCell>
             </TableRow>
           )) : (<TableShimmer columns={limitCommands ? 3 : 4} endAction />)}
         </TableBody>
       </Table>
-      <CollectionFab editPath="/settings/speedHunt"/>
+      <CollectionFab editPath="/settings/speedHuntRequest"/>
     </PageLayout>;
 }
 
-export default SpeedHuntsPage;
+export default SpeedHuntRequestsPage;

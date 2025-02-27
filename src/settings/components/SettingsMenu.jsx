@@ -165,6 +165,18 @@ const SettingsMenu = () => {
               icon={<CreateIcon />}
               selected={location.pathname.startsWith('/settings/speedHunts')}
             />
+            <MenuItem
+              title={'Standortanfragen'}
+              link="/settings/speedHuntRequests"
+              icon={<CreateIcon />}
+              selected={location.pathname.startsWith('/settings/speedHuntRequests')}
+            />
+            <MenuItem
+              title={'Catch'}
+              link="/settings/catches"
+              icon={<CreateIcon />}
+              selected={location.pathname.startsWith('/settings/catches')}
+            />
           </List>
         </>
       )}

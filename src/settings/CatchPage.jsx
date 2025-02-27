@@ -21,19 +21,19 @@ import SelectField from '../common/components/SelectField';
 
 dayjs.extend(utc);
 
-const SpeedHuntRequestPage = () => {
+const CatchPage = () => {
   const classes = useSettingsStyles();
   const t = useTranslation();
   const admin = useAdministrator();
   const commonDeviceAttributes = useCommonDeviceAttributes(t);
   const deviceAttributes = useDeviceAttributes(t);
   const [item, setItem] = useState();
-  const validate = () => item && item.speedHuntsId && item.userId && item.pos && item.time;
+  const validate = () => item && item.manhuntsId && item.hunterGroupId && item.deviceId && item.time;
 
 
   return (
     <EditItemView
-      endpoint="speedHuntRequests"
+      endpoint="catches"
       item={item}
       setItem={setItem}
       validate={validate}
@@ -45,37 +45,36 @@ const SpeedHuntRequestPage = () => {
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography variant="subtitle1">
-                {'Standort'}
+                {'Catches'}
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.details}>
                 <SelectField
-                    value={item.speedHuntsId}
-                    onChange={(event) => setItem({ ...item, speedHuntsId: Number(event.target.value) })}
-                    endpoint="/api/speedHunts?all=true"
-                    label={'Speedhuntid'}
+                    value={item.manhuntsId}
+                    onChange={(event) => setItem({ ...item, manhuntsId: Number(event.target.value) })}
+                    endpoint="/api/manhunts"
+                    label={'Manhuntid'}
                     titleGetter={x => x.id}
                 />
                 <SelectField
-                    value={item.userId}
-                    onChange={(event) => setItem({ ...item, userId: Number(event.target.value) })}
-                    endpoint="/api/users"
-                    label={'Anfragesteller (Benutzer)'}
+                    value={item.hunterGroupId}
+                    onChange={(event) => setItem({ ...item, hunterGroupId: Number(event.target.value) })}
+                    endpoint="/api/groups"
+                    label={t('groupParent')}
+                />
+                <SelectField
+                  value={item.deviceId}
+                  onChange={(event) => setItem({ ...item, deviceId: Number(event.target.value) })}
+                  endpoint="/api/devices"
+                  label={'Zielgerät'}
                 />
                 <TextField
-                    label={'Anfragenummer'}
-                    type="number"
-                    value={item.pos}
-                    onChange={(event) => setItem({ ...item, pos: Number(event.target.value) })}
-                    disabled={!admin}
-                />
-                <TextField
-                  label={'Angefragt am'}
-                  type="datetime-local"
-                  value={dayjs.utc(item.time).local().format('YYYY-MM-DDTHH:mm')}
-                  onChange={(event) => setItem({ ...item, time: dayjs(event.target.value).utc().format('YYYY-MM-DDTHH:mm') })}
-                  fullWidth
-                  disabled={!admin}
+                label={'Letzte Anfrage'}
+                type="datetime-local"
+                value={dayjs.utc(item.time).local().format('YYYY-MM-DDTHH:mm')}
+                onChange={(event) => setItem({ ...item, time: dayjs(event.target.value).utc().format('YYYY-MM-DDTHH:mm') })}
+                fullWidth
+                disabled={!admin}
                 />
             </AccordionDetails>
           </Accordion>
@@ -90,4 +89,4 @@ const SpeedHuntRequestPage = () => {
   );
 };
 
-export default SpeedHuntRequestPage;
+export default CatchPage;
