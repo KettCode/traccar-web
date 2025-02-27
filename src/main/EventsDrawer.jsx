@@ -61,7 +61,7 @@ const EventsDrawer = ({ open, onClose }) => {
             onClick={() => navigate(`/event/${event.id}`)}
             disabled={!event.id}
           >
-            {(event.type == "speedHunt" || event.type == "speedHuntRequest") ?
+            {(event.type == "speedHunt" || event.type == "speedHuntRequest" || event.type == "catch") ?
               <ListItemText
                 primary={`${event.attributes.name}: ${event.attributes.hunterGroup} -> ${devices[event.deviceId]?.name}`}
                 secondary={formatTime(event.eventTime, 'seconds')}

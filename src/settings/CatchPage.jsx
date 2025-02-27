@@ -69,7 +69,7 @@ const CatchPage = () => {
                   label={'Zielgerät'}
                 />
                 <TextField
-                label={'Letzte Anfrage'}
+                label={'Gefangen um'}
                 type="datetime-local"
                 value={dayjs.utc(item.time).local().format('YYYY-MM-DDTHH:mm')}
                 onChange={(event) => setItem({ ...item, time: dayjs(event.target.value).utc().format('YYYY-MM-DDTHH:mm') })}

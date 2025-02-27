@@ -120,9 +120,9 @@ const SocketController = () => {
       if (soundEvents.includes(event.type) || (event.type === 'alarm' && soundAlarms.includes(event.attributes.alarm))) {
         new Audio(alarm).play();
       }
-      if(event.type == "speedHunt" || event.type == "speedHuntRequest") {
+      if(event.type == "speedHunt" || event.type == "speedHuntRequest" || event.type == "catch") {
         new Audio(speedHuntAlarm).play();
-        navigator.vibrate(2000);
+        //navigator.vibrate(2000);
       }
     });
   }, [events, soundEvents, soundAlarms]);

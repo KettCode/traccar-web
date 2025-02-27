@@ -46,7 +46,6 @@ const classes = useSettingsStyles();
           <TableRow>
             <TableCell>{'Id'}</TableCell>
             <TableCell>{'Start'}</TableCell>
-            <TableCell>{'Ende'}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
         </TableHead>
@@ -55,7 +54,6 @@ const classes = useSettingsStyles();
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
               <TableCell>{dayjs.utc(item.start).local().format('DD.MM.YYYY HH:mm')}</TableCell>
-              <TableCell>{dayjs.utc(item.finish).local().format('DD.MM.YYYY HH:mm')}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
                   <CollectionActions itemId={item.id} editPath="/settings/manhunt" endpoint="manhunts" setTimestamp={setTimestamp} />
                 </TableCell>

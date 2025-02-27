@@ -57,14 +57,6 @@ const ManhuntPage = () => {
                 fullWidth
                 disabled={!admin}
               />
-              <TextField
-                label={'Ende'}
-                type="datetime-local"
-                value={dayjs.utc(item.finish).local().format('YYYY-MM-DDTHH:mm')}
-                onChange={(event) => setItem({ ...item, finish: dayjs(event.target.value).utc().format('YYYY-MM-DDTHH:mm') })}
-                fullWidth
-                disabled={!admin}
-              />
             </AccordionDetails>
           </Accordion>
           <EditAttributesAccordion

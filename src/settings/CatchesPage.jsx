@@ -10,7 +10,7 @@ import SettingsMenu from './components/SettingsMenu';
 import CollectionActions from './components/CollectionActions';
 import TableShimmer from '../common/components/TableShimmer';
 import SearchHeader, { filterByKeyword } from './components/SearchHeader';
-import { useRestriction } from '../common/util/permissions';
+import { useAdministrator, useRestriction } from '../common/util/permissions';
 import useSettingsStyles from './common/useSettingsStyles';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
@@ -57,7 +57,7 @@ const CatchesPage = () => {
                     <TableCell>{'Manhuntid'}</TableCell>
                     <TableCell>{'Anfragesteller (Gruppe)'}</TableCell>
                     <TableCell>{'Zielgerät'}</TableCell>
-                    <TableCell>{'Letzte Anfrage'}</TableCell>
+                    <TableCell>{'Gefangen um'}</TableCell>
                     <TableCell className={classes.columnAction} />
                 </TableRow>
             </TableHead>
