@@ -14,6 +14,8 @@ import LocationItem from './LocationItem';
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import Card from '../Card';
+import DrawerButton from '../DrawerButton';
+import SpeedHuntDrawer from './SpeedHuntDrawer';
 
 
 dayjs.extend(utc);
@@ -28,6 +30,7 @@ const SpeedHunt = () => {
   const [loading, setLoading] = useState(false);
   const [speedHuntInfo, setSpeedHuntInfo] = useState({});
   const [showBack, setShowBack] = useState(false);
+  const [eventsOpen, setEventsOpen] = useState(false);
 
   useEffectAsync(async () => {
     setLoading(true);
@@ -78,8 +81,9 @@ const SpeedHunt = () => {
 
   return (
     <PageLayout menu={<></>} breadcrumbs={['', '']}>
-      <Container maxWidth="xs" className={classes.container}
+      <div maxWidth="xs" className={classes.container}
         style={{
+          position: "relative",
           height: "100%",
           width: "100%",
           display: "flex",
@@ -88,6 +92,15 @@ const SpeedHunt = () => {
         }}>
         {speedHuntInfo && (
           <>
+            <DrawerButton
+              title={"Übersicht"}
+              onClick={() => setEventsOpen(true)}
+            />
+            <SpeedHuntDrawer
+              open={eventsOpen}
+              onClose={() => setEventsOpen(false)}
+              speedHuntInfo={speedHuntInfo}
+            />
             <Card
               cardFront={cardFront}
               cardBack={cardBack}
@@ -95,7 +108,7 @@ const SpeedHunt = () => {
             />
           </>
         )}
-      </Container>
+      </div>
     </PageLayout>
   );
 };

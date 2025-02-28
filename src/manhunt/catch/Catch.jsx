@@ -1,12 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Container,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow
-} from '@mui/material';
+import React, { useState } from 'react';
 import { useTranslation } from '../../common/components/LocalizationProvider';
 import useSettingsStyles from '../../settings/common/useSettingsStyles';
 import dayjs from 'dayjs';
@@ -18,6 +10,8 @@ import CatchItem from './CatchItem';
 import { useEffectAsync } from '../../reactHelper';
 import { useSelector } from 'react-redux';
 import Card from '../Card';
+import CatchDrawer from './CatchDrawer';
+import DrawerButton from '../DrawerButton';
 
 
 dayjs.extend(utc);
@@ -33,6 +27,7 @@ const Catch = () => {
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [showBack, setShowBack] = useState(false);
+  const [eventsOpen, setEventsOpen] = useState(false);
 
   useEffectAsync(async () => {
     setLoading(true);
@@ -65,110 +60,36 @@ const Catch = () => {
   }
 
   return (
-    <PageLayout menu={<></>} breadcrumbs={['', '']}>
-      <Container maxWidth="xs" className={classes.container}
+    <PageLayout menu={<></>} breadcrumbs={['', '']} >
+      <div maxWidth="xs" className={classes.container}
         style={{
+          position: "relative",
           height: "100%",
           width: "100%",
           display: "flex",
-          justifyContent: "center"
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column"
         }}>
-        {(
-          <div style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px"
-          }}>
+        {items && (
+          <>
+            <DrawerButton
+              title={"Übersicht"}
+              onClick={() => setEventsOpen(true)}
+            />
+            <CatchDrawer
+              open={eventsOpen}
+              onClose={() => setEventsOpen(false)}
+              catches={items}
+            />
             <Card
               cardFront={cardFront}
               cardBack={cardBack}
               showBack={showBack}
             />
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <TableCell>{'Zielgerät'}</TableCell>
-                  <TableCell>{'Gefangen um'}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {!loading ? items.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.deviceId ? devices[item.deviceId].name : null}</TableCell>
-                    <TableCell>{dayjs.utc(item.time).local().format('DD.MM.YYYY HH:mm')}</TableCell>
-                  </TableRow>
-                )) : null}
-              </TableBody>
-            </Table>
-            <style>
-              {
-                `
-                .cards-wrapper {
-                  
-                }
-                .card-container {
-                  perspective: 1200px;
-                }
-                .card {
-                  margin: 0 auto;
-                  border-radius: 50%;
-                  width: 300px;
-                  height: 300px;
-                  position: relative;
-                  transition: all 3s ease;
-                  transform-style: preserve-3d;
-                  box-shadow: 1px 3px 3px rgba(0,0,0,0.2)
-                }
-
-                .card-contents {
-                  border-radius: 50%;
-                  padding: 20px;
-                  font-size: 14px;
-                  width: 300px;
-                  height: 300px;
-                  margin-bottom: 2;
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: center;
-                  gap: 5px;
-                  align-items: center;
-                  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-                  color: #fff;
-                  background-color: #1976d2;
-                  background: radial-gradient(circle at 100px 100px, #5cabff, #000);
-                  text-align: center;
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  backface-visibility: hidden;
-                }
-                .card-depth {
-                  transform: translateZ(120px) scale(0.98);
-                  perspective: inherit;
-                }
-                .card-depth-icon {
-                  position: absolute;
-                  left: 0;
-                  top: 0;
-                  width: 100%;
-                  height: 100%;
-                  color: rgba(255, 255, 255, 0.3);
-                  z-index: 1;
-                  transform: translateZ(70px);
-                }
-                .card-front {       
-                  transform-style: preserve-3d;
-                }
-                .card-back {
-                  transform: rotateY(180deg);
-                  transform-style: preserve-3d;
-                }
-                `
-              }
-            </style>
-          </div>
-        )}
-      </Container>
+          </>)
+        }
+      </div>
     </PageLayout>
   );
 };
