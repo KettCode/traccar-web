@@ -1,8 +1,9 @@
 import { Button, Typography } from "@mui/material";
 import { useState } from "react";
-import { useCatch } from "../reactHelper";
-import SpeedHuntSelect from "../speedHunt/SpeedHuntSelect";
-import ConfirmationDialog from "../speedHunt/ConfirmationDialog";
+import { useCatch } from "../../reactHelper";
+import ManhuntSelect from "../ManhuntSelect";
+import ConfirmationDialog from "../ConfirmationDialog";
+import ManhuntButton from "../ManhuntButton";
 
 const CatchItem = ({
     onCreated,
@@ -35,7 +36,7 @@ const CatchItem = ({
             Catch
         </Typography>
 
-        <SpeedHuntSelect
+        <ManhuntSelect
             endpoint={"/api/manhunts/huntedDevices"}
             value={item.deviceId}
             onChange={(event) => setItem({ ...item, deviceId: Number(event.target.value) })}
@@ -46,39 +47,11 @@ const CatchItem = ({
             
         </Typography>
 
-
-        <Button
-            variant="contained"
-            color="secondary"
+        <ManhuntButton 
+            text={"Senden"}
             onClick={() => setDialogOpen(true)}
             disabled={!validate()}
-            sx={{
-                marginTop: '10px',
-                fontSize: '14px',
-                width: '120px',
-                height: '45px',
-                borderRadius: '25px',
-                backgroundColor: '#33aaff',
-                background: 'radial-gradient(circle at 100px 100px, #33aaff, #000)',
-                '&:hover': {
-                    backgroundColor: '#0277bd',
-                    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-                },
-                '&:active': {
-                    backgroundColor: '#01579b',
-                    boxShadow: 'none',
-                },
-                '&.Mui-disabled': {
-                    color: '#D0D0D0',
-                    opacity: 1
-                },
-                zIndex: 2
-            }}
-        >
-            <Typography sx={{ fontWeight: 'bold', fontSize: '14px' }}>
-                Senden
-            </Typography>
-        </Button>
+        />
         <ConfirmationDialog
             open={dialogOpen}
             onClose={() => {

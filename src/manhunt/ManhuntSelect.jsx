@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEffectAsync } from "../reactHelper";
 import { FormControl, MenuItem, Select } from "@mui/material";
 
-const SpeedHuntSelect = ({
+const ManhuntSelect = ({
     value,
     onChange,
     endpoint,
@@ -73,4 +73,4 @@ const SpeedHuntSelect = ({
     </FormControl>
 }
 
-export default SpeedHuntSelect;
+export default ManhuntSelect;

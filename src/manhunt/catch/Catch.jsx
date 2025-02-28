@@ -1,39 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Container
+  Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow
 } from '@mui/material';
-import { useTranslation } from '../common/components/LocalizationProvider';
-import useSettingsStyles from '../settings/common/useSettingsStyles';
+import { useTranslation } from '../../common/components/LocalizationProvider';
+import useSettingsStyles from '../../settings/common/useSettingsStyles';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import PageLayout from '../common/components/PageLayout';
+import PageLayout from '../../common/components/PageLayout';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCatch, useEffectAsync } from '../reactHelper';
-import SpeedHuntItem from './SpeedHuntItem';
-import LocationItem from './LocationItem';
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
+import HttpsIcon from "@mui/icons-material/Https";
+import CatchItem from './CatchItem';
+import { useEffectAsync } from '../../reactHelper';
+import { useSelector } from 'react-redux';
 
 
 dayjs.extend(utc);
 
-const SpeedHunt = () => {
+const Catch = () => {
   const [timestamp, setTimestamp] = useState(Date.now());
   const classes = useSettingsStyles();
   const t = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const devices = useSelector((state) => state.devices.items);
   const [loading, setLoading] = useState(false);
-  const [speedHuntInfo, setSpeedHuntInfo] = useState({});
+  const [items, setItems] = useState([]);
   const [showBack, setShowBack] = useState(false);
 
   useEffectAsync(async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/speedHunts/speedHuntInfo`);
+      const response = await fetch('/api/catches/getCurrentManhunt');
       if (response.ok) {
-        setSpeedHuntInfo(await response.json());
+        setItems(await response.json());
       } else {
         throw Error(await response.text());
       }
@@ -42,14 +47,6 @@ const SpeedHunt = () => {
     }
   }, [timestamp]);
 
-  useEffect(() => {
-    setShowBack(speedHuntInfo.isSpeedHuntRunning);
-  }, [speedHuntInfo.isSpeedHuntRunning])
-
-  const onCreated = useCatch(async () => {
-    setTimestamp(Date.now());
-  });
-
   return (
     <PageLayout menu={<></>} breadcrumbs={['', '']}>
       <Container maxWidth="xs" className={classes.container}
@@ -57,37 +54,56 @@ const SpeedHunt = () => {
           height: "100%",
           width: "100%",
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
+          justifyContent: "center"
         }}>
-        {speedHuntInfo && (
-          <>
+        {(
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px"
+          }}>
             <div class="cards-wrapper">
               <div class="card-container">
                 <div class="card" style={{
                   transform: showBack ? "rotateY(-180deg)" : "none"
                 }}>
                   <div class="card-contents card-front">
-                    <DirectionsRunIcon className='card-depth-icon' />
+                    <HttpsIcon className='card-depth-icon' />
                     <div class="card-depth">
-                      <SpeedHuntItem
-                        speedHuntInfo={speedHuntInfo}
-                        onCreated={onCreated}
-                        reload={() => setTimestamp(Date.now())} />
+                      <CatchItem
+                        onCreated={() => setTimestamp(Date.now())}
+                        reload={() => setTimestamp(Date.now())}
+                      />
                     </div>
                   </div>
                   <div class="card-contents card-back">
-                    <LocationOnIcon className='card-depth-icon' />
+                    {/* <LocationOnIcon className='card-depth-icon' />
                     <div class="card-depth">
                       <LocationItem
                         speedHuntInfo={speedHuntInfo}
                         onCreated={onCreated}
                         reload={() => setTimestamp(Date.now())} />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
             </div>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>{'Zielgerät'}</TableCell>
+                  <TableCell>{'Gefangen um'}</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {!loading ? items.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.deviceId ? devices[item.deviceId].name : null}</TableCell>
+                    <TableCell>{dayjs.utc(item.time).local().format('DD.MM.YYYY HH:mm')}</TableCell>
+                  </TableRow>
+                )) : null}
+              </TableBody>
+            </Table>
             <style>
               {
                 `
@@ -154,14 +170,14 @@ const SpeedHunt = () => {
                 `
               }
             </style>
-          </>
+          </div>
         )}
       </Container>
     </PageLayout>
   );
 };
 
-export default SpeedHunt;
+export default Catch;
 
 
 

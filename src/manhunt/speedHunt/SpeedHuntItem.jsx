@@ -1,8 +1,9 @@
-import { Button, Typography } from "@mui/material";
-import SpeedHuntSelect from "./SpeedHuntSelect";
-import ConfirmationDialog from "./ConfirmationDialog";
+import { Typography } from "@mui/material";
+import ManhuntSelect from "../ManhuntSelect";
+import ConfirmationDialog from "../ConfirmationDialog";
 import { useState } from "react";
-import { useCatch } from "../reactHelper";
+import { useCatch } from "../../reactHelper";
+import ManhuntButton from "../ManhuntButton";
 
 const SpeedHuntItem = ({
     speedHuntInfo,
@@ -41,7 +42,7 @@ const SpeedHuntItem = ({
             Speedhunt
         </Typography>
 
-        <SpeedHuntSelect
+        <ManhuntSelect
             endpoint={"/api/manhunts/huntedDevices"}
             value={item.deviceId}
             onChange={(event) => setItem({ ...item, deviceId: Number(event.target.value) })}
@@ -52,39 +53,11 @@ const SpeedHuntItem = ({
             {availableSpeedHunts + " Speedhunts verfügbar"}
         </Typography>
 
-
-        <Button
-            variant="contained"
-            color="secondary"
+        <ManhuntButton 
+            text={"Starten"}
             onClick={() => setDialogOpen(true)}
             disabled={!validate()}
-            sx={{
-                marginTop: '10px',
-                fontSize: '14px',
-                width: '120px',
-                height: '45px',
-                borderRadius: '25px',
-                backgroundColor: '#33aaff',
-                background: 'radial-gradient(circle at 100px 100px, #33aaff, #000)',
-                '&:hover': {
-                    backgroundColor: '#0277bd',
-                    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-                },
-                '&:active': {
-                    backgroundColor: '#01579b',
-                    boxShadow: 'none',
-                },
-                '&.Mui-disabled': {
-                    color: '#D0D0D0',
-                    opacity: 1
-                },
-                zIndex: 2
-            }}
-        >
-            <Typography sx={{ fontWeight: 'bold', fontSize: '14px' }}>
-                Starten
-            </Typography>
-        </Button>
+        />
         <ConfirmationDialog
             open={dialogOpen}
             onClose={() => {
