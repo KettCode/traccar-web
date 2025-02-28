@@ -17,6 +17,7 @@ import HttpsIcon from "@mui/icons-material/Https";
 import CatchItem from './CatchItem';
 import { useEffectAsync } from '../../reactHelper';
 import { useSelector } from 'react-redux';
+import Card from '../Card';
 
 
 dayjs.extend(utc);
@@ -47,6 +48,22 @@ const Catch = () => {
     }
   }, [timestamp]);
 
+  const cardFront = () => {
+    return <>
+      <HttpsIcon className='card-depth-icon' />
+      <div class="card-depth">
+        <CatchItem
+          onCreated={() => setTimestamp(Date.now())}
+          reload={() => setTimestamp(Date.now())}
+        />
+      </div>
+    </>
+  }
+
+  const cardBack = () => {
+    return null;
+  }
+
   return (
     <PageLayout menu={<></>} breadcrumbs={['', '']}>
       <Container maxWidth="xs" className={classes.container}
@@ -62,32 +79,11 @@ const Catch = () => {
             flexDirection: "column",
             gap: "20px"
           }}>
-            <div class="cards-wrapper">
-              <div class="card-container">
-                <div class="card" style={{
-                  transform: showBack ? "rotateY(-180deg)" : "none"
-                }}>
-                  <div class="card-contents card-front">
-                    <HttpsIcon className='card-depth-icon' />
-                    <div class="card-depth">
-                      <CatchItem
-                        onCreated={() => setTimestamp(Date.now())}
-                        reload={() => setTimestamp(Date.now())}
-                      />
-                    </div>
-                  </div>
-                  <div class="card-contents card-back">
-                    {/* <LocationOnIcon className='card-depth-icon' />
-                    <div class="card-depth">
-                      <LocationItem
-                        speedHuntInfo={speedHuntInfo}
-                        onCreated={onCreated}
-                        reload={() => setTimestamp(Date.now())} />
-                    </div> */}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Card
+              cardFront={cardFront}
+              cardBack={cardBack}
+              showBack={showBack}
+            />
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
