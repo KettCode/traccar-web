@@ -20,11 +20,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const CatchDrawer = ({ 
-    open, 
+const CatchDrawer = ({
+    open,
     onClose,
-    catches
- }) => {
+    catches,
+    huntedDevices
+}) => {
     const classes = useStyles();
 
     const devices = useSelector((state) => state.devices.items);
@@ -54,6 +55,27 @@ const CatchDrawer = ({
                     </ListItemButton>
                 ))}
             </List>
+            {huntedDevices && (
+                <>
+                    <Toolbar className={classes.toolbar} disableGutters>
+                        <Typography variant="h6" className={classes.title}>
+                            {"Auf der Flucht"}
+                        </Typography>
+                    </Toolbar>
+                    <List className={classes.drawer} dense>
+                        {huntedDevices.map((huntedDevice) => (
+                            <ListItemButton
+                                key={huntedDevice.id}
+                                disabled={true}
+                            >
+                                <ListItemText
+                                    primary={`${devices[huntedDevice.id]?.name}`}
+                                />
+                            </ListItemButton>
+                        ))}
+                    </List>
+                </>
+            )}
         </Drawer>
     );
 };

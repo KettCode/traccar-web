@@ -26,6 +26,7 @@ const Catch = () => {
   const devices = useSelector((state) => state.devices.items);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
+  const [huntedDevices, setHuntedDevices] = useState([]);
   const [showBack, setShowBack] = useState(false);
   const [eventsOpen, setEventsOpen] = useState(false);
 
@@ -35,6 +36,20 @@ const Catch = () => {
       const response = await fetch('/api/catches/getCurrentManhunt');
       if (response.ok) {
         setItems(await response.json());
+      } else {
+        throw Error(await response.text());
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [timestamp]);
+
+  useEffectAsync(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/manhunts/huntedDevices');
+      if (response.ok) {
+        setHuntedDevices(await response.json());
       } else {
         throw Error(await response.text());
       }
@@ -81,6 +96,7 @@ const Catch = () => {
               open={eventsOpen}
               onClose={() => setEventsOpen(false)}
               catches={items}
+              huntedDevices={huntedDevices}
             />
             <Card
               cardFront={cardFront}
