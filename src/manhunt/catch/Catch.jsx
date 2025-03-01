@@ -33,7 +33,7 @@ const Catch = () => {
   useEffectAsync(async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/catches/getCurrentManhunt');
+      const response = await fetch('/api/catches/getForManhunt');
       if (response.ok) {
         setItems(await response.json());
       } else {
@@ -45,16 +45,11 @@ const Catch = () => {
   }, [timestamp]);
 
   useEffectAsync(async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/manhunts/huntedDevices');
-      if (response.ok) {
-        setHuntedDevices(await response.json());
-      } else {
-        throw Error(await response.text());
-      }
-    } finally {
-      setLoading(false);
+    const response = await fetch('/api/manhunts/huntedDevices');
+    if (response.ok) {
+      setHuntedDevices(await response.json());
+    } else {
+      throw Error(await response.text());
     }
   }, [timestamp]);
 

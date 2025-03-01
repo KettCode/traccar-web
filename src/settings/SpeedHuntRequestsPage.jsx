@@ -15,18 +15,14 @@ import useSettingsStyles from './common/useSettingsStyles';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
 import CollectionFab from './components/CollectionFab';
 
 const SpeedHuntRequestsPage = () => {
 const classes = useSettingsStyles();
   const t = useTranslation();
 
-  const devices = useSelector((state) => state.devices.items);
-  const groups = useSelector((state) => state.groups.items);
   const [timestamp, setTimestamp] = useState(Date.now());
   const [items, setItems] = useState([]);
-  const [requestItems, setRequestItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [loading, setLoading] = useState(false);
   const limitCommands = useRestriction('limitCommands');
@@ -36,16 +32,9 @@ const classes = useSettingsStyles();
   useEffectAsync(async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/speedHunts?all=true');
-      if (response.ok) {
-        setItems(await response.json());
-      } else {
-        throw Error(await response.text());
-      }
-
       const responseRequests = await fetch('/api/speedHuntRequests?all=true');
       if (responseRequests.ok) {
-        setRequestItems(await responseRequests.json());
+        setItems(await responseRequests.json());
       } else {
         throw Error(await responseRequests.text());
       }
@@ -86,7 +75,7 @@ const classes = useSettingsStyles();
           </TableRow>
         </TableHead>
         <TableBody>
-          {!loading ? requestItems.filter(filterByKeyword(searchKeyword)).map((item) => (
+          {!loading ? items.filter(filterByKeyword(searchKeyword)).map((item) => (
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
               <TableCell>{item.speedHuntsId}</TableCell>

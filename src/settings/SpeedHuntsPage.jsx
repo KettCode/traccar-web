@@ -26,7 +26,6 @@ const classes = useSettingsStyles();
   const groups = useSelector((state) => state.groups.items);
   const [timestamp, setTimestamp] = useState(Date.now());
   const [items, setItems] = useState([]);
-  const [requestItems, setRequestItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [loading, setLoading] = useState(false);
   const limitCommands = useRestriction('limitCommands');
@@ -41,13 +40,6 @@ const classes = useSettingsStyles();
         setItems(await response.json());
       } else {
         throw Error(await response.text());
-      }
-
-      const responseRequests = await fetch('/api/speedHuntRequests?all=true');
-      if (responseRequests.ok) {
-        setRequestItems(await responseRequests.json());
-      } else {
-        throw Error(await responseRequests.text());
       }
     } finally {
       setLoading(false);
