@@ -21,7 +21,7 @@ const LocationItem = ({
     const validate = () => lastSpeedHunt && lastSpeedHunt.deviceId && availableSpeedHuntReqeuests > 0;
 
     const createSpeedHuntRequest = useCatch(async () => {
-        let url = `/api/speedHuntRequests/create?speedHuntId=${lastSpeedHunt.id}`;
+        let url = `/api/currentManhunt/createSpeedHuntRequest?speedHuntId=${lastSpeedHunt.id}`;
 
         const response = await fetch(url, {
             method: 'POST',
@@ -49,7 +49,7 @@ const LocationItem = ({
         </Typography>
 
         <ManhuntSelect
-            endpoint={"/api/manhunts/huntedDevices"}
+            endpoint={"/api/currentManhunt/getHuntedDevices"}
             value={lastSpeedHunt.deviceId}
             disabled={true}
         />

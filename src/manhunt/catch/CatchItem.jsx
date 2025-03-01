@@ -14,7 +14,7 @@ const CatchItem = ({
     const validate = () => item && item.deviceId;
 
     const createCatch = useCatch(async () => {
-        let url = `/api/catches/create?deviceId=${item.deviceId}`;
+        let url = `/api/currentManhunt/createCatch?deviceId=${item.deviceId}`;
 
         const response = await fetch(url, {
             method: 'POST',
@@ -37,7 +37,7 @@ const CatchItem = ({
         </Typography>
 
         <ManhuntSelect
-            endpoint={"/api/manhunts/huntedDevices"}
+            endpoint={"/api/currentManhunt/getHuntedDevices"}
             value={item.deviceId}
             onChange={(event) => setItem({ ...item, deviceId: Number(event.target.value) })}
             disabled={false}

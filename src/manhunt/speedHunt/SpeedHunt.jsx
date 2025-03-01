@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Container
-} from '@mui/material';
 import { useTranslation } from '../../common/components/LocalizationProvider';
 import useSettingsStyles from '../../settings/common/useSettingsStyles';
 import dayjs from 'dayjs';
@@ -35,7 +32,7 @@ const SpeedHunt = () => {
   useEffectAsync(async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/speedHunts/speedHuntInfo`);
+      const response = await fetch(`/api/currentManhunt/getSpeedHuntInfo`);
       if (response.ok) {
         setSpeedHuntInfo(await response.json());
       } else {
