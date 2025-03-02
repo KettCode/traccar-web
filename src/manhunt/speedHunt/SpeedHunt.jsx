@@ -18,14 +18,14 @@ import SpeedHuntDrawer from './SpeedHuntDrawer';
 dayjs.extend(utc);
 
 const SpeedHunt = () => {
-  const [timestamp, setTimestamp] = useState(Date.now());
   const classes = useSettingsStyles();
   const t = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const [timestamp, setTimestamp] = useState(Date.now());
   const [loading, setLoading] = useState(false);
-  const [speedHuntInfo, setSpeedHuntInfo] = useState({});
+  const [manhuntInfo, setManhuntInfo] = useState({});
   const [showBack, setShowBack] = useState(false);
   const [eventsOpen, setEventsOpen] = useState(false);
 
@@ -34,7 +34,7 @@ const SpeedHunt = () => {
     try {
       const response = await fetch(`/api/currentManhunt/getManhuntInfo`);
       if (response.ok) {
-        setSpeedHuntInfo(await response.json());
+        setManhuntInfo(await response.json());
       } else {
         throw Error(await response.text());
       }
@@ -44,8 +44,8 @@ const SpeedHunt = () => {
   }, [timestamp]);
 
   useEffect(() => {
-    setShowBack(speedHuntInfo.isSpeedHuntRunning);
-  }, [speedHuntInfo.isSpeedHuntRunning])
+    setShowBack(manhuntInfo.isSpeedHuntRunning);
+  }, [manhuntInfo.isSpeedHuntRunning])
 
   const onCreated = useCatch(async () => {
     setTimestamp(Date.now());
@@ -57,7 +57,7 @@ const SpeedHunt = () => {
       <DirectionsRunIcon className='card-depth-icon' />
       <div class="card-depth">
         <SpeedHuntItem
-          speedHuntInfo={speedHuntInfo}
+          speedHuntInfo={manhuntInfo}
           onCreated={onCreated}
           reload={() => setTimestamp(Date.now())} />
       </div>
@@ -69,7 +69,7 @@ const SpeedHunt = () => {
       <LocationOnIcon className='card-depth-icon' />
       <div class="card-depth">
         <LocationItem
-          speedHuntInfo={speedHuntInfo}
+          speedHuntInfo={manhuntInfo}
           onCreated={onCreated}
           reload={() => setTimestamp(Date.now())} />
       </div>
@@ -87,7 +87,7 @@ const SpeedHunt = () => {
           justifyContent: "center",
           alignItems: "center"
         }}>
-        {speedHuntInfo && (
+        {manhuntInfo && (
           <>
             <DrawerButton
               title={"Übersicht"}
@@ -96,7 +96,7 @@ const SpeedHunt = () => {
             <SpeedHuntDrawer
               open={eventsOpen}
               onClose={() => setEventsOpen(false)}
-              speedHuntInfo={speedHuntInfo}
+              speedHuntInfo={manhuntInfo}
             />
             <Card
               cardFront={cardFront}

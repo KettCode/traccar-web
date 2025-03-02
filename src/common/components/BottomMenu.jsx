@@ -140,10 +140,10 @@ const BottomMenu = () => {
           {(userGroup?.manhuntRole == 1) && (
             <BottomNavigationAction label={'Catches'} icon={<HttpsIcon />} value="catches" />
           )}
-          {!disableReports && (userGroup?.manhuntRole != 1) && (
+          {!disableReports && (userGroup?.manhuntRole < 1) && (
             <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />
           )}
-          {(userGroup?.manhuntRole != 1) && (
+          {(userGroup?.manhuntRole < 1) && (
             <BottomNavigationAction label={t('settingsTitle')} icon={<SettingsIcon />} value="settings" />
           )}
           {readonly ? (
