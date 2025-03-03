@@ -32,7 +32,7 @@ const SpeedHunt = () => {
   useEffectAsync(async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/currentManhunt/getManhuntInfo`);
+      const response = await fetch(`/api/currentManhunt/getManhuntHunterInfo`);
       if (response.ok) {
         setManhuntInfo(await response.json());
       } else {

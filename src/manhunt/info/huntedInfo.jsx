@@ -6,7 +6,7 @@ const HuntedInfo = () => {
     useEffectAsync(async () => {
         setLoading(true);
         try {
-            const response = await fetch(`/api/currentManhunt/getManhuntInfo`);
+            const response = await fetch(`/api/currentManhunt/getManhuntHuntedInfo`);
             if (response.ok) {
                 setManhuntInfo(await response.json());
             } else {
