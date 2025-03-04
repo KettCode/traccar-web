@@ -17,7 +17,7 @@ const SpeedHuntItem = ({
 
         <ManhuntSelect
             endpoint={"/api/currentManhunt/getHuntedDevices"}
-            value={manhuntInfo.lastSpeedHunt.deviceId}
+            value={manhuntInfo.lastSpeedHunt?.deviceId}
             onChange={(event) => setItem({ ...item, deviceId: Number(event.target.value) })}
             disabled={true}
         />
