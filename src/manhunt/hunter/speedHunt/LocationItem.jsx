@@ -13,25 +13,23 @@ const LocationItem = ({
     const [dialogOpen, setDialogOpen] = useState(false);
     const [showAnimation, setShowAnimation] = useState(false);
 
-    if (!speedHuntInfo || !speedHuntInfo.speedHunts || speedHuntInfo.speedHunts.length <= 0)
+    if (!speedHuntInfo || !speedHuntInfo.lastSpeedHunt)
         return null;
 
-    const lastSpeedHunt = speedHuntInfo.speedHunts[speedHuntInfo.speedHunts.length - 1];
-    const availableSpeedHuntReqeuests = speedHuntInfo.group.speedHuntRequests - lastSpeedHunt.speedHuntRequests.length;
-    const validate = () => lastSpeedHunt && lastSpeedHunt.deviceId && availableSpeedHuntReqeuests > 0;
+    const validate = () => speedHuntInfo.lastSpeedHunt && speedHuntInfo.lastSpeedHunt.deviceId && speedHuntInfo.availableSpeedHuntRequests > 0;
 
     const createSpeedHuntRequest = useCatch(async () => {
-        let url = `/api/currentManhunt/createSpeedHuntRequest?speedHuntId=${lastSpeedHunt.id}`;
+        let url = `/api/currentManhunt/createSpeedHuntRequest?speedHuntId=${speedHuntInfo.lastSpeedHunt.id}`;
 
         const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(lastSpeedHunt),
+            body: JSON.stringify(speedHuntInfo.lastSpeedHunt),
         });
 
         if (response.ok) {
             onCreated();
-            if (availableSpeedHuntReqeuests > 1) {
+            if (speedHuntInfo.availableSpeedHuntRequests > 1) {
                 setShowAnimation(true);
                 setTimeout(() => {
                     setShowAnimation(false);
@@ -50,7 +48,7 @@ const LocationItem = ({
 
         <ManhuntSelect
             endpoint={"/api/currentManhunt/getHuntedDevices"}
-            value={lastSpeedHunt.deviceId}
+            value={speedHuntInfo.lastSpeedHunt.deviceId}
             disabled={true}
         />
 
@@ -59,7 +57,7 @@ const LocationItem = ({
             zIndex: 2,
             animation: showAnimation ? 'popinTextBox 2s 1 ease' : "none"
         }}>
-            {availableSpeedHuntReqeuests + " Standortanfragen verfügbar"}
+            {speedHuntInfo.availableSpeedHuntRequests + " Standortanfragen verfügbar"}
         </Typography>
 
         <ManhuntButton 

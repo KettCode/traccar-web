@@ -1,5 +1,5 @@
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import HttpsIcon from "@mui/icons-material/Https";
+import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import { useEffect, useState, useTransition } from "react";
 import useSettingsStyles from "../../settings/common/useSettingsStyles";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,6 +9,8 @@ import DrawerButton from "../components/DrawerButton";
 import Card from "../components/Card";
 import LocationItem from "./LocationItem";
 import InfoDrawer from "../components/InfoDrawer";
+import SpeedHuntItem from "./SpeedHuntItem";
+import RotateButton from "../components/RotateButton";
 
 const HuntedInfo = () => {
     const classes = useSettingsStyles();
@@ -21,7 +23,6 @@ const HuntedInfo = () => {
     const [manhuntInfo, setManhuntInfo] = useState({});
     const [showBack, setShowBack] = useState(false);
     const [eventsOpen, setEventsOpen] = useState(false);
-    const [huntedDevices, setHuntedDevices] = useState([]);
 
     useEffectAsync(async () => {
         setLoading(true);
@@ -37,18 +38,9 @@ const HuntedInfo = () => {
         }
     }, [timestamp]);
 
-      useEffectAsync(async () => {
-        const response = await fetch('/api/currentManhunt/getHuntedDevices');
-        if (response.ok) {
-          setHuntedDevices(await response.json());
-        } else {
-          throw Error(await response.text());
-        }
-      }, [timestamp]);
-
     useEffect(() => {
-        setShowBack(manhuntInfo.isHunted);
-    }, [manhuntInfo.isHunted])
+        setShowBack(manhuntInfo.isSpeedHuntRunning);
+    }, [manhuntInfo.isSpeedHuntRunning])
 
     const cardFront = () => {
         return <>
@@ -64,12 +56,11 @@ const HuntedInfo = () => {
 
     const cardBack = () => {
         return <>
-            <HttpsIcon className='card-depth-icon' />
+            <DirectionsRunIcon className='card-depth-icon' />
             <div class="card-depth">
-                {/* <LocationItem
-                    speedHuntInfo={manhuntInfo}
-                    onCreated={onCreated}
-                    reload={() => setTimestamp(Date.now())} /> */}
+                <SpeedHuntItem 
+                    manhuntInfo={manhuntInfo}
+                />
             </div>
         </>
     }
@@ -102,6 +93,9 @@ const HuntedInfo = () => {
                             cardFront={cardFront}
                             cardBack={cardBack}
                             showBack={showBack}
+                        />
+                        <RotateButton 
+                            onClick={() => setShowBack(!showBack)}
                         />
                     </>
                 )}

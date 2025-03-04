@@ -9,16 +9,16 @@ const LocationItem = ({
         return null;
 
     return <>
-        <Typography variant="h4" sx={{ fontSize: '24px', zIndex: 2 }}>
-            Letzter Standort
+        <Typography variant="h4" sx={{ fontSize: '20px', zIndex: 2 }}>
+            Letzte Standortmeldung
         </Typography>
 
         <Typography variant="h4" sx={{ fontSize: '14px', fontWeight: 'bold', zIndex: 2 }}>
             {formatTime(manhuntInfo.lastPosition, 'seconds')}
         </Typography>
 
-        <Typography variant="h4" sx={{ fontSize: '24px', zIndex: 2 }}>
-            Nächste Standort
+        <Typography variant="h4" sx={{ fontSize: '20px', zIndex: 2, marginTop: "20px" }}>
+            Nächste Standortmeldung
         </Typography>
 
         <Typography variant="h4" sx={{ fontSize: '14px', fontWeight: 'bold', zIndex: 2 }}>
