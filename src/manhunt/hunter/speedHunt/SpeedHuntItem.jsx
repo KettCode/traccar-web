@@ -1,20 +1,26 @@
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import ManhuntSelect from "../../components/ManhuntSelect";
+import ConfirmationDialog from "../../components/ConfirmationDialog";
 import { useState } from "react";
-import { useCatch } from "../../reactHelper";
-import ManhuntSelect from "../ManhuntSelect";
-import ConfirmationDialog from "../ConfirmationDialog";
-import ManhuntButton from "../ManhuntButton";
+import { useCatch } from "../../../reactHelper";
+import ManhuntButton from "../../components/ManhuntButton";
 
-const CatchItem = ({
+const SpeedHuntItem = ({
+    speedHuntInfo,
     onCreated,
     reload
 }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [item, setItem] = useState({});
-    const validate = () => item && item.deviceId;
 
-    const createCatch = useCatch(async () => {
-        let url = `/api/currentManhunt/createCatch?deviceId=${item.deviceId}`;
+    if (!speedHuntInfo || !speedHuntInfo.group || !speedHuntInfo.speedHunts)
+        return null;
+
+    const availableSpeedHunts = speedHuntInfo.group.speedHunts - speedHuntInfo.speedHunts.length;
+    const validate = () => item && item.deviceId && availableSpeedHunts > 0;
+
+    const createSpeedHunt = useCatch(async () => {
+        let url = `/api/currentManhunt/createSpeedHunt?deviceId=${item.deviceId}`;
 
         const response = await fetch(url, {
             method: 'POST',
@@ -33,7 +39,7 @@ const CatchItem = ({
 
     return <>
         <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
-            Catch
+            Speedhunt
         </Typography>
 
         <ManhuntSelect
@@ -44,11 +50,11 @@ const CatchItem = ({
         />
 
         <Typography variant="body2" sx={{ fontSize: '14px', zIndex: 2 }}>
-            
+            {availableSpeedHunts + " Speedhunts verfügbar"}
         </Typography>
 
         <ManhuntButton 
-            text={"Senden"}
+            text={"Starten"}
             onClick={() => setDialogOpen(true)}
             disabled={!validate()}
         />
@@ -59,12 +65,12 @@ const CatchItem = ({
             }}
             onConfirm={() => {
                 setDialogOpen(false);
-                createCatch();
+                createSpeedHunt();
             }}
-            title="Catch"
-            message="Wirklich als gefangen markieren?"
+            title="Speedhunt"
+            message="Speedhunt wirklich starten?"
         />
     </>
 }
 
-export default CatchItem;
+export default SpeedHuntItem;

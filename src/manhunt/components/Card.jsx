@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import useSettingsStyles from '../settings/common/useSettingsStyles';
+import useSettingsStyles from '../../settings/common/useSettingsStyles';
 
 const Card = ({
     cardFront,

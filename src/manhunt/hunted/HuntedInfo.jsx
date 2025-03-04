@@ -5,10 +5,10 @@ import useSettingsStyles from "../../settings/common/useSettingsStyles";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCatch, useEffectAsync } from "../../reactHelper";
 import PageLayout from "../../common/components/PageLayout";
-import DrawerButton from "../DrawerButton";
-import Card from "../Card";
+import DrawerButton from "../components/DrawerButton";
+import Card from "../components/Card";
 import LocationItem from "./LocationItem";
-import HuntedInfoDrawer from "./HuntedInfoDrawer";
+import InfoDrawer from "../components/InfoDrawer";
 
 const HuntedInfo = () => {
     const classes = useSettingsStyles();
@@ -91,11 +91,12 @@ const HuntedInfo = () => {
                             title={"Übersicht"}
                             onClick={() => setEventsOpen(true)}
                         />
-                        <HuntedInfoDrawer 
+                        <InfoDrawer 
                             open={eventsOpen}
                             onClose={() => setEventsOpen(false)}
                             manhuntInfo={manhuntInfo}
-                            huntedDevices={huntedDevices}
+                            showCatches={true}
+                            showSpeedHunts={true}
                         />
                         <Card
                             cardFront={cardFront}

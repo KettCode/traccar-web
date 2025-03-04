@@ -1,9 +1,9 @@
 import { Typography } from "@mui/material";
-import ManhuntSelect from "../ManhuntSelect";
-import ConfirmationDialog from "../ConfirmationDialog";
+import ManhuntSelect from "../../components/ManhuntSelect";
+import ConfirmationDialog from "../../components/ConfirmationDialog";
 import { useState } from "react";
-import { useCatch } from "../../reactHelper";
-import ManhuntButton from "../ManhuntButton";
+import { useCatch } from "../../../reactHelper";
+import ManhuntButton from "../../components/ManhuntButton";
 
 const LocationItem = ({
     speedHuntInfo,

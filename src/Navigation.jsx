@@ -67,9 +67,9 @@ import SpeedhuntRequestPage from './settings/SpeedHuntRequestPage';
 import CatchesPage from './settings/CatchesPage';
 import CatchPage from './settings/CatchPage';
 import SpeedHuntRequestsPage from './settings/SpeedHuntRequestsPage';
-import SpeedHunt from './manhunt/speedHunt/SpeedHunt';
-import Catch from './manhunt/catch/Catch';
-import HuntedInfo from './manhunt/info/HuntedInfo';
+import SpeedHunt from './manhunt/hunter/speedHunt/SpeedHunt';
+import Catch from './manhunt/hunter/catch/Catch';
+import HuntedInfo from './manhunt/hunted/HuntedInfo';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -198,7 +198,7 @@ const Navigation = () => {
 
         <Route path="speedHunts" element={<SpeedHunt />} />
         <Route path="catches" element={<Catch />} />
-        <Route path="huntedInfo" element={<HuntedInfo/>} />
+        <Route path="huntedInfo" element={<HuntedInfo />} />
       </Route>
     </Routes>
   );

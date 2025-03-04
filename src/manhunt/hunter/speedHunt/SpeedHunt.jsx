@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from '../../common/components/LocalizationProvider';
-import useSettingsStyles from '../../settings/common/useSettingsStyles';
+import { useTranslation } from '../../../common/components/LocalizationProvider';
+import useSettingsStyles from '../../../settings/common/useSettingsStyles';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import PageLayout from '../../common/components/PageLayout';
+import PageLayout from '../../../common/components/PageLayout';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useCatch, useEffectAsync } from '../../reactHelper';
+import { useCatch, useEffectAsync } from '../../../reactHelper';
 import SpeedHuntItem from './SpeedHuntItem';
 import LocationItem from './LocationItem';
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
-import Card from '../Card';
-import DrawerButton from '../DrawerButton';
-import SpeedHuntDrawer from './SpeedHuntDrawer';
+import Card from '../../components/Card';
+import DrawerButton from '../../components/DrawerButton';
+import InfoDrawer from '../../components/InfoDrawer';
 
 
 dayjs.extend(utc);
@@ -93,10 +93,12 @@ const SpeedHunt = () => {
               title={"Übersicht"}
               onClick={() => setEventsOpen(true)}
             />
-            <SpeedHuntDrawer
+            <InfoDrawer
               open={eventsOpen}
               onClose={() => setEventsOpen(false)}
-              speedHuntInfo={manhuntInfo}
+              manhuntInfo={manhuntInfo}
+              showCatches={false}
+              showSpeedHunts={true}
             />
             <Card
               cardFront={cardFront}

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { useTranslation } from '../../common/components/LocalizationProvider';
-import useSettingsStyles from '../../settings/common/useSettingsStyles';
+import { useTranslation } from '../../../common/components/LocalizationProvider';
+import useSettingsStyles from '../../../settings/common/useSettingsStyles';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import PageLayout from '../../common/components/PageLayout';
+import PageLayout from '../../../common/components/PageLayout';
 import { useNavigate, useParams } from 'react-router-dom';
 import HttpsIcon from "@mui/icons-material/Https";
 import CatchItem from './CatchItem';
-import { useEffectAsync } from '../../reactHelper';
+import { useEffectAsync } from '../../../reactHelper';
 import { useSelector } from 'react-redux';
-import Card from '../Card';
-import CatchDrawer from './CatchDrawer';
-import DrawerButton from '../DrawerButton';
+import Card from '../../components/Card';
+import DrawerButton from '../../components/DrawerButton';
+import InfoDrawer from '../../components/InfoDrawer';
 
 
 dayjs.extend(utc);
@@ -23,33 +23,23 @@ const Catch = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const devices = useSelector((state) => state.devices.items);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
-  const [huntedDevices, setHuntedDevices] = useState([]);
   const [showBack, setShowBack] = useState(false);
   const [eventsOpen, setEventsOpen] = useState(false);
+  const [manhuntInfo, setManhuntInfo] = useState({});
 
   useEffectAsync(async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/currentManhunt/getCatches');
+      const response = await fetch(`/api/currentManhunt/getManhuntHunterInfo`);
       if (response.ok) {
-        setItems(await response.json());
+        setManhuntInfo(await response.json());
       } else {
         throw Error(await response.text());
       }
     } finally {
       setLoading(false);
-    }
-  }, [timestamp]);
-
-  useEffectAsync(async () => {
-    const response = await fetch('/api/currentManhunt/getHuntedDevices');
-    if (response.ok) {
-      setHuntedDevices(await response.json());
-    } else {
-      throw Error(await response.text());
     }
   }, [timestamp]);
 
@@ -87,11 +77,12 @@ const Catch = () => {
               title={"Übersicht"}
               onClick={() => setEventsOpen(true)}
             />
-            <CatchDrawer
+            <InfoDrawer
               open={eventsOpen}
               onClose={() => setEventsOpen(false)}
-              catches={items}
-              huntedDevices={huntedDevices}
+              manhuntInfo={manhuntInfo}
+              showCatches={true}
+              showSpeedHunts={false}
             />
             <Card
               cardFront={cardFront}
