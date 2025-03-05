@@ -49,43 +49,39 @@ const Catches = ({
     return <>
         <Toolbar className={classes.toolbar} disableGutters>
             <Typography variant="h6" className={classes.title}>
-                {"Catches"}
+                {"Verhaftungen"}
             </Typography>
         </Toolbar>
         <List className={classes.drawer} dense>
-            {manhuntInfo.catches.map((singleCatch) => (
+            {manhuntInfo.catches && manhuntInfo.catches.map((singleCatch) => (
                 <ListItemButton
                     key={singleCatch.id}
                     disabled={true}
                 >
                     <ListItemText
-                        primary={`Catch: ${manhuntInfo.groups.find(x => x.id == singleCatch.hunterGroupId)?.name} -> ${manhuntInfo.devices.find(x => x.id == singleCatch.deviceId)?.name}`}
+                        primary={`Verhaftung von ${manhuntInfo.devices.find(x => x.id == singleCatch.deviceId)?.name} um`}
                         secondary={formatTime(singleCatch.time, 'seconds')}
                     />
                 </ListItemButton>
             ))}
         </List>
-        {manhuntInfo.huntedDevices && (
-            <>
-                <Toolbar className={classes.toolbar} disableGutters>
-                    <Typography variant="h6" className={classes.title}>
-                        {"Auf der Flucht"}
-                    </Typography>
-                </Toolbar>
-                <List className={classes.drawer} dense>
-                    {manhuntInfo.huntedDevices.map((huntedDevice) => (
-                        <ListItemButton
-                            key={huntedDevice.id}
-                            disabled={true}
-                        >
-                            <ListItemText
-                                primary={`${manhuntInfo.devices.find(x => x.id == huntedDevice.id)?.name}`}
-                            />
-                        </ListItemButton>
-                    ))}
-                </List>
-            </>
-        )}
+        <Toolbar className={classes.toolbar} disableGutters>
+            <Typography variant="h6" className={classes.title}>
+                {"Auf der Flucht"}
+            </Typography>
+        </Toolbar>
+        <List className={classes.drawer} dense>
+            {manhuntInfo.huntedDevices && manhuntInfo.huntedDevices.map((huntedDevice) => (
+                <ListItemButton
+                    key={huntedDevice.id}
+                    disabled={true}
+                >
+                    <ListItemText
+                        primary={`${manhuntInfo.devices.find(x => x.id == huntedDevice.id)?.name}`}
+                    />
+                </ListItemButton>
+            ))}
+        </List>
     </>
 }
 
@@ -101,25 +97,24 @@ const SpeedHunts = ({
             </Typography>
         </Toolbar>
         <List className={classes.drawer} dense>
-            {manhuntInfo.speedHunts.map((speedHunt) => (
+            {manhuntInfo.speedHunts && manhuntInfo.speedHunts.map((speedHunt) => (
                 <>
                     <ListItemButton
                         key={speedHunt.id}
                         disabled={true}
                     >
                         <ListItemText
-                            primary={`Speedhunt: ${manhuntInfo.groups.find(x => x.id == speedHunt.hunterGroupId)?.name} -> ${manhuntInfo.devices.find(x => x.id == speedHunt.deviceId)?.name}`}
-                            secondary={formatTime(speedHunt.lastTime, 'seconds')}
+                            primary={`Speedhunt auf ${manhuntInfo.devices.find(x => x.id == speedHunt.deviceId)?.name}`}
                         />
                     </ListItemButton>
                     <div style={{ marginLeft: "30px" }}>
-                        {speedHunt.speedHuntRequests.map((speedHuntRequests) => (
+                        {speedHunt.speedHuntRequests && speedHunt.speedHuntRequests.map((speedHuntRequests) => (
                             <ListItemButton
                                 key={speedHuntRequests.id}
                                 disabled={true}
                             >
                                 <ListItemText
-                                    primary={`Standort: ${manhuntInfo.devices.find(x => x.id == speedHunt.deviceId)?.name}`}
+                                    primary={`Standortanfrage um`}
                                     secondary={formatTime(speedHuntRequests.time, 'seconds')}
                                 />
                             </ListItemButton>
