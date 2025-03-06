@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
-    Table, TableRow, TableCell, TableHead, TableBody,
-    Fab,
+    Table, TableRow, TableCell, TableHead, TableBody
 } from '@mui/material';
 import { useEffectAsync } from '../reactHelper';
 import { useTranslation } from '../common/components/LocalizationProvider';
@@ -13,12 +12,9 @@ import SearchHeader, { filterByKeyword } from './components/SearchHeader';
 import { useAdministrator, useRestriction } from '../common/util/permissions';
 import useSettingsStyles from './common/useSettingsStyles';
 import { useSelector } from 'react-redux';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
 import { useNavigate } from 'react-router-dom';
 import CollectionFab from './components/CollectionFab';
-
-dayjs.extend(utc);
+import { formatTime } from '../common/util/formatter';
 
 const CatchesPage = () => {
     const classes = useSettingsStyles();
@@ -68,7 +64,7 @@ const CatchesPage = () => {
                         <TableCell>{item.manhuntsId}</TableCell>
                         <TableCell>{item.hunterGroupId ? groups[item.hunterGroupId]?.name : null}</TableCell>
                         <TableCell>{item.deviceId ? devices[item.deviceId].name : null}</TableCell>
-                        <TableCell>{dayjs.utc(item.time).local().format('DD.MM.YYYY HH:mm')}</TableCell>
+                        <TableCell>{formatTime(item.time, "minutes")}</TableCell>
                         <TableCell className={classes.columnAction} padding="none">
                             <CollectionActions itemId={item.id} editPath="/settings/catch" endpoint="catches" setTimestamp={setTimestamp} />
                         </TableCell>

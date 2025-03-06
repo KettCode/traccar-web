@@ -60,7 +60,7 @@ const Catches = ({
                 >
                     <ListItemText
                         primary={`Verhaftung von ${manhuntInfo.devices.find(x => x.id == singleCatch.deviceId)?.name} um`}
-                        secondary={formatTime(singleCatch.time, 'seconds')}
+                        secondary={formatTime(singleCatch.time, 'minutes')}
                     />
                 </ListItemButton>
             ))}
@@ -115,7 +115,7 @@ const SpeedHunts = ({
                             >
                                 <ListItemText
                                     primary={`Standortanfrage um`}
-                                    secondary={formatTime(speedHuntRequests.time, 'seconds')}
+                                    secondary={formatTime(speedHuntRequests.time, 'minutes')}
                                 />
                             </ListItemButton>
                         ))}

@@ -33,7 +33,7 @@ const LocationItem = ({
         </Typography>
 
         <Typography variant="h4" sx={{ fontSize: '14px', fontWeight: 'bold', zIndex: 2 }}>
-            {formatTime(manhuntInfo.lastPosition, 'seconds')}
+            {formatTime(manhuntInfo.lastPosition, 'minutes')}
         </Typography>
 
         <Typography variant="h4" sx={{ fontSize: '20px', zIndex: 2, marginTop: "20px" }}>
@@ -41,7 +41,7 @@ const LocationItem = ({
         </Typography>
 
         <Typography variant="h4" sx={{ fontSize: '14px', fontWeight: 'bold', zIndex: 2 }}>
-            {formatTime(manhuntInfo.nextPosition, 'seconds')}
+            {formatTime(manhuntInfo.nextPosition, 'minutes')}
         </Typography>
     </>
 }

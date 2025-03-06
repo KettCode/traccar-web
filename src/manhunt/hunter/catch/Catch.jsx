@@ -1,27 +1,16 @@
 import React, { useState } from 'react';
-import { useTranslation } from '../../../common/components/LocalizationProvider';
 import useSettingsStyles from '../../../settings/common/useSettingsStyles';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
 import PageLayout from '../../../common/components/PageLayout';
-import { useNavigate, useParams } from 'react-router-dom';
 import HttpsIcon from "@mui/icons-material/Https";
 import CatchItem from './CatchItem';
 import { useEffectAsync } from '../../../reactHelper';
-import { useSelector } from 'react-redux';
 import Card from '../../components/Card';
 import DrawerButton from '../../components/DrawerButton';
 import InfoDrawer from '../../components/InfoDrawer';
 
-
-dayjs.extend(utc);
-
 const Catch = () => {
   const [timestamp, setTimestamp] = useState(Date.now());
   const classes = useSettingsStyles();
-  const t = useTranslation();
-  const navigate = useNavigate();
-  const { id } = useParams();
 
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);

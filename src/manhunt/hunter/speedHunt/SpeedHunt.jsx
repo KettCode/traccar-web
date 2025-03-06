@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from '../../../common/components/LocalizationProvider';
 import useSettingsStyles from '../../../settings/common/useSettingsStyles';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
 import PageLayout from '../../../common/components/PageLayout';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useCatch, useEffectAsync } from '../../../reactHelper';
 import SpeedHuntItem from './SpeedHuntItem';
 import LocationItem from './LocationItem';
@@ -14,14 +10,8 @@ import Card from '../../components/Card';
 import DrawerButton from '../../components/DrawerButton';
 import InfoDrawer from '../../components/InfoDrawer';
 
-
-dayjs.extend(utc);
-
 const SpeedHunt = () => {
   const classes = useSettingsStyles();
-  const t = useTranslation();
-  const navigate = useNavigate();
-  const { id } = useParams();
 
   const [timestamp, setTimestamp] = useState(Date.now());
   const [loading, setLoading] = useState(false);
