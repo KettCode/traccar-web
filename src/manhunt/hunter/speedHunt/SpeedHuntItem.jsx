@@ -68,7 +68,13 @@ const SpeedHuntItem = ({
                 createSpeedHunt();
             }}
             title="Speedhunt"
-            message="Speedhunt wirklich starten?"
+            message={
+                <span>
+                    Speedhunt wirklich starten?
+                    <br/>
+                    Die erste Standortanfrage wird sofort ausgeführt.
+                </span>
+            }
         />
     </>
 }

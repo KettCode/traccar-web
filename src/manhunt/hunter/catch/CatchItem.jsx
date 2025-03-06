@@ -33,7 +33,7 @@ const CatchItem = ({
 
     return <>
         <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
-            Catch
+            Verhaften
         </Typography>
 
         <ManhuntSelect
@@ -61,8 +61,8 @@ const CatchItem = ({
                 setDialogOpen(false);
                 createCatch();
             }}
-            title="Catch"
-            message="Wirklich als gefangen markieren?"
+            title="Verhaften"
+            message="Spieler wirklich verhaften?"
         />
     </>
 }

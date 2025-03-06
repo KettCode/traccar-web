@@ -36,7 +36,7 @@ const ManhuntSelect = ({
             },
             zIndex: 2
         }}><Select
-            value={value}
+            value={value ?? ""}
             onChange={onChange}
             displayEmpty
             sx={{

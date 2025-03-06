@@ -144,7 +144,7 @@ const BottomMenu = () => {
             <BottomNavigationAction label={'Speedhunts'} icon={<DirectionsRunIcon />} value="speedHunts" />
           )}
           {(userGroup?.manhuntRole == 1) && (
-            <BottomNavigationAction label={'Catches'} icon={<HttpsIcon />} value="catches" />
+            <BottomNavigationAction label={'Verhaftungen'} icon={<HttpsIcon />} value="catches" />
           )}
           {(userGroup?.manhuntRole == 2) && (
             <BottomNavigationAction label={'Info'} icon={<LocationOnIcon />} value="huntedInfo" />
