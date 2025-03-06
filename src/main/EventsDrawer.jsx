@@ -66,7 +66,7 @@ const EventsDrawer = ({ open, onClose }) => {
                 primary={`${event.attributes.name}: ${devices[event.deviceId]?.name}`}
                 secondary={formatTime(event.eventTime, 'seconds')}
               /> : (event.type == "locationUpdate") ? <ListItemText
-                primary={"Standorte wurden aktualisiert"}
+                primary={"Standorte der Jäger wurden aktualisiert"}
                 secondary={formatTime(event.eventTime, 'seconds')}
               /> :
                 <ListItemText
