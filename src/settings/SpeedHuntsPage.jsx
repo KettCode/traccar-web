@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Table, TableRow, TableCell, TableHead, TableBody,
-  Fab,
+  Table, TableRow, TableCell, TableHead, TableBody
 } from '@mui/material';
 import { useEffectAsync } from '../reactHelper';
 import { useTranslation } from '../common/components/LocalizationProvider';
@@ -13,10 +12,9 @@ import SearchHeader, { filterByKeyword } from './components/SearchHeader';
 import { useRestriction } from '../common/util/permissions';
 import useSettingsStyles from './common/useSettingsStyles';
 import { useSelector } from 'react-redux';
-import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
 import CollectionFab from './components/CollectionFab';
+import { formatTime } from '../common/util/formatter';
 
 const SpeedHuntsPage = () => {
 const classes = useSettingsStyles();
@@ -86,7 +84,7 @@ const classes = useSettingsStyles();
               <TableCell>{item.hunterGroupId ? groups[item.hunterGroupId]?.name : null}</TableCell>
               <TableCell>{item.deviceId ? devices[item.deviceId].name : null}</TableCell>
               <TableCell>{item.pos}</TableCell>
-              <TableCell>{dayjs.utc(item.lastTime).local().format('DD.MM.YYYY HH:mm')}</TableCell>
+              <TableCell>{formatTime(item.lastTime, "minutes")}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
                   <CollectionActions itemId={item.id} editPath="/settings/speedHunt" endpoint="speedHunts" setTimestamp={setTimestamp} />
               </TableCell>

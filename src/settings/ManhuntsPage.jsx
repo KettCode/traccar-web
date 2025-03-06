@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Table, TableRow, TableCell, TableHead, TableBody,
-  Button,
+  Table, TableRow, TableCell, TableHead, TableBody
 } from '@mui/material';
 import { useCatch, useEffectAsync } from '../reactHelper';
 import { useTranslation } from '../common/components/LocalizationProvider';
@@ -13,7 +12,7 @@ import TableShimmer from '../common/components/TableShimmer';
 import SearchHeader, { filterByKeyword } from './components/SearchHeader';
 import { useRestriction } from '../common/util/permissions';
 import useSettingsStyles from './common/useSettingsStyles';
-import dayjs from 'dayjs';
+import { formatTime } from '../common/util/formatter';
 
 const ManhuntsPage = () => {
 const classes = useSettingsStyles();
@@ -53,7 +52,7 @@ const classes = useSettingsStyles();
           {!loading ? items.filter(filterByKeyword(searchKeyword)).map((item) => (
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
-              <TableCell>{dayjs.utc(item.start).local().format('DD.MM.YYYY HH:mm')}</TableCell>
+              <TableCell>{formatTime(item.start, "minutes")}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
                   <CollectionActions itemId={item.id} editPath="/settings/manhunt" endpoint="manhunts" setTimestamp={setTimestamp} />
                 </TableCell>
