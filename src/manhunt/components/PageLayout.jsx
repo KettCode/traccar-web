@@ -24,7 +24,7 @@ const PageLayout = ({
                     </IconButton>
                 )}
                 <IconButton sx={{ marginLeft: "auto" }} onClick={() => openEvents()}>
-                    <KeyboardDoubleArrowLeftIcon />
+                    <KeyboardDoubleArrowLeftIcon sx={{ fontSize: "3rem" }}/>
                 </IconButton>
             </Toolbar>
             <div maxWidth="xs"
