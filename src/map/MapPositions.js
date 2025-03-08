@@ -25,7 +25,10 @@ const MapPositions = ({ positions, onClick, showStatus, selectedPosition, titleF
   const directionType = useAttributePreference('mapDirection', 'selected');
 
   const createFeature = (devices, position, selectedPositionId) => {
-    const device = devices[position.deviceId];
+    let device = devices[position.deviceId];
+    if(position.deviceId < 0) {
+      device = devices[position.deviceId * -1];
+    }
     let showDirection;
     switch (directionType) {
       case 'none':
@@ -41,10 +44,10 @@ const MapPositions = ({ positions, onClick, showStatus, selectedPosition, titleF
     return {
       id: position.id,
       deviceId: position.deviceId,
-      name: device.name,
+      name: position.deviceId < 0 ? `Bekannter Standort (${device.name})` : device.name,
       fixTime: formatTime(position.fixTime, 'seconds'),
       category: mapIconKey(device.category),
-      color: showStatus ? position.attributes.color || getStatusColor(device.status) : 'neutral',
+      color: position.deviceId < 0 ? "neutral" : showStatus ? position.attributes.color || getStatusColor(device.status) : 'neutral',
       rotation: position.course,
       direction: showDirection,
     };
@@ -193,7 +196,7 @@ const MapPositions = ({ positions, onClick, showStatus, selectedPosition, titleF
     [id, selected].forEach((source) => {
       map.getSource(source)?.setData({
         type: 'FeatureCollection',
-        features: positions.filter((it) => devices.hasOwnProperty(it.deviceId))
+        features: positions.filter((it) => devices.hasOwnProperty(it.deviceId) || devices.hasOwnProperty(it.deviceId * -1))
           .filter((it) => (source === id ? it.deviceId !== selectedDeviceId : it.deviceId === selectedDeviceId))
           .map((position) => ({
             type: 'Feature',

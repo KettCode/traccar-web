@@ -35,6 +35,10 @@ const { reducer, actions } = createSlice({
       const liveRoutesLimit = state.user.attributes['web.liveRouteLength'] || state.server.attributes['web.liveRouteLength'] || 10;
       action.payload.forEach((position) => {
         state.positions[position.deviceId] = position;
+        if(position.isManhunt) {
+          position.deviceId *= -1;
+          state.positions[position.deviceId] = position;
+        }
         if (liveRoutes !== 'none') {
           const route = state.history[position.deviceId] || [];
           const last = route.at(-1);
