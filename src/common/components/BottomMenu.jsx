@@ -32,7 +32,7 @@ const BottomMenu = () => {
   const socket = useSelector((state) => state.session.socket);
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [userGroup, setUserGroup] = useState(null);
+
 
   const currentSelection = () => {
     if (location.pathname === `/settings/user/${user.id}`) {
@@ -52,17 +52,6 @@ const BottomMenu = () => {
     }
     return null;
   };
-
-  useEffectAsync(async () => {
-    const response = await fetch(`/api/currentManhunt/getGroup`);
-    if (response.ok) {
-      let group = await response.json()
-      setUserGroup(group);
-      dispatch(sessionActions.updateUserGroup(group));
-    } else {
-      throw Error(await response.text());
-    }
-  }, [])
 
   const handleAccount = () => {
     setAnchorEl(null);
@@ -131,7 +120,7 @@ const BottomMenu = () => {
 
   return (
     <Paper square elevation={3}>
-      {userGroup && (
+      {(
         <BottomNavigation value={currentSelection()} onChange={handleSelection} showLabels>
           <BottomNavigationAction
             label={t('mapTitle')}
@@ -142,19 +131,19 @@ const BottomMenu = () => {
             )}
             value="map"
           />
-          {(userGroup?.manhuntRole == 1) && (
+          {(user.group?.manhuntRole == 1) && (
             <BottomNavigationAction label={'Speedhunts'} icon={<DirectionsRunIcon />} value="speedHunts" />
           )}
-          {(userGroup?.manhuntRole == 1) && (
+          {(user.group?.manhuntRole == 1) && (
             <BottomNavigationAction label={'Verhaftungen'} icon={<HttpsIcon />} value="catches" />
           )}
-          {(userGroup?.manhuntRole == 2) && (
+          {(user.group?.manhuntRole == 2) && (
             <BottomNavigationAction label={'Info'} icon={<LocationOnIcon />} value="huntedInfo" />
           )}
-          {!disableReports && (userGroup?.manhuntRole < 1) && (
+          {!disableReports && (!user.group || user.group?.manhuntRole < 1) && (
             <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />
           )}
-          {(userGroup?.manhuntRole < 1) && (
+          {(!user.group || user.group?.manhuntRole < 1) && (
             <BottomNavigationAction label={t('settingsTitle')} icon={<SettingsIcon />} value="settings" />
           )}
           {readonly ? (

@@ -5,7 +5,6 @@ const { reducer, actions } = createSlice({
   initialState: {
     server: null,
     user: null,
-    userGroup: null,
     socket: null,
     includeLogs: false,
     logs: [],
@@ -18,9 +17,6 @@ const { reducer, actions } = createSlice({
     },
     updateUser(state, action) {
       state.user = action.payload;
-    },
-    updateUserGroup(state, action) {
-      state.userGroup = action.payload;
     },
     updateSocket(state, action) {
       state.socket = action.payload;
@@ -39,7 +35,7 @@ const { reducer, actions } = createSlice({
       const liveRoutesLimit = state.user.attributes['web.liveRouteLength'] || state.server.attributes['web.liveRouteLength'] || 10;
       action.payload.forEach((position) => {
         state.positions[position.deviceId] = position;
-        if(position.isManhunt && state.userGroup && state.userGroup.manhuntRole == 2) {
+        if(position.isManhunt && state.user.group && state.user.group.manhuntRole == 2) {
           position.deviceId *= -1;
           state.positions[position.deviceId] = position;
         }
