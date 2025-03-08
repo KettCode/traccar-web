@@ -28,19 +28,11 @@ const LocationItem = ({
       }, [manhuntInfo.nextPosition]);
 
     return <>
-        <Typography variant="h4" sx={{ fontSize: '20px', zIndex: 2 }}>
-            Letzte Standortmeldung
-        </Typography>
-
-        <Typography variant="h4" sx={{ fontSize: '14px', fontWeight: 'bold', zIndex: 2 }}>
-            {formatTime(manhuntInfo.lastPosition, 'minutes')}
-        </Typography>
-
-        <Typography variant="h4" sx={{ fontSize: '20px', zIndex: 2, marginTop: "20px" }}>
+        <Typography variant="h4" sx={{ fontSize: '20px', zIndex: 2}}>
             Nächste Standortmeldung
         </Typography>
 
-        <Typography variant="h4" sx={{ fontSize: '14px', fontWeight: 'bold', zIndex: 2 }}>
+        <Typography variant="h4" sx={{ fontSize: '18px', fontWeight: 'bold', zIndex: 2 }}>
             {formatTime(manhuntInfo.nextPosition, 'minutes')}
         </Typography>
     </>

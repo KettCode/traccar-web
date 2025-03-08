@@ -56,7 +56,9 @@ const BottomMenu = () => {
   useEffectAsync(async () => {
     const response = await fetch(`/api/currentManhunt/getGroup`);
     if (response.ok) {
-      setUserGroup(await response.json());
+      let group = await response.json()
+      setUserGroup(group);
+      dispatch(sessionActions.updateUserGroup(group));
     } else {
       throw Error(await response.text());
     }
