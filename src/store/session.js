@@ -36,8 +36,10 @@ const { reducer, actions } = createSlice({
       action.payload.forEach((position) => {
         state.positions[position.deviceId] = position;
         if(position.isManhunt && state.user.group && state.user.group.manhuntRole == 2) {
-          position.deviceId *= -1;
-          state.positions[position.deviceId] = position;
+          let manhuntPosition = Object.assign({}, position); 
+          manhuntPosition.id *= -1;
+          manhuntPosition.deviceId *= -1;
+          state.positions[manhuntPosition.deviceId] = manhuntPosition;
         }
         if (liveRoutes !== 'none') {
           const route = state.history[position.deviceId] || [];
