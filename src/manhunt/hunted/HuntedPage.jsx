@@ -62,7 +62,10 @@ const HuntedPage = () => {
     }
 
     return (
-        <PageLayout openEvents={() => setEventsOpen(true)}>
+        <PageLayout
+            title={"Info"}
+            openEvents={() => setEventsOpen(true)}
+        >
             {manhuntInfo && (
                 <>
                     <InfoDrawer

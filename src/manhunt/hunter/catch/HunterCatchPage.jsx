@@ -45,7 +45,10 @@ const HunterCatchPage = () => {
   }
 
   return (
-    <PageLayout openEvents={() => setEventsOpen(true)}>
+    <PageLayout
+      title={"Verhaftungen"}
+      openEvents={() => setEventsOpen(true)}
+    >
       {items && (
         <>
           <InfoDrawer

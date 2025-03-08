@@ -63,7 +63,10 @@ const HunterSpeedHuntPage = () => {
   }
 
   return (
-    <PageLayout openEvents={() => setEventsOpen(true)}>
+    <PageLayout
+      title={"Speedhunts"}
+      openEvents={() => setEventsOpen(true)}
+    >
       {manhuntInfo && (
         <>
           <InfoDrawer
