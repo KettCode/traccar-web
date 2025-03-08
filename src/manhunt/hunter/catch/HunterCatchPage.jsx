@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
-import useSettingsStyles from '../../../settings/common/useSettingsStyles';
-import PageLayout from '../../../common/components/PageLayout';
 import HttpsIcon from "@mui/icons-material/Https";
 import CatchItem from './CatchItem';
 import { useEffectAsync } from '../../../reactHelper';
 import Card from '../../components/Card';
-import DrawerButton from '../../components/DrawerButton';
 import InfoDrawer from '../../components/InfoDrawer';
+import PageLayout from '../../components/PageLayout';
 
-const Catch = () => {
+const HunterCatchPage = () => {
   const [timestamp, setTimestamp] = useState(Date.now());
-  const classes = useSettingsStyles();
-
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [showBack, setShowBack] = useState(false);
@@ -49,43 +45,28 @@ const Catch = () => {
   }
 
   return (
-    <PageLayout menu={<></>} breadcrumbs={['', '']} >
-      <div maxWidth="xs" className={classes.container}
-        style={{
-          position: "relative",
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column"
-        }}>
-        {items && (
-          <>
-            <DrawerButton
-              title={"Übersicht"}
-              onClick={() => setEventsOpen(true)}
-            />
-            <InfoDrawer
-              open={eventsOpen}
-              onClose={() => setEventsOpen(false)}
-              manhuntInfo={manhuntInfo}
-              showCatches={true}
-              showSpeedHunts={false}
-            />
-            <Card
-              cardFront={cardFront}
-              cardBack={cardBack}
-              showBack={showBack}
-            />
-          </>)
-        }
-      </div>
+    <PageLayout openEvents={() => setEventsOpen(true)}>
+      {items && (
+        <>
+          <InfoDrawer
+            open={eventsOpen}
+            onClose={() => setEventsOpen(false)}
+            manhuntInfo={manhuntInfo}
+            showCatches={true}
+            showSpeedHunts={false}
+          />
+          <Card
+            cardFront={cardFront}
+            cardBack={cardBack}
+            showBack={showBack}
+          />
+        </>)
+      }
     </PageLayout>
   );
 };
 
-export default Catch;
+export default HunterCatchPage;
 
 
 

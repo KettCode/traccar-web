@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import useSettingsStyles from '../../../settings/common/useSettingsStyles';
-import PageLayout from '../../../common/components/PageLayout';
 import { useCatch, useEffectAsync } from '../../../reactHelper';
 import SpeedHuntItem from './SpeedHuntItem';
 import LocationItem from './LocationItem';
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import Card from '../../components/Card';
-import DrawerButton from '../../components/DrawerButton';
 import InfoDrawer from '../../components/InfoDrawer';
+import PageLayout from '../../components/PageLayout';
 
-const SpeedHunt = () => {
-  const classes = useSettingsStyles();
-
+const HunterSpeedHuntPage = () => {
   const [timestamp, setTimestamp] = useState(Date.now());
   const [loading, setLoading] = useState(false);
   const [manhuntInfo, setManhuntInfo] = useState({});
@@ -67,42 +63,28 @@ const SpeedHunt = () => {
   }
 
   return (
-    <PageLayout menu={<></>} breadcrumbs={['', '']}>
-      <div maxWidth="xs" className={classes.container}
-        style={{
-          position: "relative",
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
-        {manhuntInfo && (
-          <>
-            <DrawerButton
-              title={"Übersicht"}
-              onClick={() => setEventsOpen(true)}
-            />
-            <InfoDrawer
-              open={eventsOpen}
-              onClose={() => setEventsOpen(false)}
-              manhuntInfo={manhuntInfo}
-              showCatches={false}
-              showSpeedHunts={true}
-            />
-            <Card
-              cardFront={cardFront}
-              cardBack={cardBack}
-              showBack={showBack}
-            />
-          </>
-        )}
-      </div>
+    <PageLayout openEvents={() => setEventsOpen(true)}>
+      {manhuntInfo && (
+        <>
+          <InfoDrawer
+            open={eventsOpen}
+            onClose={() => setEventsOpen(false)}
+            manhuntInfo={manhuntInfo}
+            showCatches={false}
+            showSpeedHunts={true}
+          />
+          <Card
+            cardFront={cardFront}
+            cardBack={cardBack}
+            showBack={showBack}
+          />
+        </>
+      )}
     </PageLayout>
   );
 };
 
-export default SpeedHunt;
+export default HunterSpeedHuntPage;
 
 
 

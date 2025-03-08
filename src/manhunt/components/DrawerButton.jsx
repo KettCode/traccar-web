@@ -1,4 +1,5 @@
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import InfoIcon from '@mui/icons-material/Info';
 
 const DrawerButton = ({
     title,
@@ -20,15 +21,14 @@ const DrawerButton = ({
         }}
         onClick={onClick}
     >
-        <KeyboardDoubleArrowLeftIcon
+        <InfoIcon
             style={{
                 color: 'white',
-                marginRight: '8px',
                 fontSize: '24px',
             }}
         />
         <span style={{ color: 'white', fontWeight: 'bold', fontSize: '16px' }}>
-            {title}
+            {/* {title} */}
         </span>
     </div>
 }
