@@ -46,8 +46,8 @@ const BottomMenu = () => {
       return 'speedHunts';
     } if (location.pathname.startsWith("/manhunt/catches")) {
       return 'catches';
-    } if (location.pathname.startsWith("/manhunt/quickInfo")) {
-      return 'quickInfo';
+    } if (location.pathname.startsWith("/manhunt/info")) {
+      return 'info';
     }
     return null;
   };
@@ -103,8 +103,8 @@ const BottomMenu = () => {
       case 'catches':
         navigate('manhunt/catches');
         break;
-      case 'quickInfo':
-        navigate('manhunt/quickInfo');
+      case 'info':
+        navigate('manhunt/info');
         break;
       case 'account':
         setAnchorEl(event.currentTarget);
@@ -137,7 +137,7 @@ const BottomMenu = () => {
             <BottomNavigationAction label={'Verhaftungen'} icon={<HttpsIcon />} value="catches" />
           )}
           {(user.group?.manhuntRole == 2) && (
-            <BottomNavigationAction label={'Quickinfo'} icon={<LocationOnIcon />} value="quickInfo" />
+            <BottomNavigationAction label={'Info'} icon={<LocationOnIcon />} value="info" />
           )}
           {!disableReports && (!user.group || user.group?.manhuntRole < 1) && (
             <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />

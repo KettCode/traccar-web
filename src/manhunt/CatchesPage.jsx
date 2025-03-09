@@ -7,7 +7,7 @@ import { Container } from '@mui/material';
 import { useSelector } from 'react-redux';
 import HunterCatchCard from './cards/HunterCatchCard';
 import HuntedCatchCard from './cards/HuntedCatchCard';
-import CatchesItems from './items/CatchesItems';
+import DevicesInfo from './items/DevicesInfo';
 
 const CatchesPage = () => {
   const [timestamp, setTimestamp] = useState(Date.now());
@@ -66,7 +66,7 @@ const CatchesPage = () => {
               overflowY: "auto",
               padding: "0px"
             }}>
-              <CatchesItems manhuntInfo={manhuntInfo} />
+              <DevicesInfo manhuntInfo={manhuntInfo} />
             </Container>
           </>
         )}

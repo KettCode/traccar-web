@@ -15,10 +15,10 @@ const ManhuntsMenu = () => {
         <>
             <List>
                 {user.group && user.group.manhuntRole == 2 && <MenuItem
-                    title={"Quickinfo"}
-                    link="/manhunt/quickInfo"
+                    title={"Info"}
+                    link="/manhunt/info"
                     icon={<InfoIcon />}
-                    selected={location.pathname === '/manhunt/quickInfo'}
+                    selected={location.pathname === '/manhunt/info'}
                 />}
                 {<MenuItem
                     title={"Speedhunts"}
@@ -26,7 +26,7 @@ const ManhuntsMenu = () => {
                     icon={<DirectionsRunIcon />}
                     selected={location.pathname === '/manhunt/speedHunts'}
                 />}
-                {<MenuItem
+                {user.group && user.group.manhuntRole == 1 && <MenuItem
                     title={"Verhaftungen"}
                     link="/manhunt/catches"
                     icon={<HttpsIcon />}

@@ -1,17 +1,15 @@
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import { useEffect, useState } from "react";
 import { useEffectAsync } from "../reactHelper";
 import Card from "./components/Card";
-import RotateButton from "./components/RotateButton";
 import PageLayout from "../common/components/PageLayout";
 import useReportStyles from "../reports/common/useReportStyles";
 import ManhuntsMenu from "./components/ManhuntsMenu";
 import { Container, Typography } from "@mui/material";
-import ManhuntSelect from "./components/ManhuntSelect";
 import { formatTime } from "../common/util/formatter";
+import DevicesInfo from "./items/DevicesInfo";
 
-const QuickInfoPage = () => {
+const ManhuntInfoPage = () => {
     const [timestamp, setTimestamp] = useState(Date.now());
     const [loading, setLoading] = useState(false);
     const [manhuntInfo, setManhuntInfo] = useState({});
@@ -70,29 +68,11 @@ const QuickInfoPage = () => {
     }
 
     const cardBack = () => {
-        return <>
-            <DirectionsRunIcon className='card-depth-icon' />
-            <div class="card-depth">
-                <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
-                    Speedhunt läuft auf
-                </Typography>
-
-                <ManhuntSelect
-                    endpoint={"/api/currentManhunt/getHuntedDevices"}
-                    value={manhuntInfo.isSpeedHuntRunning ? manhuntInfo.lastSpeedHunt?.deviceId : null}
-                    onChange={(event) => setItem({ ...item, deviceId: Number(event.target.value) })}
-                    disabled={true}
-                />
-
-                <Typography variant="body2" sx={{ fontSize: '14px', zIndex: 2 }}>
-                    {manhuntInfo.availableSpeedHuntRequests + " Standortanfragen verfügbar"}
-                </Typography>
-            </div>
-        </>
+        return <></>
     }
 
     return (
-        <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Quickinfo']}>
+        <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Info']}>
             <div className={classes.container} style={{
                 position: "relative",
                 height: "100%",
@@ -115,9 +95,13 @@ const QuickInfoPage = () => {
                                 cardBack={cardBack}
                                 showBack={showBack}
                             />
-                            <RotateButton
-                                onClick={() => setShowBack(!showBack)}
-                            />
+                        </Container>
+                        <Container maxWidth="xs" className={classes.container} style={{
+                            height: "50%",
+                            overflowY: "auto",
+                            padding: "0px"
+                        }}>
+                            <DevicesInfo manhuntInfo={manhuntInfo} />
                         </Container>
                     </>
                 )}
@@ -126,4 +110,4 @@ const QuickInfoPage = () => {
     );
 };
 
-export default QuickInfoPage;
+export default ManhuntInfoPage;

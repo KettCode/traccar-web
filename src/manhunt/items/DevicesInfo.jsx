@@ -3,7 +3,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 
-const CatchesItems = ({
+const DevicesInfo = ({
     manhuntInfo
 }) => {
     return <List>
@@ -66,4 +66,4 @@ const HuntedItem = ({
     </>
 }
 
-export default CatchesItems;
+export default DevicesInfo;
