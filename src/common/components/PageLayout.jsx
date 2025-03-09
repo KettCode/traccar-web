@@ -58,7 +58,7 @@ const PageTitle = ({ breadcrumbs }) => {
 
   if (desktop) {
     return (
-      <Typography variant="h6" noWrap>{title ?? t(breadcrumbs[0] ?? breadcrumb)}</Typography>
+      <Typography variant="h6" noWrap>{t(breadcrumbs[0] ?? breadcrumb)}</Typography>
     );
   }
   return (
