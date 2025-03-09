@@ -61,15 +61,13 @@ const CatchesPage = () => {
                 />
               )}
             </Container>
-            {manhuntInfo.catches && manhuntInfo.catches.length > 0 && (
-              <Container maxWidth="xs" className={classes.container} style={{
-                height: "50%",
-                overflowY: "auto",
-                padding: "0px"
-              }}>
-                <CatchesItems manhuntInfo={manhuntInfo} />
-              </Container>
-            )}
+            <Container maxWidth="xs" className={classes.container} style={{
+              height: "50%",
+              overflowY: "auto",
+              padding: "0px"
+            }}>
+              <CatchesItems manhuntInfo={manhuntInfo} />
+            </Container>
           </>
         )}
       </div>

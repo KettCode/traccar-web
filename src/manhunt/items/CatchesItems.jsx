@@ -10,7 +10,7 @@ const CatchesItems = ({
         <div style={{
             backgroundColor: "white"
         }}>
-            {manhuntInfo.catches.map((singleCatch) => (
+            {manhuntInfo.catches && manhuntInfo.catches.map((singleCatch) => (
                 <CatchItem
                     manhuntInfo={manhuntInfo}
                     singleCatch={singleCatch}
