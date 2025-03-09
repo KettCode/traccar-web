@@ -43,10 +43,10 @@ const BottomMenu = () => {
       return 'reports';
     } if (location.pathname === '/') {
       return 'map';
-    } if (location.pathname.startsWith("/speedHunts")) {
-      return 'speedHunts';
-    } if (location.pathname.startsWith("/catches")) {
-      return 'catches';
+    } if (location.pathname.startsWith("/speedHunt")) {
+      return 'speedHunt';
+    } if (location.pathname.startsWith("/catch")) {
+      return 'catch';
     } if (location.pathname.startsWith("/huntedInfo")) {
       return 'huntedInfo';
     }
@@ -98,14 +98,14 @@ const BottomMenu = () => {
       case 'settings':
         navigate('/settings/preferences');
         break;
-      case 'speedHunts':
-        navigate('/speedHunts');
+      case 'speedHunt':
+        navigate('manhunt/speedHunt');
         break;
-      case 'catches':
-        navigate('/catches');
+      case 'catch':
+        navigate('manhunt/catch');
         break;
       case 'huntedInfo':
-        navigate('/huntedInfo');
+        navigate('manhunt/huntedInfo');
         break;
       case 'account':
         setAnchorEl(event.currentTarget);
@@ -132,10 +132,10 @@ const BottomMenu = () => {
             value="map"
           />
           {(user.group?.manhuntRole == 1) && (
-            <BottomNavigationAction label={'Speedhunts'} icon={<DirectionsRunIcon />} value="speedHunts" />
+            <BottomNavigationAction label={'Speedhunt'} icon={<DirectionsRunIcon />} value="speedHunt" />
           )}
           {(user.group?.manhuntRole == 1) && (
-            <BottomNavigationAction label={'Verhaftungen'} icon={<HttpsIcon />} value="catches" />
+            <BottomNavigationAction label={'Verhaften'} icon={<HttpsIcon />} value="catch" />
           )}
           {(user.group?.manhuntRole == 2) && (
             <BottomNavigationAction label={'Info'} icon={<LocationOnIcon />} value="huntedInfo" />

@@ -5,15 +5,16 @@ import LocationItem from './LocationItem';
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import Card from '../../components/Card';
-import InfoDrawer from '../../components/InfoDrawer';
-import PageLayout from '../../components/PageLayout';
+import ManhuntsMenu from '../../components/ManhuntsMenu';
+import useReportStyles from '../../../reports/common/useReportStyles';
+import PageLayout from '../../../common/components/PageLayout';
 
 const HunterSpeedHuntPage = () => {
   const [timestamp, setTimestamp] = useState(Date.now());
   const [loading, setLoading] = useState(false);
   const [manhuntInfo, setManhuntInfo] = useState({});
   const [showBack, setShowBack] = useState(false);
-  const [eventsOpen, setEventsOpen] = useState(false);
+  const classes = useReportStyles();
 
   useEffectAsync(async () => {
     setLoading(true);
@@ -63,26 +64,24 @@ const HunterSpeedHuntPage = () => {
   }
 
   return (
-    <PageLayout
-      title={"Speedhunts"}
-      openEvents={() => setEventsOpen(true)}
-    >
-      {manhuntInfo && (
-        <>
-          <InfoDrawer
-            open={eventsOpen}
-            onClose={() => setEventsOpen(false)}
-            manhuntInfo={manhuntInfo}
-            showCatches={false}
-            showSpeedHunts={true}
-          />
-          <Card
-            cardFront={cardFront}
-            cardBack={cardBack}
-            showBack={showBack}
-          />
-        </>
-      )}
+    <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Speedhunt']}>
+      <div className={classes.container} style={{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}>
+        {manhuntInfo && (
+          <>
+            <Card
+              cardFront={cardFront}
+              cardBack={cardBack}
+              showBack={showBack}
+            />
+          </>
+        )}
+      </div>
     </PageLayout>
   );
 };

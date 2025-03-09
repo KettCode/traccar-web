@@ -3,16 +3,17 @@ import HttpsIcon from "@mui/icons-material/Https";
 import CatchItem from './CatchItem';
 import { useEffectAsync } from '../../../reactHelper';
 import Card from '../../components/Card';
-import InfoDrawer from '../../components/InfoDrawer';
-import PageLayout from '../../components/PageLayout';
+import PageLayout from '../../../common/components/PageLayout';
+import ManhuntsMenu from '../../components/ManhuntsMenu';
+import useReportStyles from '../../../reports/common/useReportStyles';
 
 const HunterCatchPage = () => {
   const [timestamp, setTimestamp] = useState(Date.now());
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [showBack, setShowBack] = useState(false);
-  const [eventsOpen, setEventsOpen] = useState(false);
   const [manhuntInfo, setManhuntInfo] = useState({});
+  const classes = useReportStyles();
 
   useEffectAsync(async () => {
     setLoading(true);
@@ -45,26 +46,24 @@ const HunterCatchPage = () => {
   }
 
   return (
-    <PageLayout
-      title={"Verhaftungen"}
-      openEvents={() => setEventsOpen(true)}
-    >
-      {items && (
-        <>
-          <InfoDrawer
-            open={eventsOpen}
-            onClose={() => setEventsOpen(false)}
-            manhuntInfo={manhuntInfo}
-            showCatches={true}
-            showSpeedHunts={false}
-          />
-          <Card
-            cardFront={cardFront}
-            cardBack={cardBack}
-            showBack={showBack}
-          />
-        </>)
-      }
+    <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Verhaften']}>
+      <div className={classes.container} style={{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}>
+        {items && (
+          <>
+            <Card
+              cardFront={cardFront}
+              cardBack={cardBack}
+              showBack={showBack}
+            />
+          </>
+        )}
+      </div>
     </PageLayout>
   );
 };

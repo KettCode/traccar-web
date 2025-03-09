@@ -1,23 +1,20 @@
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
-import { useEffect, useState, useTransition } from "react";
+import { useState } from "react";
 import { useEffectAsync } from "../../reactHelper";
-import Card from "../components/Card";
-import LocationItem from "./LocationItem";
-import SpeedHuntItem from "./SpeedHuntItem";
-import RotateButton from "../components/RotateButton";
-import { useMediaQuery, useTheme } from "@mui/material";
+import { Typography } from "@mui/material";
 import PageLayout from "../../common/components/PageLayout";
 import useReportStyles from "../../reports/common/useReportStyles";
 import ManhuntsMenu from "../components/ManhuntsMenu";
+import Card from "./Card";
+import RotateButton from "./RotateButton";
+import LockIcon from '@mui/icons-material/Lock';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import { formatTime } from "../../common/util/formatter";
 
-const HuntedPage = () => {
-    const theme = useTheme();
+const CatchInfoPage = () => {
     const [timestamp, setTimestamp] = useState(Date.now());
     const [loading, setLoading] = useState(false);
     const [manhuntInfo, setManhuntInfo] = useState({});
     const [showBack, setShowBack] = useState(false);
-    const desktop = useMediaQuery(theme.breakpoints.up('md'));
     const classes = useReportStyles();
 
 
@@ -35,35 +32,46 @@ const HuntedPage = () => {
         }
     }, [timestamp]);
 
-    useEffect(() => {
-        setShowBack(manhuntInfo.isSpeedHuntRunning);
-    }, [manhuntInfo.isSpeedHuntRunning])
-
     const cardFront = () => {
         return <>
-            <LocationOnIcon className='card-depth-icon' />
+            <LockIcon className='card-depth-icon' />
             <div class="card-depth">
-                <LocationItem
-                    manhuntInfo={manhuntInfo}
-                    reload={() => setTimestamp(Date.now())}
-                />
+                {manhuntInfo.catches && manhuntInfo.catches.map((singleCatch) => (
+                    <Typography>
+                        {`${manhuntInfo.devices.find(x => x.id == singleCatch.deviceId)?.name}`}
+                    </Typography>
+                ))}
+                {manhuntInfo.catches && manhuntInfo.catches.length == 0 &&
+                    <Typography>
+                        Es gibt noch keine Verhaftungen
+                    </Typography>
+                }
             </div>
         </>
     }
 
     const cardBack = () => {
         return <>
-            <DirectionsRunIcon className='card-depth-icon' />
+            <LockOpenIcon className='card-depth-icon' />
             <div class="card-depth">
-                <SpeedHuntItem
-                    manhuntInfo={manhuntInfo}
-                />
+                {manhuntInfo.huntedDevices && manhuntInfo.huntedDevices.map((huntedDevice) => (
+                    <>
+                        <Typography variant="subtitle1">
+                            {`${manhuntInfo.devices.find(x => x.id == huntedDevice.id)?.name}`}
+                        </Typography>
+                    </>
+                ))}
+                {manhuntInfo.huntedDevices && manhuntInfo.huntedDevices.length == 0 &&
+                    <Typography>
+                        Alle Spieler wurden verhaftet
+                    </Typography>
+                }
             </div>
         </>
     }
 
     return (
-        <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Info']}>
+        <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Verhaftungen (Info)']}>
             <div className={classes.container} style={{
                 position: "relative",
                 height: "100%",
@@ -85,8 +93,8 @@ const HuntedPage = () => {
                     </>
                 )}
             </div>
-        </PageLayout>
+        </PageLayout >
     );
 };
 
-export default HuntedPage;
+export default CatchInfoPage;
