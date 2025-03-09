@@ -1,15 +1,11 @@
 import React from 'react';
-import { Divider, List } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
-import TimelineIcon from '@mui/icons-material/Timeline';
+import { List } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import MenuItem from '../../common/components/MenuItem';
 import { useSelector } from 'react-redux';
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import HttpsIcon from "@mui/icons-material/Https";
 import InfoIcon from '@mui/icons-material/Info';
-import RunCircleIcon from '@mui/icons-material/RunCircle';
-import GavelIcon from '@mui/icons-material/Gavel';
 
 const ManhuntsMenu = () => {
     const location = useLocation();
@@ -18,37 +14,24 @@ const ManhuntsMenu = () => {
     return (
         <>
             <List>
-                {user.group && user.group.manhuntRole == 1 && <MenuItem
-                    title={"Speedhunt"}
-                    link="/manhunt/speedHunt"
-                    icon={<DirectionsRunIcon />}
-                    selected={location.pathname === '/manhunt/speedHunt'}
-                />}
-                {user.group && user.group.manhuntRole == 1 && <MenuItem
-                    title={"Verhaften"}
-                    link="/manhunt/catch"
-                    icon={<HttpsIcon />}
-                    selected={location.pathname === '/manhunt/catch'}
-                />}
                 {user.group && user.group.manhuntRole == 2 && <MenuItem
-                    title={"Info"}
-                    link="/manhunt/huntedInfo"
+                    title={"Quickinfo"}
+                    link="/manhunt/quickInfo"
                     icon={<InfoIcon />}
-                    selected={location.pathname === '/manhunt/huntedInfo'}
+                    selected={location.pathname === '/manhunt/quickInfo'}
                 />}
-                <Divider />
-                <MenuItem
-                    title={"Speedhunts (Info)"}
-                    link="/manhunt/speedHuntsInfo"
-                    icon={<RunCircleIcon />}
-                    selected={location.pathname === '/manhunt/speedHuntsInfo'}
-                />
-                <MenuItem
-                    title={"Verhaftungen (Info)"}
-                    link="/manhunt/catchInfo"
-                    icon={<GavelIcon />}
-                    selected={location.pathname === '/manhunt/catchInfo'}
-                />
+                {<MenuItem
+                    title={"Speedhunts"}
+                    link="/manhunt/speedHunts"
+                    icon={<DirectionsRunIcon />}
+                    selected={location.pathname === '/manhunt/speedHunts'}
+                />}
+                {<MenuItem
+                    title={"Verhaftungen"}
+                    link="/manhunt/catches"
+                    icon={<HttpsIcon />}
+                    selected={location.pathname === '/manhunt/catches'}
+                />}
             </List>
         </>
     );

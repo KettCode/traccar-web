@@ -18,7 +18,6 @@ import { sessionActions } from '../../store';
 import { useTranslation } from './LocalizationProvider';
 import { useRestriction } from '../util/permissions';
 import { nativePostMessage } from './NativeInterface';
-import { useEffectAsync } from '../../reactHelper';
 
 const BottomMenu = () => {
   const navigate = useNavigate();
@@ -43,12 +42,12 @@ const BottomMenu = () => {
       return 'reports';
     } if (location.pathname === '/') {
       return 'map';
-    } if (location.pathname.startsWith("/speedHunt")) {
-      return 'speedHunt';
-    } if (location.pathname.startsWith("/catch")) {
-      return 'catch';
-    } if (location.pathname.startsWith("/huntedInfo")) {
-      return 'huntedInfo';
+    } if (location.pathname.startsWith("/speedHunts")) {
+      return 'speedHunts';
+    } if (location.pathname.startsWith("/catches")) {
+      return 'catches';
+    } if (location.pathname.startsWith("/quickInfo")) {
+      return 'quickInfo';
     }
     return null;
   };
@@ -98,14 +97,14 @@ const BottomMenu = () => {
       case 'settings':
         navigate('/settings/preferences');
         break;
-      case 'speedHunt':
-        navigate('manhunt/speedHunt');
+      case 'speedHunts':
+        navigate('manhunt/speedHunts');
         break;
-      case 'catch':
-        navigate('manhunt/catch');
+      case 'catches':
+        navigate('manhunt/catches');
         break;
-      case 'huntedInfo':
-        navigate('manhunt/huntedInfo');
+      case 'quickInfo':
+        navigate('manhunt/quickInfo');
         break;
       case 'account':
         setAnchorEl(event.currentTarget);
@@ -131,14 +130,14 @@ const BottomMenu = () => {
             )}
             value="map"
           />
-          {(user.group?.manhuntRole == 1) && (
-            <BottomNavigationAction label={'Speedhunt'} icon={<DirectionsRunIcon />} value="speedHunt" />
+          {(user.group?.manhuntRole == 1 || user.group?.manhuntRole == 2) && (
+            <BottomNavigationAction label={'Speedhunts'} icon={<DirectionsRunIcon />} value="speedHunts" />
           )}
           {(user.group?.manhuntRole == 1) && (
-            <BottomNavigationAction label={'Verhaften'} icon={<HttpsIcon />} value="catch" />
+            <BottomNavigationAction label={'Verhaftungen'} icon={<HttpsIcon />} value="catches" />
           )}
           {(user.group?.manhuntRole == 2) && (
-            <BottomNavigationAction label={'Info'} icon={<LocationOnIcon />} value="huntedInfo" />
+            <BottomNavigationAction label={'Quickinfo'} icon={<LocationOnIcon />} value="quickInfo" />
           )}
           {!disableReports && (!user.group || user.group?.manhuntRole < 1) && (
             <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />
