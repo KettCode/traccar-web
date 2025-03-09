@@ -35,7 +35,7 @@ const SpeedHuntsPage = () => {
   }, [timestamp]);
 
   return (
-    <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Speedhunt']}>
+    <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Speedhunts']}>
       <div className={classes.container} style={{
         height: "100%",
         width: "100%",

@@ -42,11 +42,11 @@ const BottomMenu = () => {
       return 'reports';
     } if (location.pathname === '/') {
       return 'map';
-    } if (location.pathname.startsWith("/speedHunts")) {
+    } if (location.pathname.startsWith("/manhunt/speedHunts")) {
       return 'speedHunts';
-    } if (location.pathname.startsWith("/catches")) {
+    } if (location.pathname.startsWith("/manhunt/catches")) {
       return 'catches';
-    } if (location.pathname.startsWith("/quickInfo")) {
+    } if (location.pathname.startsWith("/manhunt/quickInfo")) {
       return 'quickInfo';
     }
     return null;

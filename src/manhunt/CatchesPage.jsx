@@ -34,7 +34,7 @@ const CatchesPage = () => {
   }, [timestamp]);
 
   return (
-    <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Verhaften']}>
+    <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Verhaftungen']}>
       <div className={classes.container} style={{
         height: "100%",
         width: "100%",
