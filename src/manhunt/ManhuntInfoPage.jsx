@@ -31,10 +31,6 @@ const ManhuntInfoPage = () => {
     }, [timestamp]);
 
     useEffect(() => {
-        setShowBack(manhuntInfo.isSpeedHuntRunning);
-    }, [manhuntInfo.isSpeedHuntRunning])
-
-    useEffect(() => {
         if (!manhuntInfo || !manhuntInfo.nextPosition)
             return;
 
