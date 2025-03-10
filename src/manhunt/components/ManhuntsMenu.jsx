@@ -5,7 +5,7 @@ import MenuItem from '../../common/components/MenuItem';
 import { useSelector } from 'react-redux';
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import HttpsIcon from "@mui/icons-material/Https";
-import InfoIcon from '@mui/icons-material/Info';
+import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 
 const ManhuntsMenu = () => {
     const location = useLocation();
@@ -17,7 +17,7 @@ const ManhuntsMenu = () => {
                 {user.group && user.group.manhuntRole == 2 && <MenuItem
                     title={"Info"}
                     link="/manhunt/info"
-                    icon={<InfoIcon />}
+                    icon={<PersonPinCircleIcon />}
                     selected={location.pathname === '/manhunt/info'}
                 />}
                 {<MenuItem

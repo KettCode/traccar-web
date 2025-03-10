@@ -12,7 +12,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import HttpsIcon from "@mui/icons-material/Https";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 
 import { sessionActions } from '../../store';
 import { useTranslation } from './LocalizationProvider';
@@ -137,7 +137,7 @@ const BottomMenu = () => {
             <BottomNavigationAction label={'Verhaftungen'} icon={<HttpsIcon />} value="catches" />
           )}
           {(user.group?.manhuntRole == 2) && (
-            <BottomNavigationAction label={'Info'} icon={<LocationOnIcon />} value="info" />
+            <BottomNavigationAction label={'Info'} icon={<PersonPinCircleIcon />} value="info" />
           )}
           {!disableReports && (!user.group || user.group?.manhuntRole < 1) && (
             <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />
