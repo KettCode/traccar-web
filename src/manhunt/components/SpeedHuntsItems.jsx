@@ -31,7 +31,9 @@ const SpeedHuntItem = ({
     return <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Box display="flex" alignItems="center">
-                <DirectionsRunIcon />
+                <DirectionsRunIcon sx={{
+                    mr: 1
+                }} />
                 <Typography variant="subtitle1">
                     {`Speedhunt auf ${manhuntInfo.devices.find(x => x.id == speedHunt.deviceId)?.name}`}
                 </Typography>
@@ -40,7 +42,9 @@ const SpeedHuntItem = ({
         <AccordionDetails className={classes.details}>
             {speedHunt.speedHuntRequests && speedHunt.speedHuntRequests.map((speedHuntRequests) => (
                 <Box display="flex" alignItems="center" marginLeft={"30px"}>
-                    <LocationOnIcon />
+                    <LocationOnIcon sx={{
+                        mr: 1
+                    }} />
                     <Typography variant="subtitle1">
                         {formatTime(speedHuntRequests.time, 'minutes')}
                     </Typography>
