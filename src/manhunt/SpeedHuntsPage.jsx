@@ -6,8 +6,7 @@ import PageLayout from '../common/components/PageLayout';
 import { Container, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import SpeedHuntsItems from './items/SpeedHuntsItems';
-import HunterSpeedHuntCard from './cards/HunterSpeedHuntCard';
-import HuntedSpeedHuntCard from './cards/HuntedSpeedHuntCard';
+import SpeedHuntCard from './cards/SpeedHuntCard';
 
 
 const SpeedHuntsPage = () => {
@@ -51,15 +50,10 @@ const SpeedHuntsPage = () => {
               justifyContent: "center",
               alignItems: "center"
             }}>
-              {user.group?.manhuntRole == 1 && (
-                <HunterSpeedHuntCard
-                  manhuntInfo={manhuntInfo}
-                  reload={() => setTimestamp(Date.now())} />
-              )}
-              {user.group?.manhuntRole == 2 && (
-                <HuntedSpeedHuntCard
-                  manhuntInfo={manhuntInfo} />
-              )}
+              <SpeedHuntCard
+                manhuntInfo={manhuntInfo}
+                reload={() => setTimestamp(Date.now())}
+              />
             </Container>
             {manhuntInfo.speedHunts && manhuntInfo.speedHunts.length > 0 && (
               <Container maxWidth="xs" className={classes.container} style={{

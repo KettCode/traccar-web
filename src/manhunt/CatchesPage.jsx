@@ -5,9 +5,8 @@ import ManhuntsMenu from './components/ManhuntsMenu';
 import useReportStyles from '../reports/common/useReportStyles';
 import { Container } from '@mui/material';
 import { useSelector } from 'react-redux';
-import HunterCatchCard from './cards/HunterCatchCard';
-import HuntedCatchCard from './cards/HuntedCatchCard';
 import DevicesInfo from './items/DevicesInfo';
+import CatchCard from './cards/CatchCard';
 
 const CatchesPage = () => {
   const [timestamp, setTimestamp] = useState(Date.now());
@@ -50,16 +49,10 @@ const CatchesPage = () => {
               justifyContent: "center",
               alignItems: "center"
             }}>
-              {user.group?.manhuntRole == 1 && (
-                <HunterCatchCard
-                  reload={() => setTimestamp(Date.now())}
-                />
-              )}
-              {user.group?.manhuntRole == 2 && (
-                <HuntedCatchCard
-                  manhuntInfo={manhuntInfo}
-                />
-              )}
+              <CatchCard
+                manhuntInfo={manhuntInfo}
+                reload={() => setTimestamp(Date.now())}
+              />
             </Container>
             <Container maxWidth="xs" className={classes.container} style={{
               height: "50%",
