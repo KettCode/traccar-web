@@ -57,6 +57,13 @@ const ManhuntPage = () => {
                 fullWidth
                 disabled={!admin}
               />
+              <TextField
+                label={'Frequenz'}
+                type="number"
+                value={item.frequency}
+                onChange={(event) => setItem({ ...item, frequency: Number(event.target.value) })}
+                disabled={!admin}
+              />
             </AccordionDetails>
           </Accordion>
           <EditAttributesAccordion

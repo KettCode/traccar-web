@@ -5,8 +5,8 @@ import useReportStyles from '../reports/common/useReportStyles';
 import PageLayout from '../common/components/PageLayout';
 import { Container, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
-import SpeedHuntsItems from './items/SpeedHuntsItems';
-import SpeedHuntCard from './cards/SpeedHuntCard';
+import SpeedHuntsItems from './components/SpeedHuntsItems';
+import SpeedHuntCard from './components/SpeedHuntCard';
 
 
 const SpeedHuntsPage = () => {

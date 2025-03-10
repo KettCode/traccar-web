@@ -69,13 +69,6 @@ const GroupPage = () => {
                 label={'Role'}
               />
               <TextField
-                label={'Frequenz'}
-                type="number"
-                value={item.frequency}
-                onChange={(event) => setItem({ ...item, frequency: Number(event.target.value) })}
-                disabled={item.manhuntRole != 2}
-              />
-              <TextField
                 label={'Speedhunts'}
                 type="number"
                 value={item.speedHunts}

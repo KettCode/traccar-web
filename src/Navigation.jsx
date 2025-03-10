@@ -68,7 +68,6 @@ import CatchesPage from './settings/CatchesPage';
 import CatchPage from './settings/CatchPage';
 import SpeedHuntRequestsPage from './settings/SpeedHuntRequestsPage';
 import ManhuntSpeedHuntsPage from './manhunt/SpeedHuntsPage';
-import ManhuntCatchesPage from './manhunt/CatchesPage';
 import ManhuntInfoPage from './manhunt/ManhuntInfoPage';
 
 const Navigation = () => {
@@ -198,7 +197,6 @@ const Navigation = () => {
 
         <Route path="manhunt">
           <Route path="speedHunts" element={<ManhuntSpeedHuntsPage />} />
-          <Route path="catches" element={<ManhuntCatchesPage />} />
           <Route path="info" element={<ManhuntInfoPage />} />
         </Route>
       </Route>

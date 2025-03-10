@@ -45,6 +45,7 @@ const classes = useSettingsStyles();
           <TableRow>
             <TableCell>{'Id'}</TableCell>
             <TableCell>{'Start'}</TableCell>
+            <TableCell>{'Frequenz'}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
         </TableHead>
@@ -53,6 +54,7 @@ const classes = useSettingsStyles();
             <TableRow key={item.id}>
               <TableCell>{item.id}</TableCell>
               <TableCell>{formatTime(item.start, "minutes")}</TableCell>
+              <TableCell>{item.frequency}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
                   <CollectionActions itemId={item.id} editPath="/settings/manhunt" endpoint="manhunts" setTimestamp={setTimestamp} />
                 </TableCell>

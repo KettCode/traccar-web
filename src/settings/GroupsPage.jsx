@@ -72,7 +72,6 @@ const GroupsPage = () => {
           <TableRow>
             <TableCell>{t('sharedName')}</TableCell>
             <TableCell>{'Role'}</TableCell>
-            <TableCell>{'Frequenz'}</TableCell>
             <TableCell>{'Speedhunts'}</TableCell>
             <TableCell>{'Anfragen pro Speedhunt'}</TableCell>
             <TableCell className={classes.columnAction} />
@@ -83,7 +82,6 @@ const GroupsPage = () => {
             <TableRow key={item.id}>
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.manhuntRole ? manhuntRoles.find(x => x.id ==item.manhuntRole)?.name : null}</TableCell>
-              <TableCell>{item.frequency}</TableCell>
               <TableCell>{item.speedHunts}</TableCell>
               <TableCell>{item.speedHuntRequests}</TableCell>
               <TableCell className={classes.columnAction} padding="none">

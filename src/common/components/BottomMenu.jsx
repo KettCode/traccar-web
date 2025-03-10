@@ -11,7 +11,6 @@ import MapIcon from '@mui/icons-material/Map';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
-import HttpsIcon from "@mui/icons-material/Https";
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 
 import { sessionActions } from '../../store';
@@ -44,8 +43,6 @@ const BottomMenu = () => {
       return 'map';
     } if (location.pathname.startsWith("/manhunt/speedHunts")) {
       return 'speedHunts';
-    } if (location.pathname.startsWith("/manhunt/catches")) {
-      return 'catches';
     } if (location.pathname.startsWith("/manhunt/info")) {
       return 'info';
     }
@@ -100,9 +97,6 @@ const BottomMenu = () => {
       case 'speedHunts':
         navigate('manhunt/speedHunts');
         break;
-      case 'catches':
-        navigate('manhunt/catches');
-        break;
       case 'info':
         navigate('manhunt/info');
         break;
@@ -133,10 +127,7 @@ const BottomMenu = () => {
           {(user.group?.manhuntRole == 1 || user.group?.manhuntRole == 2) && (
             <BottomNavigationAction label={'Speedhunts'} icon={<DirectionsRunIcon />} value="speedHunts" />
           )}
-          {(user.group?.manhuntRole == 1) && (
-            <BottomNavigationAction label={'Verhaftungen'} icon={<HttpsIcon />} value="catches" />
-          )}
-          {(user.group?.manhuntRole == 2) && (
+          {(user.group?.manhuntRole == 1 || user.group?.manhuntRole == 2) && (
             <BottomNavigationAction label={'Info'} icon={<PersonPinCircleIcon />} value="info" />
           )}
           {!disableReports && (!user.group || user.group?.manhuntRole < 1) && (

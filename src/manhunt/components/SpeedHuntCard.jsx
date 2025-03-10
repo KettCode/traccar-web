@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
-import LocationItem from '../items/hunter/LocationItem';
-import SpeedHuntItem from '../items/hunter/SpeedHuntItem';
-import Card from '../components/Card';
+import LocationItem from './LocationItem';
+import SpeedHuntItem from './SpeedHuntItem';
+import Card from './Card';
 import { useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
-import ManhuntSelect from '../components/ManhuntSelect';
+import ManhuntSelect from './ManhuntSelect';
 
 const SpeedHuntCard = ({
     manhuntInfo,

@@ -1,25 +1,32 @@
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useEffect, useState } from "react";
-import { useEffectAsync } from "../reactHelper";
+import { useCatch, useEffectAsync } from "../reactHelper";
 import Card from "./components/Card";
 import PageLayout from "../common/components/PageLayout";
 import useReportStyles from "../reports/common/useReportStyles";
 import ManhuntsMenu from "./components/ManhuntsMenu";
 import { Container, Typography } from "@mui/material";
 import { formatTime } from "../common/util/formatter";
-import DevicesInfo from "./items/DevicesInfo";
+import DevicesInfo from "./components/DevicesInfo";
+import { useSelector } from "react-redux";
 
 const ManhuntInfoPage = () => {
+    const classes = useReportStyles();
+
+    const user = useSelector((state) => state.session.user);
+
     const [timestamp, setTimestamp] = useState(Date.now());
     const [loading, setLoading] = useState(false);
     const [manhuntInfo, setManhuntInfo] = useState({});
     const [showBack, setShowBack] = useState(false);
-    const classes = useReportStyles();
 
     useEffectAsync(async () => {
         setLoading(true);
         try {
-            const response = await fetch(`/api/currentManhunt/getManhuntHuntedInfo`);
+            let url = `/api/currentManhunt/getManhuntHunterInfo`;
+            if (user.group.manhuntRole == 2)
+                url = `/api/currentManhunt/getManhuntHuntedInfo`;
+            const response = await fetch(url);
             if (response.ok) {
                 setManhuntInfo(await response.json());
             } else {
@@ -97,7 +104,10 @@ const ManhuntInfoPage = () => {
                             overflowY: "auto",
                             padding: "0px"
                         }}>
-                            <DevicesInfo manhuntInfo={manhuntInfo} />
+                            <DevicesInfo
+                                manhuntInfo={manhuntInfo}
+                                reload={() => setTimestamp(Date.now())}
+                            />
                         </Container>
                     </>
                 )}
