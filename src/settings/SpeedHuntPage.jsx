@@ -27,7 +27,7 @@ const SpeedHuntPage = () => {
   const commonDeviceAttributes = useCommonDeviceAttributes(t);
   const deviceAttributes = useDeviceAttributes(t);
   const [item, setItem] = useState();
-  const validate = () => item && item.manhuntsId && item.hunterGroupId && item.deviceId && item.pos && item.lastTime;
+  const validate = () => item && item.manhuntsId && item.hunterGroupId && item.deviceId;
 
 
   return (
