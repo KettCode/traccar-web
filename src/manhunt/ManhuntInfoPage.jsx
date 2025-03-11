@@ -42,14 +42,17 @@ const ManhuntInfoPage = () => {
             return;
 
         const targetTime = new Date(manhuntInfo.nextPosition).getTime();
+        const currentTime = new Date().getTime();
+        const timeDifference = targetTime - currentTime;
+
         const interval = setInterval(() => {
             const currentTime = new Date().getTime();
 
             if (currentTime >= targetTime) {
-                reload();
                 clearInterval(interval);
+                setTimestamp(Date.now());
             }
-        }, 1000);
+        }, timeDifference);
 
         return () => clearInterval(interval);
 
