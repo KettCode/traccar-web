@@ -86,7 +86,6 @@ const ManhuntInfoPage = () => {
                             </ListItem>
                         </Container>
                         <Container maxWidth="xs" className={classes.container} style={{
-                            flex: "1",
                             overflowY: "auto",
                             padding: "0px"
                         }}>
