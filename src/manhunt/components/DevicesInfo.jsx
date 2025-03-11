@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import { Button, IconButton, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Button, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useCatch } from '../../reactHelper';
 import ConfirmationDialog from './ConfirmationDialog';
@@ -34,15 +34,8 @@ const DevicesInfo = ({
             <div style={{
                 backgroundColor: "white"
             }}>
-                {manhuntInfo.catches && manhuntInfo.catches.map((singleCatch) => (
-                    <CatchItem
-                        manhuntInfo={manhuntInfo}
-                        singleCatch={singleCatch}
-                    />
-                ))}
                 {manhuntInfo.huntedDevices && manhuntInfo.huntedDevices.map((huntedDevice) => (
                     <HuntedItem
-                        manhuntInfo={manhuntInfo}
                         huntedDevice={huntedDevice}
                         onCatch={(device) => {
                             setHuntedDevice(device);
@@ -67,51 +60,35 @@ const DevicesInfo = ({
     </>
 }
 
-const CatchItem = ({
-    manhuntInfo,
-    singleCatch
-}) => {
-    return <>
-        <ListItem style={{
-            boxShadow: "0px 2px 1px -1px rgba(0, 0, 0, 0), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)"
-        }}>
-            <ListItemIcon>
-                <LockIcon sx={{
-                    color: "#EF5350"
-                }} />
-            </ListItemIcon>
-            <ListItemText
-                primary={`${manhuntInfo.devices.find(x => x.id == singleCatch.deviceId)?.name}`}
-                secondary={"Verhafted"}
-                secondaryTypographyProps={{ color: "#EF5350" }}
-            />
-        </ListItem>
-
-    </>
-}
-
 const HuntedItem = ({
-    manhuntInfo,
     huntedDevice,
     onCatch
 }) => {
     const user = useSelector((state) => state.session.user);
 
+    var color = huntedDevice.isCaught ? "#EF5350" : "#66BB6A";
+    var text = huntedDevice.isCaught ? "Verhafted" : "Frei";
+
     return <>
         <ListItem style={{
             boxShadow: "0px 2px 1px -1px rgba(0, 0, 0, 0), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)"
         }}>
             <ListItemIcon>
-                <LockOpenIcon sx={{
-                    color: "#66BB6A"
-                }} />
+                {huntedDevice.isCaught ?
+                    <LockIcon sx={{
+                        color: color
+                    }} /> :
+                    <LockOpenIcon sx={{
+                        color: color
+                    }} />
+                }
             </ListItemIcon>
             <ListItemText
-                primary={`${manhuntInfo.devices.find(x => x.id == huntedDevice.id)?.name}`}
-                secondary={"Frei"}
-                secondaryTypographyProps={{ color: "#66BB6A" }}
+                primary={`${huntedDevice.name}`}
+                secondary={text}
+                secondaryTypographyProps={{ color: color }}
             />
-            {user.group?.manhuntRole == 1 && (
+            {user.group?.manhuntRole == 1 && !huntedDevice.isCaught && (
                 <Button
                     variant="contained"
                     onClick={() => onCatch(huntedDevice)}
