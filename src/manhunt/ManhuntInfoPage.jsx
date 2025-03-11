@@ -46,12 +46,8 @@ const ManhuntInfoPage = () => {
         const timeDifference = targetTime - currentTime;
 
         const interval = setInterval(() => {
-            const currentTime = new Date().getTime();
-
-            if (currentTime >= targetTime) {
-                clearInterval(interval);
-                setTimestamp(Date.now());
-            }
+            clearInterval(interval);
+            setTimestamp(Date.now());
         }, timeDifference);
 
         return () => clearInterval(interval);
