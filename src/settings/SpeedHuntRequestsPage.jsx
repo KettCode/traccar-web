@@ -67,7 +67,6 @@ const classes = useSettingsStyles();
             <TableCell>{'Id'}</TableCell>
             <TableCell>{'Speedhuntid'}</TableCell>
             <TableCell>{'Anfragesteller (Benutzer)'}</TableCell>
-            <TableCell>{'Anfragenummer'}</TableCell>
             <TableCell>{'Angefragt am'}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
@@ -78,7 +77,6 @@ const classes = useSettingsStyles();
               <TableCell>{item.id}</TableCell>
               <TableCell>{item.speedHuntsId}</TableCell>
               <TableCell>{item.userId ? users.find(x => x.id ==item.userId)?.name : null}</TableCell>
-              <TableCell>{item.pos}</TableCell>
               <TableCell>{formatTime(item.time, "minutes")}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
                   <CollectionActions itemId={item.id} editPath="/settings/speedHuntRequest" endpoint="speedHuntRequests" setTimestamp={setTimestamp} />

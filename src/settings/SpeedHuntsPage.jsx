@@ -14,7 +14,6 @@ import useSettingsStyles from './common/useSettingsStyles';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CollectionFab from './components/CollectionFab';
-import { formatTime } from '../common/util/formatter';
 
 const SpeedHuntsPage = () => {
 const classes = useSettingsStyles();
@@ -71,8 +70,6 @@ const classes = useSettingsStyles();
             <TableCell>{'Manhuntid'}</TableCell>
             <TableCell>{'Anfragesteller (Gruppe)'}</TableCell>
             <TableCell>{'Zielgerät'}</TableCell>
-            <TableCell>{'Anfragenummer'}</TableCell>
-            <TableCell>{'Letzte Anfrage'}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
         </TableHead>
@@ -83,8 +80,6 @@ const classes = useSettingsStyles();
               <TableCell>{item.manhuntsId}</TableCell>
               <TableCell>{item.hunterGroupId ? groups[item.hunterGroupId]?.name : null}</TableCell>
               <TableCell>{item.deviceId ? devices[item.deviceId].name : null}</TableCell>
-              <TableCell>{item.pos}</TableCell>
-              <TableCell>{formatTime(item.lastTime, "minutes")}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
                   <CollectionActions itemId={item.id} editPath="/settings/speedHunt" endpoint="speedHunts" setTimestamp={setTimestamp} />
               </TableCell>

@@ -63,13 +63,6 @@ const SpeedHuntRequestPage = () => {
                     label={'Anfragesteller (Benutzer)'}
                 />
                 <TextField
-                    label={'Anfragenummer'}
-                    type="number"
-                    value={item.pos}
-                    onChange={(event) => setItem({ ...item, pos: Number(event.target.value) })}
-                    disabled={!admin}
-                />
-                <TextField
                   label={'Angefragt am'}
                   type="datetime-local"
                   value={dayjs.utc(item.time).local().format('YYYY-MM-DDTHH:mm')}
