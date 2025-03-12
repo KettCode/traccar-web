@@ -63,7 +63,7 @@ const CatchesPage = () => {
                         <TableCell>{item.id}</TableCell>
                         <TableCell>{item.manhuntsId}</TableCell>
                         <TableCell>{item.hunterGroupId ? groups[item.hunterGroupId]?.name : null}</TableCell>
-                        <TableCell>{item.deviceId ? devices[item.deviceId].name : null}</TableCell>
+                        <TableCell>{item.deviceId ? devices[item.deviceId]?.name : null}</TableCell>
                         <TableCell>{formatTime(item.time, "minutes")}</TableCell>
                         <TableCell className={classes.columnAction} padding="none">
                             <CollectionActions itemId={item.id} editPath="/settings/catch" endpoint="catches" setTimestamp={setTimestamp} />

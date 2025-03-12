@@ -79,7 +79,7 @@ const classes = useSettingsStyles();
               <TableCell>{item.id}</TableCell>
               <TableCell>{item.manhuntsId}</TableCell>
               <TableCell>{item.hunterGroupId ? groups[item.hunterGroupId]?.name : null}</TableCell>
-              <TableCell>{item.deviceId ? devices[item.deviceId].name : null}</TableCell>
+              <TableCell>{item.deviceId ? devices[item.deviceId]?.name : null}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
                   <CollectionActions itemId={item.id} editPath="/settings/speedHunt" endpoint="speedHunts" setTimestamp={setTimestamp} />
               </TableCell>
