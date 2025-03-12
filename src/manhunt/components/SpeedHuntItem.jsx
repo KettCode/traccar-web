@@ -4,6 +4,7 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import { useState } from "react";
 import { useCatch } from "../../reactHelper";
 import ManhuntButton from "./ManhuntButton";
+import { useSelector } from "react-redux";
 
 const SpeedHuntItem = ({
     speedHuntInfo,
@@ -12,11 +13,12 @@ const SpeedHuntItem = ({
 }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [item, setItem] = useState({});
+    const user = useSelector((state) => state.session.user);
 
-    if (!speedHuntInfo || !speedHuntInfo.group || !speedHuntInfo.speedHunts)
+    if (!speedHuntInfo || !speedHuntInfo.speedHunts)
         return null;
 
-    const availableSpeedHunts = speedHuntInfo.group.speedHunts - speedHuntInfo.speedHunts.length;
+    const availableSpeedHunts = user.group.speedHunts - speedHuntInfo.speedHunts.length;
     const validate = () => item && item.deviceId && availableSpeedHunts > 0;
 
     const createSpeedHunt = useCatch(async () => {

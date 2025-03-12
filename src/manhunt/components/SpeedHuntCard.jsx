@@ -9,20 +9,20 @@ import { Typography } from '@mui/material';
 import ManhuntSelect from './ManhuntSelect';
 
 const SpeedHuntCard = ({
-    manhuntInfo,
+    speedHuntInfo,
     reload
 }) => {
     const user = useSelector((state) => state.session.user);
     const [showBack, setShowBack] = useState(false);
 
     useEffect(() => {
-        setShowBack(manhuntInfo.isSpeedHuntRunning);
-    }, [manhuntInfo.isSpeedHuntRunning])
+        setShowBack(speedHuntInfo.isSpeedHuntRunning);
+    }, [speedHuntInfo.isSpeedHuntRunning])
 
     const cardFront = () => {
         if (user.group?.manhuntRole == 1)
             return <CardFrontHunter
-                manhuntInfo={manhuntInfo}
+                speedHuntInfo={speedHuntInfo}
                 reload={reload}
             />
 
@@ -32,12 +32,12 @@ const SpeedHuntCard = ({
     const cardBack = () => {
         if (user.group?.manhuntRole == 1) {
             return <CardBackHunter
-                manhuntInfo={manhuntInfo}
+                speedHuntInfo={speedHuntInfo}
                 reload={reload}
             />
         }
 
-        return <CardBackHunted manhuntInfo={manhuntInfo} />
+        return <CardBackHunted speedHuntInfo={speedHuntInfo} />
     };
 
 
@@ -49,14 +49,14 @@ const SpeedHuntCard = ({
 }
 
 const CardFrontHunter = ({
-    manhuntInfo,
+    speedHuntInfo,
     reload
 }) => {
     return <>
         <DirectionsRunIcon className='card-depth-icon' />
         <div class="card-depth">
             <SpeedHuntItem
-                speedHuntInfo={manhuntInfo}
+                speedHuntInfo={speedHuntInfo}
                 onCreated={reload}
                 reload={reload} />
 
@@ -76,14 +76,14 @@ const CardFrontHunted = () => {
 }
 
 const CardBackHunter = ({
-    manhuntInfo,
+    speedHuntInfo,
     reload
 }) => {
     return <>
         <LocationOnIcon className="card-depth-icon" />
         <div className="card-depth">
             <LocationItem
-                speedHuntInfo={manhuntInfo}
+                speedHuntInfo={speedHuntInfo}
                 onCreated={reload}
                 reload={reload}
             />
@@ -92,7 +92,7 @@ const CardBackHunter = ({
 }
 
 const CardBackHunted = ({
-    manhuntInfo
+    speedHuntInfo
 }) => {
     return <>
         <DirectionsRunIcon className='card-depth-icon' />
@@ -103,12 +103,12 @@ const CardBackHunted = ({
 
             <ManhuntSelect
                 endpoint={"/api/currentManhunt/getHuntedDevices"}
-                value={manhuntInfo.isSpeedHuntRunning ? manhuntInfo.lastSpeedHunt?.deviceId : null}
+                value={speedHuntInfo.isSpeedHuntRunning ? speedHuntInfo.lastSpeedHunt?.deviceId : null}
                 disabled={true}
             />
 
             <Typography variant="body2" sx={{ fontSize: '14px', zIndex: 2 }}>
-                {manhuntInfo.availableSpeedHuntRequests + " Standortanfragen verfügbar"}
+                {speedHuntInfo.availableSpeedHuntRequests + " Standortanfragen verfügbar"}
             </Typography>
         </div>
     </>

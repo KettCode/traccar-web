@@ -6,14 +6,14 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import useReportStyles from '../../reports/common/useReportStyles';
 
-const SpeedHuntsItems = ({ manhuntInfo }) => {
+const SpeedHuntsItems = ({ speedHuntInfo }) => {
     return (
         <>
-            {manhuntInfo.speedHunts && manhuntInfo.speedHunts.map((speedHunt) => {
+            {speedHuntInfo.speedHunts && speedHuntInfo.speedHunts.map((speedHunt) => {
                 return (
                     <SpeedHuntItem
                         key={speedHunt.id}  // Make sure to use a unique key
-                        manhuntInfo={manhuntInfo}
+                        speedHuntInfo={speedHuntInfo}
                         speedHunt={speedHunt}
                     />
                 );
@@ -23,7 +23,7 @@ const SpeedHuntsItems = ({ manhuntInfo }) => {
 }
 
 const SpeedHuntItem = ({
-    manhuntInfo,
+    speedHuntInfo,
     speedHunt
 }) => {
     const classes = useReportStyles();
@@ -35,7 +35,7 @@ const SpeedHuntItem = ({
                     mr: 1
                 }} />
                 <Typography variant="subtitle1">
-                    {`Speedhunt auf ${manhuntInfo.devices.find(x => x.id == speedHunt.deviceId)?.name}`}
+                    {`Speedhunt auf ${speedHuntInfo.devices.find(x => x.id == speedHunt.deviceId)?.name}`}
                 </Typography>
             </Box>
         </AccordionSummary>

@@ -21,10 +21,7 @@ const ManhuntInfoPage = () => {
     useEffectAsync(async () => {
         setLoading(true);
         try {
-            let url = `/api/currentManhunt/getManhuntHunterInfo`;
-            if (user.group.manhuntRole == 2)
-                url = `/api/currentManhunt/getManhuntHuntedInfo`;
-            const response = await fetch(url);
+            const response = await fetch(`/api/currentManhunt/getManhuntInfo`);
             if (response.ok) {
                 setManhuntInfo(await response.json());
             } else {

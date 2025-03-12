@@ -12,19 +12,16 @@ import SpeedHuntCard from './components/SpeedHuntCard';
 const SpeedHuntsPage = () => {
   const [timestamp, setTimestamp] = useState(Date.now());
   const [loading, setLoading] = useState(false);
-  const [manhuntInfo, setManhuntInfo] = useState({});
+  const [speedHuntInfo, setSpeedHuntInfo] = useState({});
   const classes = useReportStyles();
   const user = useSelector((state) => state.session.user);
 
   useEffectAsync(async () => {
     setLoading(true);
     try {
-      let url = `/api/currentManhunt/getManhuntHunterInfo`;
-      if (user.group.manhuntRole == 2)
-        url = `/api/currentManhunt/getManhuntHuntedInfo`;
-      const response = await fetch(url);
+      const response = await fetch(`/api/currentManhunt/getSpeedHuntInfo`);
       if (response.ok) {
-        setManhuntInfo(await response.json());
+        setSpeedHuntInfo(await response.json());
       } else {
         throw Error(await response.text());
       }
@@ -41,7 +38,7 @@ const SpeedHuntsPage = () => {
         display: "flex",
         alignItems: "center"
       }}>
-        {manhuntInfo && (
+        {speedHuntInfo && (
           <>
             <Container maxWidth="xs" className={classes.container} style={{
               height: "50%",
@@ -51,17 +48,17 @@ const SpeedHuntsPage = () => {
               alignItems: "center"
             }}>
               <SpeedHuntCard
-                manhuntInfo={manhuntInfo}
+                speedHuntInfo={speedHuntInfo}
                 reload={() => setTimestamp(Date.now())}
               />
             </Container>
-            {manhuntInfo.speedHunts && manhuntInfo.speedHunts.length > 0 && (
+            {speedHuntInfo.speedHunts && speedHuntInfo.speedHunts.length > 0 && (
               <Container maxWidth="xs" className={classes.container} style={{
                 height: "50%",
                 overflowY: "auto",
                 padding: "0px"
               }}>
-                <SpeedHuntsItems manhuntInfo={manhuntInfo} />
+                <SpeedHuntsItems speedHuntInfo={speedHuntInfo} />
               </Container>
             )}
           </>
