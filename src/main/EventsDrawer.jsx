@@ -63,7 +63,7 @@ const EventsDrawer = ({ open, onClose }) => {
           >
             {(event.type == "speedHunt" || event.type == "speedHuntRequest" || event.type == "catch") ?
               <ListItemText
-                primary={`${event.attributes.name}: ${devices[event.deviceId]?.name}`}
+                primary={`${event.attributes.name}: ${event.attributes.deviceName}`}
                 secondary={formatTime(event.eventTime, 'seconds')}
               /> : (event.type == "locationUpdate") ? <ListItemText
                 primary={"Standorte der Gejagten wurden aktualisiert"}
