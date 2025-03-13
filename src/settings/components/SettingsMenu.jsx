@@ -153,6 +153,30 @@ const SettingsMenu = () => {
               icon={<PeopleIcon />}
               selected={location.pathname.startsWith('/settings/user') && location.pathname !== `/settings/user/${userId}`}
             />
+            <MenuItem
+              title={'Manhunt'}
+              link="/settings/manhunts"
+              icon={<CreateIcon />}
+              selected={location.pathname.startsWith('/settings/manhunts')}
+            />
+            <MenuItem
+              title={'Speedhunt'}
+              link="/settings/speedHunts"
+              icon={<CreateIcon />}
+              selected={location.pathname.startsWith('/settings/speedHunts')}
+            />
+            <MenuItem
+              title={'Standortanfragen'}
+              link="/settings/speedHuntRequests"
+              icon={<CreateIcon />}
+              selected={location.pathname.startsWith('/settings/speedHuntRequests')}
+            />
+            <MenuItem
+              title={'Catch'}
+              link="/settings/catches"
+              icon={<CreateIcon />}
+              selected={location.pathname.startsWith('/settings/catches')}
+            />
           </List>
         </>
       )}

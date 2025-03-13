@@ -62,6 +62,26 @@ const GroupPage = () => {
                 onChange={(event) => setItem({ ...item, name: event.target.value })}
                 label={t('sharedName')}
               />
+              <SelectField
+                value={item.manhuntRole}
+                onChange={(event) => setItem({ ...item, manhuntRole: Number(event.target.value) })}
+                endpoint="/api/manhunts/getRoles"
+                label={'Role'}
+              />
+              <TextField
+                label={'Speedhunts'}
+                type="number"
+                value={item.speedHunts}
+                onChange={(event) => setItem({ ...item, speedHunts: Number(event.target.value) })}
+                disabled={item.manhuntRole != 1}
+              />
+              <TextField
+                label={'Anfragen pro Speedhunt'}
+                type="number"
+                value={item.speedHuntRequests}
+                onChange={(event) => setItem({ ...item, speedHuntRequests: Number(event.target.value) })}
+                disabled={item.manhuntRole != 1}
+              />
             </AccordionDetails>
           </Accordion>
           <Accordion>

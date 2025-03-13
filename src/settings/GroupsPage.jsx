@@ -25,6 +25,7 @@ const GroupsPage = () => {
 
   const [timestamp, setTimestamp] = useState(Date.now());
   const [items, setItems] = useState([]);
+  const [manhuntRoles, setManhuntRoles] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -36,6 +37,13 @@ const GroupsPage = () => {
         setItems(await response.json());
       } else {
         throw Error(await response.text());
+      }
+
+      const responseManhuntRoles = await fetch('/api/manhunts/getRoles');
+      if (responseManhuntRoles.ok) {
+        setManhuntRoles(await responseManhuntRoles.json());
+      } else {
+        throw Error(await responseManhuntRoles.text());
       }
     } finally {
       setLoading(false);
@@ -63,6 +71,9 @@ const GroupsPage = () => {
         <TableHead>
           <TableRow>
             <TableCell>{t('sharedName')}</TableCell>
+            <TableCell>{'Role'}</TableCell>
+            <TableCell>{'Speedhunts'}</TableCell>
+            <TableCell>{'Anfragen pro Speedhunt'}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
         </TableHead>
@@ -70,6 +81,9 @@ const GroupsPage = () => {
           {!loading ? items.filter(filterByKeyword(searchKeyword)).map((item) => (
             <TableRow key={item.id}>
               <TableCell>{item.name}</TableCell>
+              <TableCell>{item.manhuntRole ? manhuntRoles.find(x => x.id ==item.manhuntRole)?.name : null}</TableCell>
+              <TableCell>{item.speedHunts}</TableCell>
+              <TableCell>{item.speedHuntRequests}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
                 <CollectionActions
                   itemId={item.id}

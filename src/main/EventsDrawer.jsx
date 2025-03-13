@@ -61,10 +61,18 @@ const EventsDrawer = ({ open, onClose }) => {
             onClick={() => navigate(`/event/${event.id}`)}
             disabled={!event.id}
           >
-            <ListItemText
-              primary={`${devices[event.deviceId]?.name} • ${formatType(event)}`}
-              secondary={formatTime(event.eventTime, 'seconds')}
-            />
+            {(event.type == "speedHunt" || event.type == "speedHuntRequest" || event.type == "catch") ?
+              <ListItemText
+                primary={`${event.attributes.name}: ${devices[event.deviceId]?.name}`}
+                secondary={formatTime(event.eventTime, 'seconds')}
+              /> : (event.type == "locationUpdate") ? <ListItemText
+                primary={"Standorte der Gejagten wurden aktualisiert"}
+                secondary={formatTime(event.eventTime, 'seconds')}
+              /> :
+                <ListItemText
+                  primary={`${devices[event.deviceId]?.name} • ${formatType(event)}`}
+                  secondary={formatTime(event.eventTime, 'seconds')}
+                />}
             <IconButton size="small" onClick={() => dispatch(eventsActions.delete(event))}>
               <DeleteIcon fontSize="small" className={classes.delete} />
             </IconButton>

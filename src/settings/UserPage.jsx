@@ -149,6 +149,12 @@ const UserPage = () => {
                   label={t('userPassword')}
                 />
               )}
+              <SelectField
+                value={item.groupId}
+                onChange={(event) => setItem({ ...item, groupId: Number(event.target.value) })}
+                endpoint="/api/groups"
+                label={t('groupParent')}
+              />
               {totpEnable && (
                 <FormControl>
                   <InputLabel>{t('loginTotpKey')}</InputLabel>
