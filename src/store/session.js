@@ -52,6 +52,9 @@ const { reducer, actions } = createSlice({
         }
       });
     },
+    clearPositions(state, action) {
+      state.positions = [];
+    },
   },
 });
 

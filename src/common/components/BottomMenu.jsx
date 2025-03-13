@@ -81,6 +81,7 @@ const BottomMenu = () => {
     nativePostMessage('logout');
     navigate('/login');
     dispatch(sessionActions.updateUser(null));
+    dispatch(sessionActions.clearPositions());
   };
 
   const handleSelection = (event, value) => {
