@@ -3,10 +3,13 @@ import { useEffectAsync } from '../reactHelper';
 import ManhuntsMenu from './components/ManhuntsMenu';
 import useReportStyles from '../reports/common/useReportStyles';
 import PageLayout from '../common/components/PageLayout';
-import { Container, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Container, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
-import SpeedHuntsItems from './components/SpeedHuntsItems';
 import SpeedHuntCard from './components/SpeedHuntCard';
+import { formatTime } from '../common/util/formatter';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 
 
 const SpeedHuntsPage = () => {
@@ -58,7 +61,13 @@ const SpeedHuntsPage = () => {
                 overflowY: "auto",
                 padding: "0px"
               }}>
-                <SpeedHuntsItems speedHuntInfo={speedHuntInfo} />
+                {speedHuntInfo.speedHunts.map((speedHunt) => (
+                  <SpeedHuntItem
+                    key={speedHunt.id}  // Make sure to use a unique key
+                    speedHunt={speedHunt}
+                  />
+                )
+                )}
               </Container>
             )}
           </>
@@ -67,6 +76,38 @@ const SpeedHuntsPage = () => {
     </PageLayout>
   );
 };
+
+const SpeedHuntItem = ({
+  speedHunt
+}) => {
+  const classes = useReportStyles();
+
+  return <Accordion>
+    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <Box display="flex" alignItems="center">
+        <DirectionsRunIcon sx={{
+          mr: 1
+        }} />
+        <Typography variant="subtitle1">
+          {`Speedhunt auf ${speedHunt.deviceName}`}
+        </Typography>
+      </Box>
+    </AccordionSummary>
+    <AccordionDetails className={classes.details}>
+      {speedHunt.speedHuntRequests && speedHunt.speedHuntRequests.map((speedHuntRequests) => (
+        <Box display="flex" alignItems="center" marginLeft={"30px"} key={speedHuntRequests.id} >
+          <LocationOnIcon sx={{
+            mr: 1
+          }} />
+          <Typography variant="subtitle1">
+            {formatTime(speedHuntRequests.time, 'minutes')}
+          </Typography>
+        </Box>
+
+      ))}
+    </AccordionDetails>
+  </Accordion >
+}
 
 export default SpeedHuntsPage;
 

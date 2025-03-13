@@ -16,28 +16,60 @@ const SpeedHuntCard = ({
     const [showBack, setShowBack] = useState(false);
 
     useEffect(() => {
-        setShowBack(speedHuntInfo.isSpeedHuntRunning);
-    }, [speedHuntInfo.isSpeedHuntRunning])
+        setShowBack(speedHuntInfo.lastSpeedHunt?.isSpeedHuntRunning);
+    }, [speedHuntInfo.lastSpeedHunt?.isSpeedHuntRunning])
 
     const cardFront = () => {
-        if (user.group?.manhuntRole == 1)
-            return <CardFrontHunter
-                speedHuntInfo={speedHuntInfo}
-                reload={reload}
-            />
+        return <>
+            <DirectionsRunIcon className='card-depth-icon' />
+            <div class="card-depth">
+                {
+                    user.group?.manhuntRole == 1
+                        ?
+                        <SpeedHuntItem
+                            speedHuntInfo={speedHuntInfo}
+                            onCreated={reload}
+                            reload={reload} />
+                        :
+                        <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
+                            Aktuell läuft kein Speedhunt
+                        </Typography>
+                }
 
-        return <CardFrontHunted />
+            </div>
+        </>
     }
 
     const cardBack = () => {
-        if (user.group?.manhuntRole == 1) {
-            return <CardBackHunter
-                speedHuntInfo={speedHuntInfo}
-                reload={reload}
-            />
-        }
+        return <>
+            <LocationOnIcon className="card-depth-icon" />
+            <div className="card-depth">
+                {
+                    user.group?.manhuntRole == 1
+                        ?
+                        <LocationItem
+                            speedHuntInfo={speedHuntInfo}
+                            onCreated={reload}
+                            reload={reload}
+                        />
+                        : <>
+                            <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
+                                Speedhunt läuft auf
+                            </Typography>
 
-        return <CardBackHunted speedHuntInfo={speedHuntInfo} />
+                            <ManhuntSelect
+                                endpoint={"/api/currentManhunt/getHuntedDevices"}
+                                value={speedHuntInfo.lastSpeedHunt?.isSpeedHuntRunning ? speedHuntInfo.lastSpeedHunt?.deviceId : null}
+                                disabled={true}
+                            />
+
+                            <Typography variant="body2" sx={{ fontSize: '14px', zIndex: 2 }}>
+                                {speedHuntInfo.lastSpeedHunt?.availableSpeedHuntRequests + " Standortanfragen verfügbar"}
+                            </Typography>
+                        </>
+                }
+            </div>
+        </>
     };
 
 
@@ -46,72 +78,6 @@ const SpeedHuntCard = ({
         cardBack={cardBack}
         showBack={showBack}
     />
-}
-
-const CardFrontHunter = ({
-    speedHuntInfo,
-    reload
-}) => {
-    return <>
-        <DirectionsRunIcon className='card-depth-icon' />
-        <div class="card-depth">
-            <SpeedHuntItem
-                speedHuntInfo={speedHuntInfo}
-                onCreated={reload}
-                reload={reload} />
-
-        </div>
-    </>
-}
-
-const CardFrontHunted = () => {
-    return <>
-        <DirectionsRunIcon className='card-depth-icon' />
-        <div class="card-depth">
-            <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
-                Aktuell läuft kein Speedhunt
-            </Typography>
-        </div>
-    </>
-}
-
-const CardBackHunter = ({
-    speedHuntInfo,
-    reload
-}) => {
-    return <>
-        <LocationOnIcon className="card-depth-icon" />
-        <div className="card-depth">
-            <LocationItem
-                speedHuntInfo={speedHuntInfo}
-                onCreated={reload}
-                reload={reload}
-            />
-        </div>
-    </>
-}
-
-const CardBackHunted = ({
-    speedHuntInfo
-}) => {
-    return <>
-        <DirectionsRunIcon className='card-depth-icon' />
-        <div class="card-depth">
-            <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
-                Speedhunt läuft auf
-            </Typography>
-
-            <ManhuntSelect
-                endpoint={"/api/currentManhunt/getHuntedDevices"}
-                value={speedHuntInfo.isSpeedHuntRunning ? speedHuntInfo.lastSpeedHunt?.deviceId : null}
-                disabled={true}
-            />
-
-            <Typography variant="body2" sx={{ fontSize: '14px', zIndex: 2 }}>
-                {speedHuntInfo.availableSpeedHuntRequests + " Standortanfragen verfügbar"}
-            </Typography>
-        </div>
-    </>
 }
 
 export default SpeedHuntCard;

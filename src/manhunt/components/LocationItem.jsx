@@ -16,7 +16,7 @@ const LocationItem = ({
     if (!speedHuntInfo || !speedHuntInfo.lastSpeedHunt)
         return null;
 
-    const validate = () => speedHuntInfo.lastSpeedHunt && speedHuntInfo.lastSpeedHunt.deviceId && speedHuntInfo.availableSpeedHuntRequests > 0;
+    const validate = () => speedHuntInfo.lastSpeedHunt && speedHuntInfo.lastSpeedHunt.deviceId && speedHuntInfo.lastSpeedHunt.availableSpeedHuntRequests > 0;
 
     const createSpeedHuntRequest = useCatch(async () => {
         let url = `/api/currentManhunt/createSpeedHuntRequest?speedHuntId=${speedHuntInfo.lastSpeedHunt.id}`;
@@ -29,7 +29,7 @@ const LocationItem = ({
 
         if (response.ok) {
             onCreated();
-            if (speedHuntInfo.availableSpeedHuntRequests > 1) {
+            if (speedHuntInfo.lastSpeedHunt?.availableSpeedHuntRequests > 1) {
                 setShowAnimation(true);
                 setTimeout(() => {
                     setShowAnimation(false);
@@ -48,7 +48,7 @@ const LocationItem = ({
 
         <ManhuntSelect
             endpoint={"/api/currentManhunt/getHuntedDevices"}
-            value={speedHuntInfo.lastSpeedHunt.deviceId}
+            value={speedHuntInfo.lastSpeedHunt?.deviceId}
             disabled={true}
         />
 
@@ -57,7 +57,7 @@ const LocationItem = ({
             zIndex: 2,
             animation: showAnimation ? 'popinTextBox 2s 1 ease' : "none"
         }}>
-            {speedHuntInfo.availableSpeedHuntRequests + " Standortanfragen verfügbar"}
+            {speedHuntInfo.lastSpeedHunt?.availableSpeedHuntRequests + " Standortanfragen verfügbar"}
         </Typography>
 
         <ManhuntButton 
