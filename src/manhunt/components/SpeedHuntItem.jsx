@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 
 const SpeedHuntItem = ({
     speedHuntInfo,
-    onCreated,
     reload
 }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -31,13 +30,17 @@ const SpeedHuntItem = ({
         });
 
         if (response.ok) {
-            onCreated()
+            reload();
         } else {
             reload();
             throw Error(await response.text());
         }
     });
 
+    if (user.group?.manhuntRole == 2)
+        return <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
+            Aktuell läuft kein Speedhunt
+        </Typography>
 
     return <>
         <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
@@ -55,7 +58,7 @@ const SpeedHuntItem = ({
             {availableSpeedHunts + " Speedhunts verfügbar"}
         </Typography>
 
-        <ManhuntButton 
+        <ManhuntButton
             text={"Starten"}
             onClick={() => setDialogOpen(true)}
             disabled={!validate()}
@@ -73,7 +76,7 @@ const SpeedHuntItem = ({
             message={
                 <span>
                     Speedhunt wirklich starten?
-                    <br/>
+                    <br />
                     Die erste Standortanfrage wird sofort ausgeführt.
                 </span>
             }

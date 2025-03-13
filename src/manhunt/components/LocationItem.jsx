@@ -4,32 +4,34 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import { useState } from "react";
 import { useCatch } from "../../reactHelper";
 import ManhuntButton from "./ManhuntButton";
+import { useSelector } from "react-redux";
 
 const LocationItem = ({
-    speedHuntInfo,
-    onCreated,
+    speedHunt,
     reload
 }) => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [showAnimation, setShowAnimation] = useState(false);
 
-    if (!speedHuntInfo || !speedHuntInfo.lastSpeedHunt)
+    const user = useSelector((state) => state.session.user);
+
+    if (!speedHunt)
         return null;
 
-    const validate = () => speedHuntInfo.lastSpeedHunt && speedHuntInfo.lastSpeedHunt.deviceId && speedHuntInfo.lastSpeedHunt.availableSpeedHuntRequests > 0;
+    const validate = () => speedHunt.deviceId && speedHunt.availableSpeedHuntRequests > 0;
 
     const createSpeedHuntRequest = useCatch(async () => {
-        let url = `/api/currentManhunt/createSpeedHuntRequest?speedHuntId=${speedHuntInfo.lastSpeedHunt.id}`;
+        let url = `/api/currentManhunt/createSpeedHuntRequest?speedHuntId=${speedHunt.id}`;
 
         const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(speedHuntInfo.lastSpeedHunt),
+            body: JSON.stringify(speedHunt),
         });
 
         if (response.ok) {
-            onCreated();
-            if (speedHuntInfo.lastSpeedHunt?.availableSpeedHuntRequests > 1) {
+            reload();
+            if (speedHunt.availableSpeedHuntRequests > 1) {
                 setShowAnimation(true);
                 setTimeout(() => {
                     setShowAnimation(false);
@@ -43,12 +45,12 @@ const LocationItem = ({
 
     return <>
         <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
-            Standort
+            {user.group?.manhuntRole == 1 ? "Standort" : "Speedhunt läuft auf"}
         </Typography>
 
         <ManhuntSelect
             endpoint={"/api/currentManhunt/getHuntedDevices"}
-            value={speedHuntInfo.lastSpeedHunt?.deviceId}
+            value={speedHunt.deviceId}
             disabled={true}
         />
 
@@ -57,26 +59,29 @@ const LocationItem = ({
             zIndex: 2,
             animation: showAnimation ? 'popinTextBox 2s 1 ease' : "none"
         }}>
-            {speedHuntInfo.lastSpeedHunt?.availableSpeedHuntRequests + " Standortanfragen verfügbar"}
+            {speedHunt.availableSpeedHuntRequests + " Standortanfragen verfügbar"}
         </Typography>
 
-        <ManhuntButton 
-            text={"Anfragen"}
-            onClick={() => setDialogOpen(true)}
-            disabled={!validate()}
-        />
-        <ConfirmationDialog
-            open={dialogOpen}
-            onClose={() => {
-                setDialogOpen(false);
-            }}
-            onConfirm={() => {
-                setDialogOpen(false);
-                createSpeedHuntRequest();
-            }}
-            title="Standort"
-            message="Standort wirklich anfragen?"
-        />
+        {user.group?.manhuntRole == 1 && (<>
+            <ManhuntButton
+                text={"Anfragen"}
+                onClick={() => setDialogOpen(true)}
+                disabled={!validate()}
+            />
+            <ConfirmationDialog
+                open={dialogOpen}
+                onClose={() => {
+                    setDialogOpen(false);
+                }}
+                onConfirm={() => {
+                    setDialogOpen(false);
+                    createSpeedHuntRequest();
+                }}
+                title="Standort"
+                message="Standort wirklich anfragen?"
+            />
+        </>
+        )}
         <style>
             {
                 `

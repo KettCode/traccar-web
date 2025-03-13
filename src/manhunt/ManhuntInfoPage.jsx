@@ -7,12 +7,9 @@ import ManhuntsMenu from "./components/ManhuntsMenu";
 import { Container, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { formatTime } from "../common/util/formatter";
 import DevicesInfo from "./components/DevicesInfo";
-import { useSelector } from "react-redux";
 
 const ManhuntInfoPage = () => {
     const classes = useReportStyles();
-
-    const user = useSelector((state) => state.session.user);
 
     const [timestamp, setTimestamp] = useState(Date.now());
     const [loading, setLoading] = useState(false);

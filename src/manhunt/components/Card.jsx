@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import useSettingsStyles from '../../settings/common/useSettingsStyles';
 
 const Card = ({
     cardFront,
     cardBack,
     showBack
 }) => {
-    const classes = useSettingsStyles();
-
     return (
         <>
             <div class="cards-wrapper">

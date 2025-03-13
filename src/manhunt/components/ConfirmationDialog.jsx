@@ -4,7 +4,6 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/
 const ConfirmationDialog = ({ open, onClose, onConfirm, title, message }) => {
     const css = {
         fontSize: '14px',
-        //borderRadius: '25px',
         color: "white",
         backgroundColor: '#33aaff',
         background: 'radial-gradient(circle at 100px 100px, #33aaff, #000)'
