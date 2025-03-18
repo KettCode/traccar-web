@@ -55,7 +55,7 @@ const SpeedHuntsPage = () => {
                 reload={() => setTimestamp(Date.now())}
               />
             </Container>
-            {speedHuntInfo.speedHunts && speedHuntInfo.speedHunts.length > 0 && (
+            {user.group?.manhuntRole == 1 && speedHuntInfo.speedHunts && speedHuntInfo.speedHunts.length > 0 && (
               <Container maxWidth="xs" className={classes.container} style={{
                 height: "50%",
                 overflowY: "auto",

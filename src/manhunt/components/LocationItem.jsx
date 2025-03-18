@@ -45,14 +45,16 @@ const LocationItem = ({
 
     return <>
         <Typography variant="h4" sx={{ fontSize: '24px', fontWeight: 'bold', zIndex: 2 }}>
-            {user.group?.manhuntRole == 1 ? "Standort" : "Speedhunt läuft auf"}
+            {user.group?.manhuntRole == 1 ? "Standort" : "Speedhunt läuft"}
         </Typography>
 
-        <ManhuntSelect
-            endpoint={"/api/currentManhunt/getHuntedDevices"}
-            value={speedHunt.deviceId}
-            disabled={true}
-        />
+        {user.group?.manhuntRole == 1 && (
+            <ManhuntSelect
+                endpoint={"/api/currentManhunt/getHuntedDevices"}
+                value={speedHunt.deviceId}
+                disabled={true}
+            />
+        )}
 
         <Typography variant="body2" sx={{
             fontSize: '14px',
