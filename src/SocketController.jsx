@@ -7,7 +7,6 @@ import { useEffectAsync } from './reactHelper';
 import { useTranslation } from './common/components/LocalizationProvider';
 import { snackBarDurationLongMs } from './common/util/duration';
 import alarm from './resources/alarm.mp3';
-import speedHuntAlarm from './resources/speedHunt.mp3';
 import { eventsActions } from './store/events';
 import useFeatures from './common/util/useFeatures';
 import { useAttributePreference } from './common/util/preferences';
@@ -119,13 +118,6 @@ const SocketController = () => {
     events.forEach((event) => {
       if (soundEvents.includes(event.type) || (event.type === 'alarm' && soundAlarms.includes(event.attributes.alarm))) {
         new Audio(alarm).play();
-      }
-      if(event.type == "catch" || event.type == "locationUpdate") {
-        new Audio(alarm).play();
-      }
-      if(event.type == "speedHunt" || event.type == "speedHuntRequest") {
-        new Audio(speedHuntAlarm).play();
-        //navigator.vibrate(2000);
       }
     });
   }, [events, soundEvents, soundAlarms]);
