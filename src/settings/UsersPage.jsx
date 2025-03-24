@@ -30,6 +30,7 @@ const UsersPage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [loading, setLoading] = useState(false);
   const [temporary, setTemporary] = useState(false);
+  const [manhuntRoles, setManhuntRoles] = useState([]);
 
   const handleLogin = useCatch(async (userId) => {
     await fetchOrThrow(`/api/session/${userId}`);
@@ -55,6 +56,13 @@ const UsersPage = () => {
     try {
       const response = await fetchOrThrow('/api/users?excludeAttributes=true');
       setItems(await response.json());
+
+      const responseManhuntRoles = await fetch('/api/manhunts/getRoles');
+      if (responseManhuntRoles.ok) {
+        setManhuntRoles(await responseManhuntRoles.json());
+      } else {
+        throw Error(await responseManhuntRoles.text());
+      }
     } finally {
       setLoading(false);
     }
@@ -68,6 +76,7 @@ const UsersPage = () => {
           <TableRow>
             <TableCell>{t('sharedName')}</TableCell>
             <TableCell>{t('userEmail')}</TableCell>
+            <TableCell>{'Role'}</TableCell>
             <TableCell>{t('userAdmin')}</TableCell>
             <TableCell>{t('sharedDisabled')}</TableCell>
             <TableCell>{t('userExpirationTime')}</TableCell>
@@ -79,6 +88,7 @@ const UsersPage = () => {
             <TableRow key={item.id}>
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.email}</TableCell>
+              <TableCell>{item.manhuntRole ? manhuntRoles.find(x => x.id ==item.manhuntRole)?.name : null}</TableCell>
               <TableCell>{formatBoolean(item.administrator, t)}</TableCell>
               <TableCell>{formatBoolean(item.disabled, t)}</TableCell>
               <TableCell>{formatTime(item.expirationTime, 'date')}</TableCell>
@@ -96,7 +106,7 @@ const UsersPage = () => {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={6} align="right">
+            <TableCell colSpan={7} align="right">
               <FormControlLabel
                 control={(
                   <Switch

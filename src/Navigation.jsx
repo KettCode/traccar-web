@@ -61,6 +61,15 @@ import { generateLoginToken } from './common/components/NativeInterface';
 import { useLocalization } from './common/components/LocalizationProvider';
 import fetchOrThrow from './common/util/fetchOrThrow';
 import AuditPage from './reports/AuditPage';
+import ManhuntsPage from './settings/ManhuntsPage';
+import ManhuntPage from './settings/ManhuntPage';
+import SpeedhuntsPage from './settings/SpeedHuntsPage';
+import SpeedhuntPage from './settings/SpeedHuntPage';
+import CatchesPage from './settings/CatchesPage';
+import CatchPage from './settings/CatchPage';
+import LocationRequestsPage from './settings/LocationRequestsPage';
+import LocationRequestPage from './settings/LocationRequestPage';
+import CurrentManhuntPage from './manhunt/CurrentManhuntPage';
 
 const Navigation = () => {
   const dispatch = useDispatch();
@@ -166,6 +175,18 @@ const Navigation = () => {
           <Route path="user/:id/connections" element={<UserConnectionsPage />} />
           <Route path="user/:id" element={<UserPage />} />
           <Route path="user" element={<UserPage />} />
+          <Route path="manhunts" element={<ManhuntsPage />} />
+          <Route path="manhunt" element={<ManhuntPage />} />
+          <Route path="manhunt/:id" element={<ManhuntPage />} />
+          <Route path="speedHunts" element={<SpeedhuntsPage />} />
+          <Route path="speedHunt" element={<SpeedhuntPage />} />
+          <Route path="speedHunt/:id" element={<SpeedhuntPage />} />
+          <Route path="locationRequests" element={<LocationRequestsPage />} />
+          <Route path="locationRequest" element={<LocationRequestPage />} />
+          <Route path="locationRequest/:id" element={<LocationRequestPage />} />
+          <Route path="catches" element={<CatchesPage />} />
+          <Route path="catch" element={<CatchPage />} />
+          <Route path="catch/:id" element={<CatchPage />} />
         </Route>
 
         <Route path="reports">
@@ -180,6 +201,10 @@ const Navigation = () => {
           <Route path="statistics" element={<StatisticsPage />} />
           <Route path="audit" element={<AuditPage />} />
           <Route path="logs" element={<LogsPage />} />
+        </Route>
+
+        <Route path="manhunt">
+          <Route path="current" element={<CurrentManhuntPage />} />
         </Route>
       </Route>
     </Routes>

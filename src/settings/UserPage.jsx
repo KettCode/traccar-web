@@ -160,6 +160,12 @@ const UserPage = () => {
                   label={t('userPassword')}
                 />
               )}
+              <SelectField
+                value={item.manhuntRole}
+                onChange={(event) => setItem({ ...item, manhuntRole: Number(event.target.value) })}
+                endpoint="/api/manhunts/getRoles"
+                label={'Role'}
+              />
               {totpEnable && (
                 <FormControl>
                   <InputLabel>{t('loginTotpKey')}</InputLabel>
@@ -397,6 +403,11 @@ const UserPage = () => {
                 <FormControlLabel
                   control={<Checkbox checked={item.fixedEmail} onChange={(e) => setItem({ ...item, fixedEmail: e.target.checked })} />}
                   label={t('userFixedEmail')}
+                  disabled={!manager}
+                />
+                <FormControlLabel
+                  control={<Checkbox checked={item.triggerManhuntActions} onChange={(e) => setItem({ ...item, triggerManhuntActions: e.target.checked })} />}
+                  label={'Fandungsaktionen auslösen'}
                   disabled={!manager}
                 />
               </FormGroup>

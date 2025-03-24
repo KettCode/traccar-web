@@ -21,6 +21,7 @@ const SelectField = ({
   onChange,
   endpoint,
   data,
+  disabled,
   keyGetter = (item) => item.id,
   titleGetter = (item) => item.name,
   helperText,
@@ -73,6 +74,7 @@ const SelectField = ({
             value={value}
             onChange={(_, value) => onChange({ target: { value: value ? keyGetter(value) : emptyValue } })}
             renderInput={(params) => <TextField {...params} label={label} helperText={helperText} />}
+	    disabled={disabled ?? false}
           />
         )}
       </FormControl>

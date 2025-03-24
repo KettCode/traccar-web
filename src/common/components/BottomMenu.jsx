@@ -10,6 +10,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import MapIcon from '@mui/icons-material/Map';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import GroupsIcon from '@mui/icons-material/Groups';
 
 import { sessionActions } from '../../store';
 import { useTranslation } from './LocalizationProvider';
@@ -31,6 +32,7 @@ const BottomMenu = () => {
 
   const [anchorEl, setAnchorEl] = useState(null);
 
+
   const currentSelection = () => {
     if (location.pathname === `/settings/user/${user.id}`) {
       return 'account';
@@ -40,6 +42,8 @@ const BottomMenu = () => {
       return 'reports';
     } if (location.pathname === '/') {
       return 'map';
+    } if (location.pathname.startsWith("/manhunt/current")) {
+      return 'manhunt';
     }
     return null;
   };
@@ -76,6 +80,7 @@ const BottomMenu = () => {
     nativePostMessage('logout');
     navigate('/login');
     dispatch(sessionActions.updateUser(null));
+    dispatch(sessionActions.clearPositions());
   };
 
   const handleSelection = (event, value) => {
@@ -102,6 +107,9 @@ const BottomMenu = () => {
       case 'settings':
         navigate('/settings/preferences?menu=true');
         break;
+      case 'manhunt':
+        navigate('manhunt/current');
+        break;
       case 'account':
         setAnchorEl(event.currentTarget);
         break;
@@ -115,26 +123,33 @@ const BottomMenu = () => {
 
   return (
     <Paper square elevation={3}>
-      <BottomNavigation value={currentSelection()} onChange={handleSelection} showLabels>
-        <BottomNavigationAction
-          label={t('mapTitle')}
-          icon={(
-            <Badge color="error" variant="dot" overlap="circular" invisible={socket !== false}>
-              <MapIcon />
-            </Badge>
+      {(
+        <BottomNavigation value={currentSelection()} onChange={handleSelection} showLabels>
+          <BottomNavigationAction
+            label={t('mapTitle')}
+            icon={(
+              <Badge color="error" variant="dot" overlap="circular" invisible={socket !== false}>
+                <MapIcon />
+              </Badge>
+            )}
+            value="map"
+          />
+          {(user.manhuntRole == 1 || user.manhuntRole == 2) && (
+            <BottomNavigationAction label={'Manhunt'} icon={<GroupsIcon />} value="manhunt" />
           )}
-          value="map"
-        />
-        {!disableReports && (
-          <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />
-        )}
-        <BottomNavigationAction label={t('settingsTitle')} icon={<SettingsIcon />} value="settings" />
-        {readonly ? (
-          <BottomNavigationAction label={t('loginLogout')} icon={<ExitToAppIcon />} value="logout" />
-        ) : (
-          <BottomNavigationAction label={t('settingsUser')} icon={<PersonIcon />} value="account" />
-        )}
-      </BottomNavigation>
+          {!disableReports && (user.manhuntRole < 1) && (
+            <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />
+          )}
+          (
+            <BottomNavigationAction label={t('settingsTitle')} icon={<SettingsIcon />} value="settings" />
+          )
+          {readonly ? (
+            <BottomNavigationAction label={t('loginLogout')} icon={<ExitToAppIcon />} value="logout" />
+          ) : (
+            <BottomNavigationAction label={t('settingsUser')} icon={<PersonIcon />} value="account" />
+          )}
+        </BottomNavigation>
+      )}
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
         <MenuItem onClick={handleAccount}>
           <Typography color="textPrimary">{t('settingsUser')}</Typography>

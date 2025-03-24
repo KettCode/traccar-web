@@ -41,6 +41,7 @@ const DevicesPage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [showAll, setShowAll] = usePersistedState('showAllDevices', false);
   const [loading, setLoading] = useState(false);
+  const [manhuntRoles, setManhuntRoles] = useState([]);
 
   useEffectAsync(async () => {
     setLoading(true);
@@ -48,6 +49,13 @@ const DevicesPage = () => {
       const query = new URLSearchParams({ all: showAll });
       const response = await fetchOrThrow(`/api/devices?${query.toString()}`);
       setItems(await response.json());
+
+      const responseManhuntRoles = await fetch('/api/manhunts/getRoles');
+      if (responseManhuntRoles.ok) {
+        setManhuntRoles(await responseManhuntRoles.json());
+      } else {
+        throw Error(await responseManhuntRoles.text());
+      }
     } finally {
       setLoading(false);
     }
@@ -86,6 +94,7 @@ const DevicesPage = () => {
           <TableRow>
             <TableCell>{t('sharedName')}</TableCell>
             <TableCell>{t('deviceIdentifier')}</TableCell>
+            <TableCell>{'Role'}</TableCell>
             <TableCell>{t('groupParent')}</TableCell>
             <TableCell>{t('sharedPhone')}</TableCell>
             <TableCell>{t('deviceModel')}</TableCell>
@@ -101,6 +110,7 @@ const DevicesPage = () => {
             <TableRow key={item.id}>
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.uniqueId}</TableCell>
+              <TableCell>{item.manhuntRole ? manhuntRoles.find(x => x.id ==item.manhuntRole)?.name : null}</TableCell>
               <TableCell>{item.groupId ? groups[item.groupId]?.name : null}</TableCell>
               <TableCell>{item.phone}</TableCell>
               <TableCell>{item.model}</TableCell>

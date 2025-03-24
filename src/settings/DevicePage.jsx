@@ -89,6 +89,12 @@ const DevicePage = () => {
                 helperText={t('deviceIdentifierHelp')}
                 disabled={Boolean(uniqueId)}
               />
+              <SelectField
+                value={item.manhuntRole}
+                onChange={(event) => setItem({ ...item, manhuntRole: Number(event.target.value) })}
+                endpoint="/api/manhunts/getRoles"
+                label={'Role'}
+              />
             </AccordionDetails>
           </Accordion>
           <Accordion>

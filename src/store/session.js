@@ -35,6 +35,12 @@ const { reducer, actions } = createSlice({
       const liveRoutesLimit = state.user.attributes['web.liveRouteLength'] || state.server.attributes['web.liveRouteLength'] || 10;
       action.payload.forEach((position) => {
         state.positions[position.deviceId] = position;
+        if(position.isManhunt && state.user.manhuntRole == 2) {
+          let manhuntPosition = Object.assign({}, position); 
+          manhuntPosition.id *= -1;
+          manhuntPosition.deviceId *= -1;
+          state.positions[manhuntPosition.deviceId] = manhuntPosition;
+        }
         if (liveRoutes !== 'none') {
           const route = state.history[position.deviceId] || [];
           const last = route.at(-1);
@@ -45,6 +51,9 @@ const { reducer, actions } = createSlice({
           state.history = {};
         }
       });
+    },
+    clearPositions(state, action) {
+      state.positions = [];
     },
   },
 });
