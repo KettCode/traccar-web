@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -10,6 +10,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import MapIcon from '@mui/icons-material/Map';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
+import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 
 import { sessionActions } from '../../store';
 import { useTranslation } from './LocalizationProvider';
@@ -29,6 +31,7 @@ const BottomMenu = () => {
 
   const [anchorEl, setAnchorEl] = useState(null);
 
+
   const currentSelection = () => {
     if (location.pathname === `/settings/user/${user.id}`) {
       return 'account';
@@ -38,6 +41,10 @@ const BottomMenu = () => {
       return 'reports';
     } if (location.pathname === '/') {
       return 'map';
+    } if (location.pathname.startsWith("/manhunt/speedHunts")) {
+      return 'speedHunts';
+    } if (location.pathname.startsWith("/manhunt/info")) {
+      return 'info';
     }
     return null;
   };
@@ -74,6 +81,7 @@ const BottomMenu = () => {
     nativePostMessage('logout');
     navigate('/login');
     dispatch(sessionActions.updateUser(null));
+    dispatch(sessionActions.clearPositions());
   };
 
   const handleSelection = (event, value) => {
@@ -86,6 +94,12 @@ const BottomMenu = () => {
         break;
       case 'settings':
         navigate('/settings/preferences');
+        break;
+      case 'speedHunts':
+        navigate('manhunt/speedHunts');
+        break;
+      case 'info':
+        navigate('manhunt/info');
         break;
       case 'account':
         setAnchorEl(event.currentTarget);
@@ -100,26 +114,36 @@ const BottomMenu = () => {
 
   return (
     <Paper square elevation={3}>
-      <BottomNavigation value={currentSelection()} onChange={handleSelection} showLabels>
-        <BottomNavigationAction
-          label={t('mapTitle')}
-          icon={(
-            <Badge color="error" variant="dot" overlap="circular" invisible={socket !== false}>
-              <MapIcon />
-            </Badge>
+      {(
+        <BottomNavigation value={currentSelection()} onChange={handleSelection} showLabels>
+          <BottomNavigationAction
+            label={t('mapTitle')}
+            icon={(
+              <Badge color="error" variant="dot" overlap="circular" invisible={socket !== false}>
+                <MapIcon />
+              </Badge>
+            )}
+            value="map"
+          />
+          {(user.manhuntRole == 1 || user.manhuntRole == 2) && (
+            <BottomNavigationAction label={'Speedhunts'} icon={<DirectionsRunIcon />} value="speedHunts" />
           )}
-          value="map"
-        />
-        {!disableReports && (
-          <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />
-        )}
-        <BottomNavigationAction label={t('settingsTitle')} icon={<SettingsIcon />} value="settings" />
-        {readonly ? (
-          <BottomNavigationAction label={t('loginLogout')} icon={<ExitToAppIcon />} value="logout" />
-        ) : (
-          <BottomNavigationAction label={t('settingsUser')} icon={<PersonIcon />} value="account" />
-        )}
-      </BottomNavigation>
+          {(user.manhuntRole == 1 || user.manhuntRole == 2) && (
+            <BottomNavigationAction label={'Info'} icon={<PersonPinCircleIcon />} value="info" />
+          )}
+          {!disableReports && (user.manhuntRole < 1) && (
+            <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />
+          )}
+          (
+            <BottomNavigationAction label={t('settingsTitle')} icon={<SettingsIcon />} value="settings" />
+          )
+          {readonly ? (
+            <BottomNavigationAction label={t('loginLogout')} icon={<ExitToAppIcon />} value="logout" />
+          ) : (
+            <BottomNavigationAction label={t('settingsUser')} icon={<PersonIcon />} value="account" />
+          )}
+        </BottomNavigation>
+      )}
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
         <MenuItem onClick={handleAccount}>
           <Typography color="textPrimary">{t('settingsUser')}</Typography>

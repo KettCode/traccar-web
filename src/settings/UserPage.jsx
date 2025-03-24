@@ -149,6 +149,12 @@ const UserPage = () => {
                   label={t('userPassword')}
                 />
               )}
+              <SelectField
+                value={item.manhuntRole}
+                onChange={(event) => setItem({ ...item, manhuntRole: Number(event.target.value) })}
+                endpoint="/api/manhunts/getRoles"
+                label={'Role'}
+              />
               {totpEnable && (
                 <FormControl>
                   <InputLabel>{t('loginTotpKey')}</InputLabel>

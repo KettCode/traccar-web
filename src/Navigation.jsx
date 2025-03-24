@@ -60,6 +60,16 @@ import EmulatorPage from './other/EmulatorPage';
 import Loader from './common/components/Loader';
 import { generateLoginToken } from './common/components/NativeInterface';
 import { useLocalization } from './common/components/LocalizationProvider';
+import ManhuntsPage from './settings/ManhuntsPage';
+import ManhuntPage from './settings/ManhuntPage';
+import SpeedhuntsPage from './settings/SpeedHuntsPage';
+import SpeedhuntPage from './settings/SpeedHuntPage';
+import SpeedhuntRequestPage from './settings/SpeedHuntRequestPage';
+import CatchesPage from './settings/CatchesPage';
+import CatchPage from './settings/CatchPage';
+import SpeedHuntRequestsPage from './settings/SpeedHuntRequestsPage';
+import ManhuntSpeedHuntsPage from './manhunt/SpeedHuntsPage';
+import ManhuntInfoPage from './manhunt/ManhuntInfoPage';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -163,6 +173,18 @@ const Navigation = () => {
           <Route path="user/:id/connections" element={<UserConnectionsPage />} />
           <Route path="user/:id" element={<UserPage />} />
           <Route path="user" element={<UserPage />} />
+          <Route path="manhunts" element={<ManhuntsPage />} />
+          <Route path="manhunt" element={<ManhuntPage />} />
+          <Route path="manhunt/:id" element={<ManhuntPage />} />
+          <Route path="speedHunts" element={<SpeedhuntsPage />} />
+          <Route path="speedHunt" element={<SpeedhuntPage />} />
+          <Route path="speedHunt/:id" element={<SpeedhuntPage />} />
+          <Route path="speedHuntRequests" element={<SpeedHuntRequestsPage />} />
+          <Route path="speedHuntRequest" element={<SpeedhuntRequestPage />} />
+          <Route path="speedHuntRequest/:id" element={<SpeedhuntRequestPage />} />
+          <Route path="catches" element={<CatchesPage />} />
+          <Route path="catch" element={<CatchPage />} />
+          <Route path="catch/:id" element={<CatchPage />} />
         </Route>
 
         <Route path="reports">
@@ -176,6 +198,11 @@ const Navigation = () => {
           <Route path="scheduled" element={<ScheduledPage />} />
           <Route path="statistics" element={<StatisticsPage />} />
           <Route path="logs" element={<LogsPage />} />
+        </Route>
+
+        <Route path="manhunt">
+          <Route path="speedHunts" element={<ManhuntSpeedHuntsPage />} />
+          <Route path="info" element={<ManhuntInfoPage />} />
         </Route>
       </Route>
     </Routes>
