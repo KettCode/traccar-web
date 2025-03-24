@@ -17,8 +17,7 @@ const SpeedHuntItem = ({
     if (!speedHuntInfo || !speedHuntInfo.speedHunts)
         return null;
 
-    //const availableSpeedHunts = user.group.speedHunts - speedHuntInfo.speedHunts.length;
-    const availableSpeedHunts = 0;
+    const availableSpeedHunts = speedHuntInfo.manhunt.speedHunts - speedHuntInfo.speedHunts.length;
     const validate = () => item && item.deviceId && availableSpeedHunts > 0;
 
     const createSpeedHunt = useCatch(async () => {
