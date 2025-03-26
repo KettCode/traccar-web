@@ -13,7 +13,7 @@ const ManhuntInfoPage = () => {
 
     const [timestamp, setTimestamp] = useState(Date.now());
     const [loading, setLoading] = useState(false);
-    const [manhuntInfo, setManhuntInfo] = useState({});
+    const [manhuntInfo, setManhuntInfo] = useState(null);
 
     useEffectAsync(async () => {
         setLoading(true);
@@ -30,10 +30,10 @@ const ManhuntInfoPage = () => {
     }, [timestamp]);
 
     useEffect(() => {
-        if (!manhuntInfo || !manhuntInfo.nextPosition)
+        if (!manhuntInfo || !manhuntInfo.manhunt || !manhuntInfo.manhunt.nextLocationReport)
             return;
 
-        const targetTime = new Date(manhuntInfo.nextPosition).getTime();
+        const targetTime = new Date(manhuntInfo.manhunt.nextLocationReport).getTime();
         const currentTime = new Date().getTime();
         const timeDifference = targetTime - currentTime;
 
@@ -44,7 +44,7 @@ const ManhuntInfoPage = () => {
 
         return () => clearInterval(interval);
 
-    }, [manhuntInfo.nextPosition]);
+    }, [manhuntInfo?.manhunt?.nextLocationReport]);
 
     return (
         <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Info']}>
@@ -75,7 +75,7 @@ const ManhuntInfoPage = () => {
                                 </ListItemIcon>
                                 <ListItemText
                                     primary="Nächste Standortmeldung"
-                                    secondary={formatTime(manhuntInfo.nextPosition, 'minutes')}
+                                    secondary={formatTime(manhuntInfo.manhunt.nextLocationReport, 'minutes')}
                                 />
                             </ListItem>
                         </Container>
