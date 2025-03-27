@@ -271,6 +271,10 @@ const ServerPage = () => {
                     control={<Checkbox checked={item.fixedEmail} onChange={(e) => setItem({ ...item, fixedEmail: e.target.checked })} />}
                     label={t('userFixedEmail')}
                   />
+                  <FormControlLabel
+                    control={<Checkbox checked={item.triggerManhuntActions} onChange={(e) => setItem({ ...item, triggerManhuntActions: e.target.checked })} />}
+                    label={'Fandungsaktionen auslösen'}
+                  />
                 </FormGroup>
               </AccordionDetails>
             </Accordion>
