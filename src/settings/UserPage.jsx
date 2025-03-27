@@ -387,6 +387,11 @@ const UserPage = () => {
                   label={t('userFixedEmail')}
                   disabled={!manager}
                 />
+                <FormControlLabel
+                  control={<Checkbox checked={item.triggerManhuntActions} onChange={(e) => setItem({ ...item, triggerManhuntActions: e.target.checked })} />}
+                  label={'Fandungsaktionen auslösen'}
+                  disabled={!manager}
+                />
               </FormGroup>
             </AccordionDetails>
           </Accordion>
