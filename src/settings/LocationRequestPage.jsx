@@ -12,7 +12,6 @@ import { useTranslation } from '../common/components/LocalizationProvider';
 import { useAdministrator } from '../common/util/permissions';
 import SettingsMenu from './components/SettingsMenu';
 import useSettingsStyles from './common/useSettingsStyles';
-import EditAttributesAccordion from './components/EditAttributesAccordion';
 import useCommonDeviceAttributes from '../common/attributes/useCommonDeviceAttributes';
 import useDeviceAttributes from '../common/attributes/useDeviceAttributes';
 import dayjs from 'dayjs';
@@ -21,7 +20,7 @@ import SelectField from '../common/components/SelectField';
 
 dayjs.extend(utc);
 
-const SpeedHuntRequestPage = () => {
+const LocationRequestPage = () => {
   const classes = useSettingsStyles();
   const t = useTranslation();
   const admin = useAdministrator();
@@ -33,7 +32,7 @@ const SpeedHuntRequestPage = () => {
 
   return (
     <EditItemView
-      endpoint="speedHuntRequests"
+      endpoint="locationRequests"
       item={item}
       setItem={setItem}
       validate={validate}
@@ -72,15 +71,10 @@ const SpeedHuntRequestPage = () => {
                 />
             </AccordionDetails>
           </Accordion>
-          <EditAttributesAccordion
-            attributes={item.attributes}
-            setAttributes={(attributes) => setItem({ ...item, attributes })}
-            definitions={{ ...commonDeviceAttributes, ...deviceAttributes }}
-          />
         </>
       )}
     </EditItemView>
   );
 };
 
-export default SpeedHuntRequestPage;
+export default LocationRequestPage;

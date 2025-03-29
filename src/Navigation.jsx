@@ -64,12 +64,13 @@ import ManhuntsPage from './settings/ManhuntsPage';
 import ManhuntPage from './settings/ManhuntPage';
 import SpeedhuntsPage from './settings/SpeedHuntsPage';
 import SpeedhuntPage from './settings/SpeedHuntPage';
-import SpeedhuntRequestPage from './settings/SpeedHuntRequestPage';
 import CatchesPage from './settings/CatchesPage';
 import CatchPage from './settings/CatchPage';
-import SpeedHuntRequestsPage from './settings/SpeedHuntRequestsPage';
 import ManhuntSpeedHuntsPage from './manhunt/SpeedHuntsPage';
 import ManhuntInfoPage from './manhunt/ManhuntInfoPage';
+import LocationRequestsPage from './settings/LocationRequestsPage';
+import LocationRequestPage from './settings/LocationRequestPage';
+import CurrentManhuntPage from './manhunt/CurrentManhunt';
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -179,9 +180,9 @@ const Navigation = () => {
           <Route path="speedHunts" element={<SpeedhuntsPage />} />
           <Route path="speedHunt" element={<SpeedhuntPage />} />
           <Route path="speedHunt/:id" element={<SpeedhuntPage />} />
-          <Route path="speedHuntRequests" element={<SpeedHuntRequestsPage />} />
-          <Route path="speedHuntRequest" element={<SpeedhuntRequestPage />} />
-          <Route path="speedHuntRequest/:id" element={<SpeedhuntRequestPage />} />
+          <Route path="locationRequests" element={<LocationRequestsPage />} />
+          <Route path="locationRequest" element={<LocationRequestPage />} />
+          <Route path="locationRequest/:id" element={<LocationRequestPage />} />
           <Route path="catches" element={<CatchesPage />} />
           <Route path="catch" element={<CatchPage />} />
           <Route path="catch/:id" element={<CatchPage />} />
@@ -201,6 +202,7 @@ const Navigation = () => {
         </Route>
 
         <Route path="manhunt">
+          <Route path="current" element={<CurrentManhuntPage />} />
           <Route path="speedHunts" element={<ManhuntSpeedHuntsPage />} />
           <Route path="info" element={<ManhuntInfoPage />} />
         </Route>

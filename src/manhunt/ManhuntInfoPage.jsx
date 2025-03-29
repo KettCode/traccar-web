@@ -6,7 +6,7 @@ import useReportStyles from "../reports/common/useReportStyles";
 import ManhuntsMenu from "./components/ManhuntsMenu";
 import { Container, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { formatTime } from "../common/util/formatter";
-import DevicesInfo from "./components/DevicesInfo";
+import DevicesInfo from "./components/Devices";
 
 const ManhuntInfoPage = () => {
     const classes = useReportStyles();

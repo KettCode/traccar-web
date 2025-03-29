@@ -26,3 +26,10 @@ export const useRestriction = (key) => useSelector((state) => {
   const userValue = state.session.user[key];
   return !admin && (serverValue || userValue);
 });
+
+export const useTriggerManhuntActions = () => useSelector((state) => {
+  const admin = state.session.user.administrator;
+  const serverValue = state.session.server.triggerManhuntActions;
+  const userValue = state.session.user.triggerManhuntActions;
+  return admin || (serverValue && userValue);
+});

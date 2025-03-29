@@ -10,8 +10,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import MapIcon from '@mui/icons-material/Map';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
-import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 import { sessionActions } from '../../store';
 import { useTranslation } from './LocalizationProvider';
@@ -41,10 +40,8 @@ const BottomMenu = () => {
       return 'reports';
     } if (location.pathname === '/') {
       return 'map';
-    } if (location.pathname.startsWith("/manhunt/speedHunts")) {
-      return 'speedHunts';
-    } if (location.pathname.startsWith("/manhunt/info")) {
-      return 'info';
+    } if (location.pathname.startsWith("/manhunt/current")) {
+      return 'current';
     }
     return null;
   };
@@ -95,11 +92,8 @@ const BottomMenu = () => {
       case 'settings':
         navigate('/settings/preferences');
         break;
-      case 'speedHunts':
-        navigate('manhunt/speedHunts');
-        break;
-      case 'info':
-        navigate('manhunt/info');
+      case 'current':
+        navigate('manhunt/current');
         break;
       case 'account':
         setAnchorEl(event.currentTarget);
@@ -126,10 +120,7 @@ const BottomMenu = () => {
             value="map"
           />
           {(user.manhuntRole == 1 || user.manhuntRole == 2) && (
-            <BottomNavigationAction label={'Speedhunts'} icon={<DirectionsRunIcon />} value="speedHunts" />
-          )}
-          {(user.manhuntRole == 1 || user.manhuntRole == 2) && (
-            <BottomNavigationAction label={'Info'} icon={<PersonPinCircleIcon />} value="info" />
+            <BottomNavigationAction label={'MisterX'} icon={<PersonSearchIcon />} value="current" />
           )}
           {!disableReports && (user.manhuntRole < 1) && (
             <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />

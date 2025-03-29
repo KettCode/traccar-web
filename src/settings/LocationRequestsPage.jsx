@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import CollectionFab from './components/CollectionFab';
 import { formatTime } from '../common/util/formatter';
 
-const SpeedHuntRequestsPage = () => {
+const LocationRequestsPage = () => {
 const classes = useSettingsStyles();
   const t = useTranslation();
 
@@ -30,7 +30,7 @@ const classes = useSettingsStyles();
   useEffectAsync(async () => {
     setLoading(true);
     try {
-      const responseRequests = await fetch('/api/speedHuntRequests?all=true');
+      const responseRequests = await fetch('/api/locationRequests?all=true');
       if (responseRequests.ok) {
         setItems(await responseRequests.json());
       } else {
@@ -79,14 +79,14 @@ const classes = useSettingsStyles();
               <TableCell>{item.userId ? users.find(x => x.id ==item.userId)?.name : null}</TableCell>
               <TableCell>{formatTime(item.time, "minutes")}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
-                  <CollectionActions itemId={item.id} editPath="/settings/speedHuntRequest" endpoint="speedHuntRequests" setTimestamp={setTimestamp} />
+                  <CollectionActions itemId={item.id} editPath="/settings/locationRequest" endpoint="locationRequests" setTimestamp={setTimestamp} />
                 </TableCell>
             </TableRow>
           )) : (<TableShimmer columns={limitCommands ? 3 : 4} endAction />)}
         </TableBody>
       </Table>
-      <CollectionFab editPath="/settings/speedHuntRequest"/>
+      <CollectionFab editPath="/settings/locationRequest"/>
     </PageLayout>;
 }
 
-export default SpeedHuntRequestsPage;
+export default LocationRequestsPage;
