@@ -4,9 +4,10 @@ import { useEffectAsync } from "../reactHelper";
 import PageLayout from "../common/components/PageLayout";
 import useReportStyles from "../reports/common/useReportStyles";
 import ManhuntsMenu from "./components/ManhuntsMenu";
-import { Container, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { Container, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { formatTime } from "../common/util/formatter";
 import Devices from "./components/Devices";
+import SpeedHunt from "./components/SpeedHunt";
 
 const CurrentManhuntPage = () => {
     const classes = useReportStyles();
@@ -47,22 +48,28 @@ const CurrentManhuntPage = () => {
     }, [manhunt?.nextLocationReport]);
 
     return (
-        <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Info']}>
+        <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Aktuell']}>
             <Container maxWidth="xs" className={classes.container}>
                 {manhunt && (
                     <>
-                        <ListItem sx={{
-                            backgroundColor: "white",
-                            boxShadow: "0px 2px 1px -1px rgba(0, 0, 0, 0), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)"
-                        }}>
-                            <ListItemIcon>
-                                <LocationOnIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="Nächste Standortmeldung"
-                                secondary={formatTime(manhunt.nextLocationReport, 'minutes')}
-                            />
-                        </ListItem>
+                        <List>
+                            <ListItem sx={{
+                                backgroundColor: "white",
+                                boxShadow: "0px 2px 1px -1px rgba(0, 0, 0, 0), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)"
+                            }}>
+                                <ListItemIcon>
+                                    <LocationOnIcon />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary="Nächste Standortmeldung"
+                                    secondary={formatTime(manhunt.nextLocationReport, 'minutes')}
+                                />
+                            </ListItem>
+                        </List>
+                        <SpeedHunt
+                            manhunt={manhunt}
+                            reload={() => setTimestamp(Date.now())}
+                        />
                         <Devices
                             manhunt={manhunt}
                             reload={() => setTimestamp(Date.now())}
