@@ -46,8 +46,8 @@ const classes = useSettingsStyles();
             <TableCell>{'Id'}</TableCell>
             <TableCell>{'Start'}</TableCell>
             <TableCell>{'Frequenz'}</TableCell>
-            <TableCell>{'Speedhunts'}</TableCell>
-            <TableCell>{'Standortanfragen pro Speedhunt'}</TableCell>
+            <TableCell>{'Anzahl Speedhunts'}</TableCell>
+            <TableCell>{'Anzahl Standortanfragen pro Speedhunt'}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
         </TableHead>
@@ -57,8 +57,8 @@ const classes = useSettingsStyles();
               <TableCell>{item.id}</TableCell>
               <TableCell>{formatTime(item.start, "minutes")}</TableCell>
               <TableCell>{item.frequency}</TableCell>
-              <TableCell>{item.speedHunts}</TableCell>
-              <TableCell>{item.locationRequests}</TableCell>
+              <TableCell>{item.speedHuntLimit}</TableCell>
+              <TableCell>{item.locationRequestLimit}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
                   <CollectionActions itemId={item.id} editPath="/settings/manhunt" endpoint="manhunts" setTimestamp={setTimestamp} />
                 </TableCell>

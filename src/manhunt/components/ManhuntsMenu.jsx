@@ -18,12 +18,12 @@ const ManhuntsMenu = () => {
                     icon={<DirectionsRunIcon />}
                     selected={location.pathname === '/manhunt/current'}
                 />}
-                {<MenuItem
+                {/* {<MenuItem
                     title={"Speedhunts"}
                     link="/manhunt/speedHunts"
                     icon={<DirectionsRunIcon />}
                     selected={location.pathname === '/manhunt/speedHunts'}
-                />}
+                />} */}
             </List>
         </>
     );

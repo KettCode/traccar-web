@@ -2,15 +2,20 @@ import React, { useState } from 'react';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import GpsFixedIcon from '@mui/icons-material//GpsFixed';
-import { Button, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { useCatch, useEffectAsync } from '../../reactHelper';
 import ConfirmationDialog from './ConfirmationDialog';
 import { useTriggerManhuntActions } from '../../common/util/permissions';
+import useReportStyles from '../../reports/common/useReportStyles';
 
 const Devices = ({
     manhunt,
     reload
 }) => {
+    const classes = useReportStyles();
+
     const [dialogOpen, setDialogOpen] = useState(false);
     const [selectedDevice, setSelectedDevice] = useState(null);
     const [devices, setDevices] = useState(null);
@@ -42,21 +47,54 @@ const Devices = ({
 
     return <>
         {devices && (
-            <List>
-                <div style={{
-                    backgroundColor: "white"
-                }}>
-                    {devices && devices.sort((a, b) => b.manhuntRole - a.manhuntRole).map((device) => (
-                        <DeviceItem
-                            device={device}
-                            onCatch={(device) => {
-                                setSelectedDevice(device);
-                                setDialogOpen(true);
-                            }}
-                        />
-                    ))}
-                </div>
-            </List>
+            <>
+                <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Box display="flex" alignItems="center">
+                            <PersonSearchIcon sx={{ mr: 1 }} />
+                            <Typography variant="subtitle1">
+                                {`Gejagte`}
+                            </Typography>
+                        </Box>
+                    </AccordionSummary>
+                    <AccordionDetails className={classes.details}>
+                        <List>
+                            {devices.filter((x) => x.manhuntRole == 2).map((device) =>
+                                <DeviceListItem
+                                    device={device}
+                                    onCatch={(device) => {
+                                        setSelectedDevice(device);
+                                        setDialogOpen(true);
+                                    }}
+                                />
+                            )}
+                        </List>
+                    </AccordionDetails>
+                </Accordion >
+                <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Box display="flex" alignItems="center">
+                            <GpsFixedIcon sx={{ mr: 1 }} />
+                            <Typography variant="subtitle1">
+                                {`Jäger`}
+                            </Typography>
+                        </Box>
+                    </AccordionSummary>
+                    <AccordionDetails className={classes.details}>
+                        <List>
+                            {devices.filter((x) => x.manhuntRole == 1).map((device) =>
+                                <DeviceListItem
+                                    device={device}
+                                    onCatch={(device) => {
+                                        setSelectedDevice(device);
+                                        setDialogOpen(true);
+                                    }}
+                                />
+                            )}
+                        </List>
+                    </AccordionDetails>
+                </Accordion >
+            </>
         )}
         <ConfirmationDialog
             open={dialogOpen}
@@ -73,7 +111,7 @@ const Devices = ({
     </>
 }
 
-const DeviceItem = ({
+const DeviceListItem = ({
     device,
     onCatch
 }) => {
@@ -89,9 +127,7 @@ const DeviceItem = ({
     }
 
     return <>
-        <ListItem style={{
-            boxShadow: "0px 2px 1px -1px rgba(0, 0, 0, 0), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)"
-        }}>
+        <ListItem>
             <ListItemIcon>
                 <Icon sx={{ color: color }} />
             </ListItemIcon>
@@ -102,6 +138,7 @@ const DeviceItem = ({
             />
             {triggerManhuntActions && device.manhuntRole == 2 && !device.isCaught && (
                 <Button
+                    size="small"
                     text="Verhaften"
                     variant="outlined"
                     onClick={() => onCatch(device)}
@@ -117,10 +154,7 @@ const DeviceItem = ({
                         }
                     }}
                 >
-                    <LockIcon sx={{
-                        color: "inherit",
-                        mr: 1
-                    }} />
+                    <LockIcon sx={{ color: "inherit" }} />
                     <Typography variant="button" noWrap>Verhaften</Typography>
                 </Button>
             )}

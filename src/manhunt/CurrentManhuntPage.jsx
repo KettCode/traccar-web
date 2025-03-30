@@ -8,9 +8,13 @@ import { Container, List, ListItem, ListItemIcon, ListItemText } from "@mui/mate
 import { formatTime } from "../common/util/formatter";
 import Devices from "./components/Devices";
 import SpeedHunt from "./components/SpeedHunt";
+import { useSelector } from "react-redux";
+import SpeedHunts from "./components/SpeedHunts";
+import Location from "./components/Location";
 
 const CurrentManhuntPage = () => {
     const classes = useReportStyles();
+    const user = useSelector((state) => state.session.user);
 
     const [timestamp, setTimestamp] = useState(Date.now());
     const [loading, setLoading] = useState(false);
@@ -19,7 +23,7 @@ const CurrentManhuntPage = () => {
     useEffectAsync(async () => {
         setLoading(true);
         try {
-            const response = await fetch(`/api/currentManhunt/get`);
+            const response = await fetch(`/api/currentManhunt/get?withSpeedHunts=true`);
             if (response.ok) {
                 setManhunt(await response.json());
             } else {
@@ -52,20 +56,9 @@ const CurrentManhuntPage = () => {
             <Container maxWidth="xs" className={classes.container}>
                 {manhunt && (
                     <>
-                        <List>
-                            <ListItem sx={{
-                                backgroundColor: "white",
-                                boxShadow: "0px 2px 1px -1px rgba(0, 0, 0, 0), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)"
-                            }}>
-                                <ListItemIcon>
-                                    <LocationOnIcon />
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary="Nächste Standortmeldung"
-                                    secondary={formatTime(manhunt.nextLocationReport, 'minutes')}
-                                />
-                            </ListItem>
-                        </List>
+                        <Location 
+                            manhunt={manhunt}
+                        />
                         <SpeedHunt
                             manhunt={manhunt}
                             reload={() => setTimestamp(Date.now())}
@@ -74,6 +67,11 @@ const CurrentManhuntPage = () => {
                             manhunt={manhunt}
                             reload={() => setTimestamp(Date.now())}
                         />
+                        {user.manhuntRole == 1 && (
+                            <SpeedHunts
+                                manhunt={manhunt}
+                            />
+                        )}
                     </>
                 )}
             </Container>

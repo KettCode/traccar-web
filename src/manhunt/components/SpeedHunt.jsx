@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material';
 import { useCatch, useEffectAsync } from '../../reactHelper';
 import ConfirmationDialog from './ConfirmationDialog';
 import { useTriggerManhuntActions } from '../../common/util/permissions';
@@ -15,20 +14,22 @@ const SpeedHunt = ({
     reload
 }) => {
     const classes = useSettingsStyles();
-    const [lastSpeetHunt, setLastSpeedHunt] = useState(null);
+    const [huntedDevices, setHuntedDevices] = useState(null);
 
     useEffectAsync(async () => {
-        const response = await fetch(`/api/currentManhunt/getLastSpeedHunt?manhuntId=${manhunt.id}`);
+        const response = await fetch(`/api/currentManhunt/getHuntedDevices?manhuntId=${manhunt.id}`);
         if (response.ok) {
-            setLastSpeedHunt(await response.json());
+            setHuntedDevices(await response.json());
         } else {
             throw Error(await response.text());
         }
     }, [manhunt]);
 
-    const isSpeedHuntRunning = lastSpeetHunt
-        && !lastSpeetHunt.deviceIsCaught
-        && lastSpeetHunt.numRequests < manhunt.locationRequests;
+    const lastSpeedHunt = manhunt.speedHunts.length > 0 ? manhunt.speedHunts[manhunt.speedHunts.length - 1] : null;
+    const isSpeedHuntRunning = lastSpeedHunt
+        && lastSpeedHunt.locationRequests.length < manhunt.locationRequestLimit
+        && huntedDevices
+        && huntedDevices.some(x => x.id == lastSpeedHunt.deviceId);
 
     return <>
         <Accordion defaultExpanded={true}>
@@ -41,10 +42,14 @@ const SpeedHunt = ({
                 </Box>
             </AccordionSummary>
             <AccordionDetails className={classes.details}>
+                <FormControlLabel
+                    control={<Checkbox checked={isSpeedHuntRunning} disabled={true} />}
+                    label={'Aktiv'}
+                />
                 {isSpeedHuntRunning ?
                     <SpeedHuntIsRunningItem
                         manhunt={manhunt}
-                        lastSpeetHunt={lastSpeetHunt}
+                        lastSpeedHunt={lastSpeedHunt}
                         reload={reload}
                     /> :
                     <SpeedHuntIsNotRunningItem
@@ -59,15 +64,16 @@ const SpeedHunt = ({
 
 const SpeedHuntIsRunningItem = ({
     manhunt,
-    lastSpeetHunt,
+    lastSpeedHunt,
     reload
 }) => {
     const triggerManhuntActions = useTriggerManhuntActions();
     const user = useSelector((state) => state.session.user);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const availableLocationRequests = manhunt.locationRequestLimit - lastSpeedHunt.locationRequests.length;
 
     const createLocationRequest = useCatch(async () => {
-        let url = `/api/currentManhunt/createLocationRequest?manhuntId=${manhunt.id}&speedHuntId=${lastSpeetHunt.id}`;
+        let url = `/api/currentManhunt/createLocationRequest?manhuntId=${manhunt.id}&speedHuntId=${lastSpeedHunt.id}`;
 
         const response = await fetch(url, {
             method: 'POST',
@@ -76,7 +82,7 @@ const SpeedHuntIsRunningItem = ({
 
         if (response.ok) {
             reload();
-            if (lastSpeetHunt.availableSpeedHuntRequests > 1) {
+            if (availableLocationRequests > 1) {
                 //setShowAnimation(true);
                 //setTimeout(() => {
                 //    setShowAnimation(false);
@@ -89,18 +95,20 @@ const SpeedHuntIsRunningItem = ({
     });
 
     return <>
-        <Typography sx={{
-            textAlign: "center"
-        }}>
-            {`Speedhunt läuft ${user.manhuntRole == 1 ? "auf " + lastSpeetHunt.deviceName : ""}`}
-        </Typography>
-        <Typography sx={{
-            textAlign: "center",
-            color: "gray",
-            fontSize: "1rem"
-        }}>
-            {manhunt.locationRequests - lastSpeetHunt.numRequests + " Standortanfragen verfügbar"}
-        </Typography>
+        {user.manhuntRole == 1 && (
+            <SelectField
+                label={"Spieler"}
+                endpoint={"/api/currentManhunt/getHuntedDevices"}
+                value={lastSpeedHunt.deviceId}
+                disabled={true}
+            />
+        )}
+        <TextField
+            type="number"
+            value={availableLocationRequests}
+            label={"Verfügbare Standortanfragen"}
+            disabled={true}
+        />
         {triggerManhuntActions && (
             <Button
                 type="button"
@@ -133,7 +141,6 @@ const SpeedHuntIsNotRunningItem = ({
     const triggerManhuntActions = useTriggerManhuntActions();
     const [dialogOpen, setDialogOpen] = useState(false);
     const [selectedDevice, setSelectedDevice] = useState(null);
-    const validate = () => selectedDevice && selectedDevice.id; //available SpeedHunts
 
     const createSpeedHunt = useCatch(async () => {
         let url = `/api/currentManhunt/createSpeedHunt?manhuntId=${manhunt.id}&deviceId=${selectedDevice.id}`;
@@ -151,19 +158,16 @@ const SpeedHuntIsNotRunningItem = ({
         }
     });
 
+    const availableSpeedHunts = manhunt.speedHuntLimit - (manhunt.speedHunts ? manhunt.speedHunts.length : 0);
+    const validate = () => selectedDevice && selectedDevice.id && availableSpeedHunts > 0;
+
     return <>
-        <Typography sx={{
-            textAlign: "center"
-        }}>
-            Aktuell läuft kein Speedhunt
-        </Typography>
-        <Typography sx={{
-            textAlign: "center",
-            color: "gray",
-            fontSize: "1rem"
-        }}>
-            {0 + " Speedhunts verfügbar"}
-        </Typography>
+        <TextField
+            type="number"
+            value={availableSpeedHunts}
+            label={"Verfügbare Speedhunts"}
+            disabled={true}
+        />
         {triggerManhuntActions && (
             <>
                 <SelectField

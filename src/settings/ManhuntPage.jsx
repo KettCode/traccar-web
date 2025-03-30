@@ -26,7 +26,7 @@ const ManhuntPage = () => {
   const commonDeviceAttributes = useCommonDeviceAttributes(t);
   const deviceAttributes = useDeviceAttributes(t);
   const [item, setItem] = useState();
-  const validate = () => item && item.start;
+  const validate = () => item && item.start && item.frequency && item.speedHuntLimit && item.locationRequestLimit;
 
 
   return (
@@ -65,15 +65,15 @@ const ManhuntPage = () => {
               <TextField
                 label={'Speedhunts'}
                 type="number"
-                value={item.speedHunts}
-                onChange={(event) => setItem({ ...item, speedHunts: Number(event.target.value) })}
+                value={item.speedHuntLimit}
+                onChange={(event) => setItem({ ...item, speedHuntLimit: Number(event.target.value) })}
                 disabled={!admin}
               />
               <TextField
                 label={'Anfragen pro Speedhunt'}
                 type="number"
-                value={item.locationRequests}
-                onChange={(event) => setItem({ ...item, locationRequests: Number(event.target.value) })}
+                value={item.locationRequestLimit}
+                onChange={(event) => setItem({ ...item, locationRequestLimit: Number(event.target.value) })}
                 disabled={!admin}
               />
             </AccordionDetails>
