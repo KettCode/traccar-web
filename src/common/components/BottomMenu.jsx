@@ -120,7 +120,7 @@ const BottomMenu = () => {
             value="map"
           />
           {(user.manhuntRole == 1 || user.manhuntRole == 2) && (
-            <BottomNavigationAction label={'MisterX'} icon={<PersonSearchIcon />} value="current" />
+            <BottomNavigationAction label={'Mister X'} icon={<PersonSearchIcon />} value="current" />
           )}
           {!disableReports && (user.manhuntRole < 1) && (
             <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />

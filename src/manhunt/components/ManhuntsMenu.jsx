@@ -3,7 +3,7 @@ import { List } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import MenuItem from '../../common/components/MenuItem';
 import { useSelector } from 'react-redux';
-import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 const ManhuntsMenu = () => {
     const location = useLocation();
@@ -13,9 +13,9 @@ const ManhuntsMenu = () => {
         <>
             <List>
                 {<MenuItem
-                    title={"Aktuell"}
+                    title={"Allgemein"}
                     link="/manhunt/current"
-                    icon={<DirectionsRunIcon />}
+                    icon={<PersonSearchIcon />}
                     selected={location.pathname === '/manhunt/current'}
                 />}
                 {/* {<MenuItem

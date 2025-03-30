@@ -17,7 +17,7 @@ const SpeedHunt = ({
     const [huntedDevices, setHuntedDevices] = useState(null);
 
     useEffectAsync(async () => {
-        const response = await fetch(`/api/currentManhunt/getHuntedDevices?manhuntId=${manhunt.id}`);
+        const response = await fetch(`/api/currentManhunt/getDevices?manhuntId=${manhunt.id}&huntedOnly=true`);
         if (response.ok) {
             setHuntedDevices(await response.json());
         } else {
@@ -95,20 +95,20 @@ const SpeedHuntIsRunningItem = ({
     });
 
     return <>
-        {user.manhuntRole == 1 && (
-            <SelectField
-                label={"Spieler"}
-                endpoint={"/api/currentManhunt/getHuntedDevices"}
-                value={lastSpeedHunt.deviceId}
-                disabled={true}
-            />
-        )}
         <TextField
             type="number"
             value={availableLocationRequests}
             label={"Verfügbare Standortanfragen"}
             disabled={true}
         />
+        {user.manhuntRole == 1 && (
+            <SelectField
+                label={"Spieler"}
+                endpoint={`/api/currentManhunt/getDevices?manhuntId=${manhunt.id}&huntedOnly=true`}
+                value={lastSpeedHunt.deviceId}
+                disabled={true}
+            />
+        )}
         {triggerManhuntActions && (
             <Button
                 type="button"
@@ -172,7 +172,7 @@ const SpeedHuntIsNotRunningItem = ({
             <>
                 <SelectField
                     label={"Spieler"}
-                    endpoint={"/api/currentManhunt/getHuntedDevices"}
+                    endpoint={`/api/currentManhunt/getDevices?manhuntId=${manhunt.id}&huntedOnly=true`}
                     value={selectedDevice?.id}
                     onChange={(event) => setSelectedDevice({ ...selectedDevice, id: Number(event.target.value) })}
                     disabled={false}

@@ -1,11 +1,9 @@
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useEffect, useState } from "react";
 import { useEffectAsync } from "../reactHelper";
 import PageLayout from "../common/components/PageLayout";
 import useReportStyles from "../reports/common/useReportStyles";
 import ManhuntsMenu from "./components/ManhuntsMenu";
-import { Container, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
-import { formatTime } from "../common/util/formatter";
+import { Container } from "@mui/material";
 import Devices from "./components/Devices";
 import SpeedHunt from "./components/SpeedHunt";
 import { useSelector } from "react-redux";
@@ -23,7 +21,7 @@ const CurrentManhuntPage = () => {
     useEffectAsync(async () => {
         setLoading(true);
         try {
-            const response = await fetch(`/api/currentManhunt/get?withSpeedHunts=true`);
+            const response = await fetch(`/api/currentManhunt/get?loadCascade=true`);
             if (response.ok) {
                 setManhunt(await response.json());
             } else {
