@@ -6,7 +6,7 @@ import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { useCatch, useEffectAsync } from '../../reactHelper';
-import ConfirmationDialog from './ConfirmationDialog';
+import ConfirmationDialog from '../components/ConfirmationDialog';
 import { useTriggerManhuntActions } from '../../common/util/permissions';
 import useReportStyles from '../../reports/common/useReportStyles';
 

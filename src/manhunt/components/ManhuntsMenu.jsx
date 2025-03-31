@@ -3,10 +3,13 @@ import { List } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import MenuItem from '../../common/components/MenuItem';
 import { useSelector } from 'react-redux';
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import GroupsIcon from '@mui/icons-material/Groups';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import { useTranslation } from '../../common/components/LocalizationProvider';
 
 const ManhuntsMenu = () => {
     const location = useLocation();
+    const t = useTranslation();
     const user = useSelector((state) => state.session.user);
 
     return (
@@ -15,15 +18,15 @@ const ManhuntsMenu = () => {
                 {<MenuItem
                     title={"Allgemein"}
                     link="/manhunt/current"
-                    icon={<PersonSearchIcon />}
+                    icon={<GroupsIcon />}
                     selected={location.pathname === '/manhunt/current'}
                 />}
-                {/* {<MenuItem
-                    title={"Speedhunts"}
-                    link="/manhunt/speedHunts"
-                    icon={<DirectionsRunIcon />}
-                    selected={location.pathname === '/manhunt/speedHunts'}
-                />} */}
+                {/* <MenuItem
+                    title={t('reportRoute')}
+                    link="/reports/route"
+                    icon={<TimelineIcon />}
+                    selected={location.pathname === '/reports/route'}
+                /> */}
             </List>
         </>
     );

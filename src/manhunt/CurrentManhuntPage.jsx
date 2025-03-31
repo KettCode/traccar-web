@@ -4,11 +4,11 @@ import PageLayout from "../common/components/PageLayout";
 import useReportStyles from "../reports/common/useReportStyles";
 import ManhuntsMenu from "./components/ManhuntsMenu";
 import { Container } from "@mui/material";
-import Devices from "./components/Devices";
-import SpeedHunt from "./components/SpeedHunt";
 import { useSelector } from "react-redux";
-import SpeedHunts from "./components/SpeedHunts";
-import Location from "./components/Location";
+import Location from "./elements/Location";
+import SpeedHunt from "./elements/SpeedHunt";
+import Devices from "./elements/Devices";
+import SpeedHunts from "./elements/SpeedHunts";
 
 const CurrentManhuntPage = () => {
     const classes = useReportStyles();
@@ -50,7 +50,7 @@ const CurrentManhuntPage = () => {
     }, [manhunt?.nextLocationReport]);
 
     return (
-        <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Aktuell']}>
+        <PageLayout menu={<ManhuntsMenu />} breadcrumbs={['Manhunt', 'Allgemein']}>
             <Container maxWidth="xs" className={classes.container}>
                 {manhunt && (
                     <>

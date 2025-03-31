@@ -3,7 +3,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material';
 import { useCatch, useEffectAsync } from '../../reactHelper';
-import ConfirmationDialog from './ConfirmationDialog';
+import ConfirmationDialog from '../components/ConfirmationDialog';
 import { useTriggerManhuntActions } from '../../common/util/permissions';
 import SelectField from '../../common/components/SelectField';
 import useSettingsStyles from '../../settings/common/useSettingsStyles';

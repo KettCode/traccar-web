@@ -10,7 +10,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import MapIcon from '@mui/icons-material/Map';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import GroupsIcon from '@mui/icons-material/Groups';
 
 import { sessionActions } from '../../store';
 import { useTranslation } from './LocalizationProvider';
@@ -41,7 +41,7 @@ const BottomMenu = () => {
     } if (location.pathname === '/') {
       return 'map';
     } if (location.pathname.startsWith("/manhunt/current")) {
-      return 'current';
+      return 'manhunt';
     }
     return null;
   };
@@ -92,7 +92,7 @@ const BottomMenu = () => {
       case 'settings':
         navigate('/settings/preferences');
         break;
-      case 'current':
+      case 'manhunt':
         navigate('manhunt/current');
         break;
       case 'account':
@@ -120,7 +120,7 @@ const BottomMenu = () => {
             value="map"
           />
           {(user.manhuntRole == 1 || user.manhuntRole == 2) && (
-            <BottomNavigationAction label={'Mister X'} icon={<PersonSearchIcon />} value="current" />
+            <BottomNavigationAction label={'Manhunt'} icon={<GroupsIcon />} value="manhunt" />
           )}
           {!disableReports && (user.manhuntRole < 1) && (
             <BottomNavigationAction label={t('reportTitle')} icon={<DescriptionIcon />} value="reports" />
