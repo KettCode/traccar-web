@@ -24,6 +24,7 @@ import {
 } from '../../common/util/permissions';
 import useFeatures from '../../common/util/useFeatures';
 import MenuItem from '../../common/components/MenuItem';
+import CreateIcon from '@mui/icons-material/Create';
 
 const SettingsMenu = () => {
   const t = useTranslation();
