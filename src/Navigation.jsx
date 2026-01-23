@@ -70,6 +70,8 @@ import CatchPage from './settings/CatchPage';
 import LocationRequestsPage from './settings/LocationRequestsPage';
 import LocationRequestPage from './settings/LocationRequestPage';
 import CurrentManhuntPage from './manhunt/CurrentManhuntPage';
+import JokersPage from './settings/JokersPage';
+import JokerPage from './settings/JokerPage';
 
 const Navigation = () => {
   const dispatch = useDispatch();
@@ -187,6 +189,9 @@ const Navigation = () => {
           <Route path="catches" element={<CatchesPage />} />
           <Route path="catch" element={<CatchPage />} />
           <Route path="catch/:id" element={<CatchPage />} />
+          <Route path="jokers" element={<JokersPage />} />
+          <Route path="joker" element={<JokerPage />} />
+          <Route path="joker/:id" element={<JokerPage />} />
         </Route>
 
         <Route path="reports">

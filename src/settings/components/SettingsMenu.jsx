@@ -187,6 +187,12 @@ const SettingsMenu = () => {
               icon={<CreateIcon />}
               selected={location.pathname.startsWith('/settings/catches')}
             />
+            <MenuItem
+              title={'Joker'}
+              link="/settings/jokers"
+              icon={<CreateIcon />}
+              selected={location.pathname.startsWith('/settings/jokers')}
+            />
           </List>
         </>
       )}

@@ -95,6 +95,7 @@ const DevicesPage = () => {
             <TableCell>{t('sharedName')}</TableCell>
             <TableCell>{t('deviceIdentifier')}</TableCell>
             <TableCell>{'Role'}</TableCell>
+            <TableCell>{'Nächsten Standort aussetzten'}</TableCell>
             <TableCell>{t('groupParent')}</TableCell>
             <TableCell>{t('sharedPhone')}</TableCell>
             <TableCell>{t('deviceModel')}</TableCell>
@@ -111,6 +112,7 @@ const DevicesPage = () => {
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.uniqueId}</TableCell>
               <TableCell>{item.manhuntRole ? manhuntRoles.find(x => x.id ==item.manhuntRole)?.name : null}</TableCell>
+              <TableCell>{item.skipNextManhuntLocation ? "Yes" : "No"}</TableCell>
               <TableCell>{item.groupId ? groups[item.groupId]?.name : null}</TableCell>
               <TableCell>{item.phone}</TableCell>
               <TableCell>{item.model}</TableCell>

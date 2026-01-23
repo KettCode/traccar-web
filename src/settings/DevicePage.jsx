@@ -95,6 +95,10 @@ const DevicePage = () => {
                 endpoint="/api/manhunts/getRoles"
                 label={'Role'}
               />
+              <FormControlLabel
+                control={<Checkbox checked={item.skipNextManhuntLocation} onChange={(e) => setItem({ ...item, skipNextManhuntLocation: e.target.checked })} />}
+                label={'Nächste Standort aussetzten'}
+              />
             </AccordionDetails>
           </Accordion>
           <Accordion>
