@@ -95,6 +95,12 @@ const DevicePage = () => {
                 endpoint="/api/manhunts/getRoles"
                 label={'Role'}
               />
+              <SelectField
+                value={item.manhuntUserId}
+                onChange={(event) => setItem({ ...item, manhuntUserId: Number(event.target.value) })}
+                endpoint="/api/users"
+                label={t('settingsUsers')}
+              />
               <FormControlLabel
                 control={<Checkbox checked={item.skipNextManhuntLocation} onChange={(e) => setItem({ ...item, skipNextManhuntLocation: e.target.checked })} />}
                 label={'Nächste Standort aussetzten'}

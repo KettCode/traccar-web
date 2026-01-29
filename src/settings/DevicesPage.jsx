@@ -42,6 +42,7 @@ const DevicesPage = () => {
   const [showAll, setShowAll] = usePersistedState('showAllDevices', false);
   const [loading, setLoading] = useState(false);
   const [manhuntRoles, setManhuntRoles] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffectAsync(async () => {
     setLoading(true);
@@ -50,12 +51,13 @@ const DevicesPage = () => {
       const response = await fetchOrThrow(`/api/devices?${query.toString()}`);
       setItems(await response.json());
 
-      const responseManhuntRoles = await fetch('/api/manhunts/getRoles');
-      if (responseManhuntRoles.ok) {
-        setManhuntRoles(await responseManhuntRoles.json());
-      } else {
-        throw Error(await responseManhuntRoles.text());
-      }
+      const [rolesResponse, usersResponse] = await Promise.all([
+        fetchOrThrow('/api/manhunts/getRoles'),
+        fetchOrThrow('/api/users'),
+      ]);
+  
+      setManhuntRoles(await rolesResponse.json());
+      setUsers(await usersResponse.json());
     } finally {
       setLoading(false);
     }
@@ -95,6 +97,7 @@ const DevicesPage = () => {
             <TableCell>{t('sharedName')}</TableCell>
             <TableCell>{t('deviceIdentifier')}</TableCell>
             <TableCell>{'Role'}</TableCell>
+            <TableCell>{'Manhunt User'}</TableCell>
             <TableCell>{'Nächsten Standort aussetzten'}</TableCell>
             <TableCell>{t('groupParent')}</TableCell>
             <TableCell>{t('sharedPhone')}</TableCell>
@@ -112,6 +115,7 @@ const DevicesPage = () => {
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.uniqueId}</TableCell>
               <TableCell>{item.manhuntRole ? manhuntRoles.find(x => x.id ==item.manhuntRole)?.name : null}</TableCell>
+              <TableCell>{item.manhuntUserId ? users.find(x => x.id ==item.manhuntUserId)?.name : null}</TableCell>
               <TableCell>{item.skipNextManhuntLocation ? "Yes" : "No"}</TableCell>
               <TableCell>{item.groupId ? groups[item.groupId]?.name : null}</TableCell>
               <TableCell>{item.phone}</TableCell>

@@ -27,7 +27,7 @@ const JokerPage = () => {
   const commonDeviceAttributes = useCommonDeviceAttributes(t);
   const deviceAttributes = useDeviceAttributes(t);
   const [item, setItem] = useState();
-  const validate = () => {debugger; return item && item.manhuntsId && item.userId && item.jokerTypeId && item.status};
+  const validate = () => item && item.manhuntsId && item.userId && item.jokerTypeId && item.status;
 
 
   return (

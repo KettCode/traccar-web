@@ -9,6 +9,9 @@ import { useCatch, useEffectAsync } from '../../reactHelper';
 import ConfirmationDialog from '../components/ConfirmationDialog';
 import { useTriggerManhuntActions } from '../../common/util/permissions';
 import useReportStyles from '../../reports/common/useReportStyles';
+import fetchOrThrow from '../../common/util/fetchOrThrow';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import BlockIcon from '@mui/icons-material/Block';
 
 const Devices = ({
     manhunt,
@@ -16,21 +19,71 @@ const Devices = ({
 }) => {
     const classes = useReportStyles();
 
-    const [dialogOpen, setDialogOpen] = useState(false);
-    const [selectedDevice, setSelectedDevice] = useState(null);
     const [devices, setDevices] = useState(null);
+    const [jokers, setJokers] = useState(null);
+
+    const [confirmation, setConfirmation] = useState({
+        open: false,
+        title: "",
+        message: "",
+        onConfirm: null
+    });
+
+    const openConfirmation = ({ title, message, onConfirm }) => {
+        setConfirmation({ open: true, title, message, onConfirm });
+    }
+
+    const closeConfirmation = () => setConfirmation(prev => ({ ...prev, open: false }));
+
+    const triggerManhuntActions = useTriggerManhuntActions();
 
     useEffectAsync(async () => {
-        const response = await fetch(`/api/currentManhunt/getDevices?manhuntId=${manhunt.id}`);
-        if (response.ok) {
-            setDevices(await response.json());
-        } else {
-            throw Error(await response.text());
-        }
+        const [devicesResponse, jokersResponse] = await Promise.all([
+            fetchOrThrow(`/api/currentManhunt/getDevices?manhuntId=${manhunt.id}`),
+            fetchOrThrow(`/api/currentManhunt/getJoker?manhuntId=${manhunt.id}&all=${triggerManhuntActions}`)
+        ]);
+
+        const devicesData = await devicesResponse.json();
+        const jokersData = await jokersResponse.json();
+
+        setDevices(devicesData);
+        setJokers(jokersData);
     }, [manhunt]);
 
     const createCatch = useCatch(async (device) => {
         let url = `/api/currentManhunt/createCatch?manhuntId=${manhunt.id}&deviceId=${device.id}`;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.ok) {
+            reload();
+        } else {
+            reload();
+            throw Error(await response.text());
+        }
+    });
+
+    const unlockJoker = useCatch(async (userId, jokerTypeId) => {
+        let url = `/api/currentManhunt/unlockJoker?manhuntId=${manhunt.id}&huntedUserId=${userId}&jokerTypeId=${jokerTypeId}`;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.ok) {
+            reload();
+        } else {
+            reload();
+            throw Error(await response.text());
+        }
+    });
+
+    const useJoker = useCatch(async (jokerId, deviceId) => {
+        let url = `/api/currentManhunt/useJoker?jokerId=${jokerId}&deviceId=${deviceId}`;
 
         const response = await fetch(url, {
             method: 'POST',
@@ -62,10 +115,22 @@ const Devices = ({
                             {devices.filter((x) => x.manhuntRole == 2).map((device) =>
                                 <DeviceListItem
                                     device={device}
-                                    onCatch={(device) => {
-                                        setSelectedDevice(device);
-                                        setDialogOpen(true);
-                                    }}
+                                    jokers={jokers ? jokers.filter((j) => j.userId === device.manhuntUserId) : []}
+                                    onCatch={(device) => openConfirmation({
+                                        title: "Verhaften",
+                                        message: "Spieler wirklich verhaften?",
+                                        onConfirm: () => createCatch(device)
+                                    })}
+                                    onUnlockJoker={(userId, jokerTypeId) => openConfirmation({
+                                        title: "Joker freischalten",
+                                        message: "Joker wirklich freischalten?",
+                                        onConfirm: () => unlockJoker(userId, jokerTypeId)
+                                    })}
+                                    onUseJoker={(jokerId, deviceId) => openConfirmation({
+                                        title: "Joker benutzen",
+                                        message: "Joker wirklich benutzen?",
+                                        onConfirm: () => useJoker(jokerId, deviceId)
+                                    })}
                                 />
                             )}
                         </List>
@@ -85,10 +150,22 @@ const Devices = ({
                             {devices.filter((x) => x.manhuntRole == 1).map((device) =>
                                 <DeviceListItem
                                     device={device}
-                                    onCatch={(device) => {
-                                        setSelectedDevice(device);
-                                        setDialogOpen(true);
-                                    }}
+                                    jokers={[]}
+                                    onCatch={(device) => openConfirmation({
+                                        title: "Verhaften",
+                                        message: "Spieler wirklich verhaften?",
+                                        onConfirm: () => createCatch(device)
+                                    })}
+                                    onUnlockJoker={(userId, jokerTypeId) => openConfirmation({
+                                        title: "Joker freischalten",
+                                        message: "Joker wirklich freischalten?",
+                                        onConfirm: () => unlockJoker(userId, jokerTypeId)
+                                    })}
+                                    onUseJoker={(jokerId, deviceId) => openConfirmation({
+                                        title: "Joker benutzen",
+                                        message: "Joker wirklich benutzen?",
+                                        onConfirm: () => useJoker(jokerId, deviceId)
+                                    })}
                                 />
                             )}
                         </List>
@@ -97,23 +174,25 @@ const Devices = ({
             </>
         )}
         <ConfirmationDialog
-            open={dialogOpen}
-            onClose={() => {
-                setDialogOpen(false);
-            }}
+            open={confirmation.open}
+            onClose={closeConfirmation}
+            title={confirmation.title}
+            message={confirmation.message}
             onConfirm={() => {
-                setDialogOpen(false);
-                createCatch(selectedDevice);
+                closeConfirmation();
+                if (confirmation.onConfirm) 
+                    confirmation.onConfirm();
             }}
-            title="Verhaften"
-            message="Spieler wirklich verhaften?"
         />
     </>
 }
 
 const DeviceListItem = ({
     device,
-    onCatch
+    jokers,
+    onCatch,
+    onUnlockJoker,
+    onUseJoker
 }) => {
     const triggerManhuntActions = useTriggerManhuntActions();
 
@@ -158,8 +237,99 @@ const DeviceListItem = ({
                     <Typography variant="button" noWrap>Verhaften</Typography>
                 </Button>
             )}
-        </ListItem>
+        </ListItem >
+        <JokerList device={device} jokers={jokers} onUnlockJoker={onUnlockJoker} onUseJoker={onUseJoker} />
     </>
 }
+
+const JokerList = ({ device, jokers, onUnlockJoker, onUseJoker }) => {
+    const triggerManhuntActions = useTriggerManhuntActions();
+
+    const allJokers = [
+        { id: 1, name: "Jägerstandorte erfragen" },
+        { id: 2, name: "Nächste Position aussetzten" },
+        { id: 3, name: "Speedhunt aufdecken" },
+    ];
+
+    if (!jokers || jokers.length === 0) return null;
+
+    return (
+        <>
+            {jokers.map(j => {
+                const type = allJokers.find(t => t.id === j.jokerTypeId);
+                if (!type) return null;
+
+                let IconComponent = BlockIcon;
+                let buttonAction = null;
+                let buttonText = "";
+                let iconColor = "grey";
+
+                switch (j.status) {
+                    case 0:
+                        IconComponent = BlockIcon;
+                        iconColor = "#42A5F5";
+                        buttonAction = () => onUnlockJoker(device.manhuntUserId, j.jokerTypeId);
+                        buttonText = "Freischalten";
+                        break;
+                    case 1:
+                        IconComponent = CheckCircleIcon;
+                        iconColor = "#66BB6A";
+                        buttonAction = () => onUseJoker(j.id, device.id);
+                        buttonText = "Einsetzen";
+                        break;
+                    case 2:
+                        IconComponent = BlockIcon;
+                        iconColor = "#EF5350";
+                        break;
+                    default:
+                        IconComponent = BlockIcon;
+                        iconColor = "#B0BEC5";
+                }
+
+                return (
+                    <ListItem
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            pl: 3
+                        }}
+                    >
+                        <Box display="flex" alignItems="center" gap={1}>
+                            <IconComponent sx={{ color: iconColor }} />
+                            <Typography fontSize="0.875rem" fontWeight="500">
+                                {type.name}
+                            </Typography>
+                        </Box>
+
+                        {triggerManhuntActions && device.manhuntRole == 2 && !device.isCaught && buttonAction && (
+                            <Button
+                                size="small"
+                                variant="outlined"
+                                onClick={buttonAction}
+                                sx={{
+                                    color: buttonText === "Freischalten" ? "#42A5F5" : "#FFB300",
+                                    borderColor: buttonText === "Freischalten" ? "#42A5F5" : "#FFB300",
+                                    borderRadius: '20px',
+                                    padding: '6px 16px',
+                                    fontWeight: 'bold',
+                                    textTransform: 'none',
+                                    fontSize: '0.75rem',
+                                    '&:hover': {
+                                        backgroundColor: (buttonText === "Freischalten" ? "#42A5F5" : "#FFB300") + '33',
+                                        borderColor: buttonText === "Freischalten" ? "#42A5F5" : "#FFB300"
+                                    }
+                                }}
+                            >
+                                {buttonText}
+                            </Button>
+                        )}
+                    </ListItem>
+                );
+            })}
+        </>
+    );
+};
+
 
 export default Devices;
