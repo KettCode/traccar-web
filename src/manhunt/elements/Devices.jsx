@@ -10,8 +10,6 @@ import ConfirmationDialog from '../components/ConfirmationDialog';
 import { useTriggerManhuntActions } from '../../common/util/permissions';
 import useReportStyles from '../../reports/common/useReportStyles';
 import fetchOrThrow from '../../common/util/fetchOrThrow';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import BlockIcon from '@mui/icons-material/Block';
 
 const Devices = ({
     manhunt,
@@ -259,31 +257,31 @@ const JokerList = ({ device, jokers, onUnlockJoker, onUseJoker }) => {
                 const type = allJokers.find(t => t.id === j.jokerTypeId);
                 if (!type) return null;
 
-                let IconComponent = BlockIcon;
                 let buttonAction = null;
                 let buttonText = "";
-                let iconColor = "grey";
+                let iconColor = "#B0BEC5";
+                let textSx = {};
 
                 switch (j.status) {
                     case 0:
-                        IconComponent = BlockIcon;
-                        iconColor = "#42A5F5";
+                        iconColor = "#B0BEC5";
                         buttonAction = () => onUnlockJoker(device.manhuntUserId, j.jokerTypeId);
                         buttonText = "Freischalten";
+                        textSx = {
+                            color: "text.disabled"
+                        };
                         break;
                     case 1:
-                        IconComponent = CheckCircleIcon;
                         iconColor = "#66BB6A";
                         buttonAction = () => onUseJoker(j.id, device.id);
                         buttonText = "Einsetzen";
                         break;
                     case 2:
-                        IconComponent = BlockIcon;
                         iconColor = "#EF5350";
+                        textSx = {
+                            textDecoration: "line-through"
+                        };
                         break;
-                    default:
-                        IconComponent = BlockIcon;
-                        iconColor = "#B0BEC5";
                 }
 
                 return (
@@ -296,8 +294,8 @@ const JokerList = ({ device, jokers, onUnlockJoker, onUseJoker }) => {
                         }}
                     >
                         <Box display="flex" alignItems="center" gap={1}>
-                            <IconComponent sx={{ color: iconColor }} />
-                            <Typography fontSize="0.875rem" fontWeight="500">
+                            <StatusDot color={iconColor}/>
+                            <Typography fontSize="0.875rem" fontWeight="500" sx={textSx}>
                                 {type.name}
                             </Typography>
                         </Box>
@@ -330,6 +328,18 @@ const JokerList = ({ device, jokers, onUnlockJoker, onUseJoker }) => {
         </>
     );
 };
+
+const StatusDot = ({ color }) => (
+    <Box
+        sx={{
+            width: 10,
+            height: 10,
+            borderRadius: "50%",
+            backgroundColor: color,
+            flexShrink: 0
+        }}
+    />
+);
 
 
 export default Devices;

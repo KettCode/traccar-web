@@ -20,7 +20,7 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 
 const ManhuntPage = () => {
-  const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const t = useTranslation();
   const admin = useAdministrator();
   const commonDeviceAttributes = useCommonDeviceAttributes(t);

@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import CollectionFab from './components/CollectionFab';
 
 const SpeedHuntsPage = () => {
-const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const t = useTranslation();
 
   const devices = useSelector((state) => state.devices.items);

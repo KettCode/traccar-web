@@ -17,7 +17,7 @@ import CollectionFab from './components/CollectionFab';
 import { formatTime } from '../common/util/formatter';
 
 const CatchesPage = () => {
-    const classes = useSettingsStyles();
+    const { classes } = useSettingsStyles();
     const t = useTranslation();
 
     const devices = useSelector((state) => state.devices.items);

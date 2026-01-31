@@ -22,7 +22,7 @@ import SelectField from '../common/components/SelectField';
 dayjs.extend(utc);
 
 const CatchPage = () => {
-  const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const t = useTranslation();
   const admin = useAdministrator();
   const commonDeviceAttributes = useCommonDeviceAttributes(t);

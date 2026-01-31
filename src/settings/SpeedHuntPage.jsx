@@ -20,7 +20,7 @@ import SelectField from '../common/components/SelectField';
 dayjs.extend(utc);
 
 const SpeedHuntPage = () => {
-  const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const t = useTranslation();
   const admin = useAdministrator();
   const commonDeviceAttributes = useCommonDeviceAttributes(t);

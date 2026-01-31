@@ -13,7 +13,7 @@ const SpeedHunt = ({
     manhunt,
     reload
 }) => {
-    const classes = useSettingsStyles();
+    const { classes } = useSettingsStyles();
     const [huntedDevices, setHuntedDevices] = useState(null);
 
     useEffectAsync(async () => {

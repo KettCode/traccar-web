@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 const SpeedHunts = ({
     manhunt
 }) => {
-    const classes = useSettingsStyles();
+    const { classes } = useSettingsStyles();
     
     return <>
         <Accordion>
@@ -38,7 +38,7 @@ const SpeedHunts = ({
 const SpeedHuntItem = ({
     speedHunt
 }) => {
-    const classes = useSettingsStyles();
+    const { classes } = useSettingsStyles();
     const devices = useSelector((state) => state.devices.items);
 
     return <Accordion>

@@ -8,7 +8,7 @@ import { formatTime } from '../../common/util/formatter';
 const Location = ({
     manhunt
 }) => {
-    const classes = useSettingsStyles();
+    const { classes } = useSettingsStyles();
 
     return <>
         <Accordion defaultExpanded={true}>

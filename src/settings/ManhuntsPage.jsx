@@ -15,7 +15,7 @@ import useSettingsStyles from './common/useSettingsStyles';
 import { formatTime } from '../common/util/formatter';
 
 const ManhuntsPage = () => {
-const classes = useSettingsStyles();
+  const { classes } = useSettingsStyles();
   const t = useTranslation();
 
   const [timestamp, setTimestamp] = useState(Date.now());
