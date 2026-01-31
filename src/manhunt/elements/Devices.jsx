@@ -249,7 +249,7 @@ const JokerList = ({ device, jokers, onUnlockJoker, onUseJoker }) => {
         { id: 3, name: "Speedhunt aufdecken" },
     ];
 
-    if (!jokers || jokers.length === 0) return null;
+    if (!jokers || jokers.length === 0 || (device.manhuntRole == 2 && device.isCaught)) return null;
 
     return (
         <>
