@@ -69,12 +69,12 @@ export const selectPositionsWithManhunt = (state) => {
   if(user.manhuntRole != 2)
     return realPositions;
 
+  const userDevice = Object.values(devices).find(d => d.manhuntUserId === user.id);
+  if(!userDevice)
+    return realPositions;
+
   const hunterPositions = Object.values(manhuntPositions)
-    .filter((p) => !realPositions.some(rp => rp.id === p.id))
-    .filter((p) => {
-      const device = devices[p.deviceId];
-      return device && device.manhuntUserId === user.id;
-    })
+    .filter((p) => !realPositions.some(rp => rp.id === p.id) && p.deviceId == userDevice.id)
     .map((p) => ({
       ...p,
       disabled: true,
