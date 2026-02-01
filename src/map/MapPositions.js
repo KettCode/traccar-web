@@ -20,16 +20,13 @@ const MapPositions = ({ positions, onMapClick, onMarkerClick, showStatus, select
 
   const devices = useSelector((state) => state.devices.items);
   const selectedDeviceId = useSelector((state) => state.devices.selectedId);
-  const user = useSelector((state) => state.session.user);
 
   const mapCluster = useAttributePreference('mapCluster', true);
   const directionType = useAttributePreference('mapDirection', 'selected');
+  const user = useSelector((state) => state.session.user);
 
   const createFeature = (devices, position, selectedPositionId) => {
-    let device = devices[position.deviceId];
-    if (position.deviceId < 0) {
-      device = devices[position.deviceId * -1];
-    }
+    const device = devices[position.deviceId];
     let showDirection;
     switch (directionType) {
       case 'none':
@@ -45,10 +42,10 @@ const MapPositions = ({ positions, onMapClick, onMarkerClick, showStatus, select
     return {
       id: position.id,
       deviceId: position.deviceId,
-      name: position.deviceId < 0 ? `Bekannter Standort (${device.name})` : device.name,
+      name: (!!position.isManhunt && user.manhuntRole == 2) ? `${device.name} (Bekannt)` : device.name,
       fixTime: formatTime(position.fixTime, 'seconds'),
       category: mapIconKey(device.category),
-      color: position.deviceId < 0 ? "neutral" : showStatus ? position.attributes.color || getStatusColor(device.status) : 'neutral',
+      color: !!position.disabled ? 'neutral' : showStatus ? position.attributes.color || getStatusColor(device.status) : 'neutral',
       rotation: position.course,
       direction: showDirection,
     };
@@ -198,8 +195,7 @@ const MapPositions = ({ positions, onMapClick, onMarkerClick, showStatus, select
     [id, selected].forEach((source) => {
       map.getSource(source)?.setData({
         type: 'FeatureCollection',
-        features: positions.filter((it) => devices.hasOwnProperty(it.deviceId) ||
-          (user.manhuntRole == 2 && devices.hasOwnProperty(it.deviceId * -1)))
+        features: positions.filter((it) => devices.hasOwnProperty(it.deviceId))
           .filter((it) => (source === id ? it.deviceId !== selectedDeviceId : it.deviceId === selectedDeviceId))
           .map((position) => ({
             type: 'Feature',
