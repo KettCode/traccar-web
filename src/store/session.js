@@ -35,11 +35,6 @@ const { reducer, actions } = createSlice({
       const liveRoutes = state.user.attributes.mapLiveRoutes || state.server.attributes.mapLiveRoutes || 'none';
       const liveRoutesLimit = state.user.attributes['web.liveRouteLength'] || state.server.attributes['web.liveRouteLength'] || 10;
       action.payload.forEach((position) => {
-        if (position.isManhunt && state.user.manhuntRole == 2) {
-          state.manhuntPositions = state.manhuntPositions || {};
-          state.manhuntPositions[position.deviceId] = position;
-        }
-
         state.positions[position.deviceId] = position;
         if (liveRoutes !== 'none') {
           const route = state.history[position.deviceId] || [];
@@ -60,25 +55,3 @@ const { reducer, actions } = createSlice({
 
 export { actions as sessionActions };
 export { reducer as sessionReducer };
-
-export const selectPositionsWithManhunt = (state) => {
-  const { positions = {}, manhuntPositions = {}, user } = state.session;
-  const devices = state.devices.items;
-
-  const realPositions = Object.values(positions);
-  if(user.manhuntRole != 2)
-    return realPositions;
-
-  const userDevice = Object.values(devices).find(d => d.manhuntUserId === user.id);
-  if(!userDevice)
-    return realPositions;
-
-  const hunterPositions = Object.values(manhuntPositions)
-    .filter((p) => !realPositions.some(rp => rp.id === p.id) && p.deviceId == userDevice.id)
-    .map((p) => ({
-      ...p,
-      disabled: true,
-    }));
-
-  return [...realPositions, ...hunterPositions];
-};

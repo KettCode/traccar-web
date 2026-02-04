@@ -42,10 +42,10 @@ const MapPositions = ({ positions, onMapClick, onMarkerClick, showStatus, select
     return {
       id: position.id,
       deviceId: position.deviceId,
-      name: (!!position.isManhunt && user.manhuntRole == 2) ? `${device.name} (Bekannt)` : device.name,
+      name: device.name,
       fixTime: formatTime(position.fixTime, 'seconds'),
       category: mapIconKey(device.category),
-      color: !!position.disabled ? 'neutral' : showStatus ? position.attributes.color || getStatusColor(device.status) : 'neutral',
+      color: showStatus ? position.attributes.color || getStatusColor(device.status) : 'neutral',
       rotation: position.course,
       direction: showDirection,
     };
