@@ -1,7 +1,7 @@
 import {
   Fragment, useCallback, useEffect, useRef, useState,
 } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useMatch, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   IconButton, Table, TableBody, TableCell, TableHead, TableRow,
 } from '@mui/material';
@@ -29,6 +29,7 @@ import { useRestriction } from '../common/util/permissions';
 import CollectionActions from '../settings/components/CollectionActions';
 import fetchOrThrow from '../common/util/fetchOrThrow';
 import SelectField from '../common/components/SelectField';
+import ManhuntsMenu from '../manhunt/components/ManhuntsMenu';
 
 const PositionsReportPage = () => {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ const PositionsReportPage = () => {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const selectedIcon = useRef();
+  const isManhunt = useMatch('/manhunt/*');
 
   useEffect(() => {
     if (selectedIcon.current) {
@@ -108,7 +110,7 @@ const PositionsReportPage = () => {
   });
 
   return (
-    <PageLayout menu={<ReportsMenu />} breadcrumbs={['reportTitle', 'reportPositions']}>
+    <PageLayout menu={isManhunt ? <ManhuntsMenu/> : <ReportsMenu />} breadcrumbs={['reportTitle', 'reportPositions']}>
       <div className={classes.container}>
         {selectedItem && (
           <div className={classes.containerMap}>

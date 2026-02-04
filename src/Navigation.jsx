@@ -210,6 +210,7 @@ const Navigation = () => {
 
         <Route path="manhunt">
           <Route path="current" element={<CurrentManhuntPage />} />
+          <Route path="route" element={<PositionsReportPage />} />
         </Route>
       </Route>
     </Routes>
