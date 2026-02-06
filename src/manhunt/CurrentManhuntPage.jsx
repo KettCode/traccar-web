@@ -21,6 +21,7 @@ const CurrentManhuntPage = () => {
     const [device, setDevice] = useState(null);
 
     useEffectAsync(async () => {
+        setLoading(true);
         try {
             const [devicesResponse, jokersResponse] = await Promise.all([
                 fetchOrThrow(`/api/currentManhunt/get?loadCascade=true`),
