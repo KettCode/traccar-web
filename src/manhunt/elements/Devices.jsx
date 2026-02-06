@@ -194,12 +194,12 @@ const DeviceListItem = ({
 }) => {
     const triggerManhuntActions = useTriggerManhuntActions();
 
-    var color = "grey";
+    var color = "text.secondary";
     var text = "Jäger";
     var Icon = GpsFixedIcon;
     if (device.manhuntRole == 2) {
         text = device.isCaught ? "Verhafted" : "Frei";
-        color = device.isCaught ? "#EF5350" : "#66BB6A";
+        color = device.isCaught ? "error.main" : "success.main";
         Icon = device.isCaught ? LockIcon : LockOpenIcon;
     }
 
@@ -220,14 +220,15 @@ const DeviceListItem = ({
                     variant="outlined"
                     onClick={() => onCatch(device)}
                     sx={{
-                        color: "#EF5350",
-                        borderColor: "#EF5350",
+                        color: "error.main",
+                        borderColor: "error.main",
                         borderRadius: '20px',
                         padding: '6px 16px',
                         fontWeight: 'bold',
                         '&:hover': {
-                            backgroundColor: "#C62828",
-                            borderColor: "#C62828"
+                            backgroundColor: 'error.main',
+                            color: 'background.paper',
+                            borderColor: 'error.main'
                         }
                     }}
                 >
@@ -259,12 +260,12 @@ const JokerList = ({ device, jokers, onUnlockJoker, onUseJoker }) => {
 
                 let buttonAction = null;
                 let buttonText = "";
-                let iconColor = "#B0BEC5";
+                let iconColor = "text.disabled";
                 let textSx = {};
 
                 switch (j.status) {
                     case 0:
-                        iconColor = "#B0BEC5";
+                        iconColor = "text.disabled";
                         buttonAction = () => onUnlockJoker(device.manhuntUserId, j.jokerTypeId);
                         buttonText = "Freischalten";
                         textSx = {
@@ -272,12 +273,12 @@ const JokerList = ({ device, jokers, onUnlockJoker, onUseJoker }) => {
                         };
                         break;
                     case 1:
-                        iconColor = "#66BB6A";
+                        iconColor = "success.main";
                         buttonAction = () => onUseJoker(j.id, device.id);
                         buttonText = "Einsetzen";
                         break;
                     case 2:
-                        iconColor = "#EF5350";
+                        iconColor = "error.main";
                         textSx = {
                             textDecoration: "line-through"
                         };
@@ -306,16 +307,16 @@ const JokerList = ({ device, jokers, onUnlockJoker, onUseJoker }) => {
                                 variant="outlined"
                                 onClick={buttonAction}
                                 sx={{
-                                    color: buttonText === "Freischalten" ? "#42A5F5" : "#FFB300",
-                                    borderColor: buttonText === "Freischalten" ? "#42A5F5" : "#FFB300",
+                                    color: j.status == 0 ? "info.main" : "warning.main",
+                                    borderColor: j.status == 0 ? "info.main" : "warning.main",
                                     borderRadius: '20px',
                                     padding: '6px 16px',
                                     fontWeight: 'bold',
                                     textTransform: 'none',
                                     fontSize: '0.75rem',
                                     '&:hover': {
-                                        backgroundColor: (buttonText === "Freischalten" ? "#42A5F5" : "#FFB300") + '33',
-                                        borderColor: buttonText === "Freischalten" ? "#42A5F5" : "#FFB300"
+                                        backgroundColor: (j.status == 0 ? "info.main" : "warning.main") + '33',
+                                        borderColor: j.status == 0 ? "info.main" : "warning.main"
                                     }
                                 }}
                             >

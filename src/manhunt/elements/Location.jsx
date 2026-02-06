@@ -6,7 +6,8 @@ import useSettingsStyles from '../../settings/common/useSettingsStyles';
 import { formatTime } from '../../common/util/formatter';
 
 const Location = ({
-    manhunt
+    manhunt,
+    device
 }) => {
     const { classes } = useSettingsStyles();
 
@@ -27,6 +28,15 @@ const Location = ({
                     fullWidth
                     disabled={true}
                 />
+                {device.skipNextManhuntLocation && (
+                    <Typography
+                        variant="body2"
+                        color="warning.main"
+                        style={{ marginTop: 12 }}
+                    >
+                        Die nächste Standortabfrage wird ausgesetzt (Speedhunt oder Silenthunt)
+                    </Typography>
+                )}
             </AccordionDetails>
         </Accordion >
     </>

@@ -17,7 +17,7 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title, message }) => {
             <DialogActions sx={{ px: 3, pb: 2 }}>
                 <Button
                     onClick={onClose}
-                    style={{ color: "#ff6f61" }}>
+                    sx={{ color: "error.main" }}>
                     Abbrechen
                 </Button>
                 <Button
@@ -25,7 +25,7 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title, message }) => {
                         onConfirm();
                         onClose();
                     }}
-                    style={{ color: "#4caf50" }}
+                    sx={{ color: "success.main" }}
                 >
                     Bestätigen
                 </Button>

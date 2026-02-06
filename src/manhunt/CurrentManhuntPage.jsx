@@ -9,6 +9,7 @@ import Location from "./elements/Location";
 import SpeedHunt from "./elements/SpeedHunt";
 import Devices from "./elements/Devices";
 import SpeedHunts from "./elements/SpeedHunts";
+import fetchOrThrow from "../common/util/fetchOrThrow";
 
 const CurrentManhuntPage = () => {
     const classes = useReportStyles();
@@ -17,16 +18,20 @@ const CurrentManhuntPage = () => {
     const [timestamp, setTimestamp] = useState(Date.now());
     const [loading, setLoading] = useState(false);
     const [manhunt, setManhunt] = useState(null);
+    const [device, setDevice] = useState(null);
 
     useEffectAsync(async () => {
-        setLoading(true);
         try {
-            const response = await fetch(`/api/currentManhunt/get?loadCascade=true`);
-            if (response.ok) {
-                setManhunt(await response.json());
-            } else {
-                throw Error(await response.text());
-            }
+            const [devicesResponse, jokersResponse] = await Promise.all([
+                fetchOrThrow(`/api/currentManhunt/get?loadCascade=true`),
+                fetchOrThrow(`/api/currentManhunt/getDevice`)
+            ]);
+
+            const manhuntData = await devicesResponse.json();
+            const deviceData = await jokersResponse.json();
+
+            setManhunt(manhuntData);
+            setDevice(deviceData);
         } finally {
             setLoading(false);
         }
@@ -56,6 +61,7 @@ const CurrentManhuntPage = () => {
                     <>
                         <Location 
                             manhunt={manhunt}
+                            device={device}
                         />
                         <SpeedHunt
                             manhunt={manhunt}
