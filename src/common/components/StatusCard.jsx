@@ -250,7 +250,7 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
                 <Tooltip title={t('reportReplay')}>
                   <IconButton
                     onClick={() => navigate(`/replay?deviceId=${deviceId}`)}
-                    disabled={disableActions || !position}
+                    disabled={disableActions || !position || deviceReadonly}
                   >
                     <RouteIcon />
                   </IconButton>
@@ -258,7 +258,7 @@ const StatusCard = ({ deviceId, position, onClose, disableActions, desktopPaddin
                 <Tooltip title={t('commandTitle')}>
                   <IconButton
                     onClick={() => navigate(`/settings/device/${deviceId}/command`)}
-                    disabled={disableActions}
+                    disabled={disableActions || deviceReadonly}
                   >
                     <SendIcon />
                   </IconButton>
