@@ -10,10 +10,13 @@ import SpeedHunt from "./elements/SpeedHunt";
 import Devices from "./elements/Devices";
 import SpeedHunts from "./elements/SpeedHunts";
 import fetchOrThrow from "../common/util/fetchOrThrow";
+import Punishment from "./elements/Punishment";
+import { useTriggerManhuntActions } from "../common/util/permissions";
 
 const CurrentManhuntPage = () => {
     const classes = useReportStyles();
     const user = useSelector((state) => state.session.user);
+    const triggerManhuntActions = useTriggerManhuntActions();
 
     const [timestamp, setTimestamp] = useState(Date.now());
     const [loading, setLoading] = useState(false);
@@ -75,6 +78,12 @@ const CurrentManhuntPage = () => {
                         {user.manhuntRole == 1 && (
                             <SpeedHunts
                                 manhunt={manhunt}
+                            />
+                        )}
+                        {triggerManhuntActions && (
+                            <Punishment
+                                manhunt={manhunt}
+                                reload={() => setTimestamp(Date.now())}
                             />
                         )}
                     </>

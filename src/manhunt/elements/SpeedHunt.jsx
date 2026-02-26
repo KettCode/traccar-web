@@ -35,7 +35,7 @@ const SpeedHunt = ({
         <Accordion defaultExpanded={true}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Box display="flex" alignItems="center">
-                    <DirectionsRunIcon />
+                    <DirectionsRunIcon sx={{ mr: 1 }} />
                     <Typography variant="subtitle1">
                         {"Speedhunt"}
                     </Typography>
