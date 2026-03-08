@@ -76,6 +76,13 @@ const ManhuntPage = () => {
                 onChange={(event) => setItem({ ...item, locationRequestLimit: Number(event.target.value) })}
                 disabled={!admin}
               />
+              <TextField
+                label={'Erinnerung bei fehlendem Standortupdate'}
+                type="number"
+                value={item.locationUpdateReminderSeconds}
+                onChange={(event) => setItem({ ...item, locationUpdateReminderSeconds: Number(event.target.value) })}
+                disabled={!admin}
+              />
             </AccordionDetails>
           </Accordion>
         </>

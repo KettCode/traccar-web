@@ -48,6 +48,7 @@ const ManhuntsPage = () => {
             <TableCell>{'Frequenz'}</TableCell>
             <TableCell>{'Anzahl Speedhunts'}</TableCell>
             <TableCell>{'Anzahl Standortanfragen pro Speedhunt'}</TableCell>
+            <TableCell>{'Erinnerung bei fehlendem Standortupdate'}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
         </TableHead>
@@ -59,6 +60,7 @@ const ManhuntsPage = () => {
               <TableCell>{item.frequency}</TableCell>
               <TableCell>{item.speedHuntLimit}</TableCell>
               <TableCell>{item.locationRequestLimit}</TableCell>
+              <TableCell>{item.locationUpdateReminderSeconds}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
                   <CollectionActions itemId={item.id} editPath="/settings/manhunt" endpoint="manhunts" setTimestamp={setTimestamp} />
                 </TableCell>
