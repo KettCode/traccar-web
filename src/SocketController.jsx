@@ -4,7 +4,7 @@ import {
 import { useDispatch, useSelector, connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Snackbar } from '@mui/material';
-import { devicesActions, sessionActions } from './store';
+import { devicesActions, geofencesActions, sessionActions } from './store';
 import { useCatchCallback, useEffectAsync } from './reactHelper';
 import { snackBarDurationLongMs } from './common/util/duration';
 import alarm from './resources/alarm.mp3';
@@ -107,6 +107,12 @@ const SocketController = () => {
       }
       if (data.logs) {
         dispatch(sessionActions.updateLogs(data.logs));
+      }
+      if (data.updateGeofence) {
+        dispatch(geofencesActions.update(data.updateGeofence));
+      }
+      if (data.removeGeofence) {
+        dispatch(geofencesActions.remove(data.removeGeofence));
       }
     };
   };

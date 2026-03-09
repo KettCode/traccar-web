@@ -5,6 +5,9 @@ import {
   AccordionDetails,
   Typography,
   TextField,
+  Button,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import EditItemView from './components/EditItemView';
@@ -16,6 +19,8 @@ import useCommonDeviceAttributes from '../common/attributes/useCommonDeviceAttri
 import useDeviceAttributes from '../common/attributes/useDeviceAttributes';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import { useCatch } from '../reactHelper';
+import SelectField from '../common/components/SelectField';
 
 dayjs.extend(utc);
 
@@ -26,8 +31,41 @@ const ManhuntPage = () => {
   const commonDeviceAttributes = useCommonDeviceAttributes(t);
   const deviceAttributes = useDeviceAttributes(t);
   const [item, setItem] = useState();
+  const [selectedGeofence, setSelectedGeofence] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const validate = () => item && item.start && item.frequency && item.speedHuntLimit && item.locationRequestLimit;
 
+  const handleAddGeofence = useCatch(async () => {
+    if (!selectedGeofence) return;
+  
+    const url = `/api/currentManhunt/assignGeofenceToAllUsers?geofenceId=${selectedGeofence}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+  
+    if (response.ok) {
+      setSnackbarOpen(true);
+    } else {
+      throw new Error(await response.text());
+    }
+  });
+  
+  const handleRemoveGeofence = useCatch(async () => {
+    if (!selectedGeofence) return;
+  
+    const url = `/api/currentManhunt/removeGeofenceFromAllUsers?geofenceId=${selectedGeofence}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+  
+    if (response.ok) {
+      setSnackbarOpen(true);
+    } else {
+      throw new Error(await response.text());
+    }
+  });
 
   return (
     <EditItemView
@@ -83,6 +121,47 @@ const ManhuntPage = () => {
                 onChange={(event) => setItem({ ...item, locationUpdateReminderSeconds: Number(event.target.value) })}
                 disabled={!admin}
               />
+            </AccordionDetails>
+            <AccordionDetails>
+              <SelectField
+                value={selectedGeofence}
+                onChange={(event) => setSelectedGeofence(Number(event.target.value))}
+                endpoint="/api/geofences"
+                label={t('sharedGeofence')}
+                fullWidth={true}
+              />
+              <div style={{ marginTop: 12, display: 'flex', gap: 8 }}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleRemoveGeofence}
+                  disabled={!selectedGeofence}
+                >
+                  Entfernen
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleAddGeofence}
+                  disabled={!selectedGeofence}
+                >
+                  Hinzufügen
+                </Button>
+              </div>
+              <Snackbar
+                  open={snackbarOpen}
+                  autoHideDuration={4000}
+                  onClose={() => setSnackbarOpen(false)}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+              >
+                  <Alert
+                      onClose={() => setSnackbarOpen(false)}
+                      severity={"success"}
+                      variant="filled"
+                  >
+                      {"Erfolgreich gespeichert."}
+                  </Alert>
+              </Snackbar>
             </AccordionDetails>
           </Accordion>
         </>
