@@ -108,10 +108,10 @@ const SocketController = () => {
       if (data.logs) {
         dispatch(sessionActions.updateLogs(data.logs));
       }
-      if (data.updateGeofence) {
+      if (data.updateGeofences) {
         dispatch(geofencesActions.update(data.updateGeofence));
       }
-      if (data.removeGeofence) {
+      if (data.removeGeofences) {
         dispatch(geofencesActions.remove(data.removeGeofence));
       }
     };
