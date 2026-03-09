@@ -44,7 +44,7 @@ const LocationRequestPage = () => {
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography variant="subtitle1">
-                {'Standort'}
+                {'Standortanfrage'}
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.details}>

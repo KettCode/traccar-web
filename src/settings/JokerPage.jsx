@@ -59,7 +59,7 @@ const JokerPage = () => {
                 value={item.userId}
                 onChange={(event) => setItem({ ...item, userId: Number(event.target.value) })}
                 endpoint="/api/users"
-                label={t('settingsUsers')}
+                label={'User'}
               />
               <SelectField
                 value={item.jokerTypeId}

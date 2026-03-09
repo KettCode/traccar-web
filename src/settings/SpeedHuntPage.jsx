@@ -43,7 +43,7 @@ const SpeedHuntPage = () => {
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography variant="subtitle1">
-                {'Standort'}
+                {'Speedhunt'}
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.details}>
@@ -58,7 +58,7 @@ const SpeedHuntPage = () => {
                     value={item.userId}
                     onChange={(event) => setItem({ ...item, userId: Number(event.target.value) })}
                     endpoint="/api/users"
-                    label={t('settingsUsers')}
+                    label={'User'}
                 />
                 <SelectField
                   value={item.deviceId}

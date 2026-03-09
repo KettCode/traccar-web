@@ -68,7 +68,7 @@ const SpeedHuntsPage = () => {
           <TableRow>
             <TableCell>{'Id'}</TableCell>
             <TableCell>{'Manhuntid'}</TableCell>
-            <TableCell>{t('settingsUsers')}</TableCell>
+            <TableCell>{'User'}</TableCell>
             <TableCell>{'Zielgerät'}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>

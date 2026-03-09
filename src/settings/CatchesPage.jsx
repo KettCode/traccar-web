@@ -68,7 +68,7 @@ const CatchesPage = () => {
                 <TableRow>
                     <TableCell>{'Id'}</TableCell>
                     <TableCell>{'Manhuntid'}</TableCell>
-                    <TableCell>{t('settingsUsers')}</TableCell>
+                    <TableCell>{'User'}</TableCell>
                     <TableCell>{'Zielgerät'}</TableCell>
                     <TableCell>{'Gefangen um'}</TableCell>
                     <TableCell className={classes.columnAction} />

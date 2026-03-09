@@ -71,7 +71,7 @@ const JokersPage = () => {
                 <TableRow>
                     <TableCell>{'Id'}</TableCell>
                     <TableCell>{'Manhuntid'}</TableCell>
-                    <TableCell>{t('settingsUsers')}</TableCell>
+                    <TableCell>{'User'}</TableCell>
                     <TableCell>{'Joker'}</TableCell>
                     <TableCell>{'Status'}</TableCell>
                     <TableCell>{'Freigeschaltet um'}</TableCell>
