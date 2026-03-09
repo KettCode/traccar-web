@@ -81,7 +81,7 @@ const ManhuntPage = () => {
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography variant="subtitle1">
-                {'Standort'}
+                {'Manhunt'}
               </Typography>
             </AccordionSummary>
             <AccordionDetails className={classes.details}>
@@ -122,6 +122,13 @@ const ManhuntPage = () => {
                 disabled={!admin}
               />
             </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="subtitle1">
+                {'Einstellungen'}
+              </Typography>
+            </AccordionSummary>
             <AccordionDetails>
               <SelectField
                 value={selectedGeofence}
