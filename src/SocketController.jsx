@@ -112,7 +112,7 @@ const SocketController = () => {
         dispatch(geofencesActions.update(data.updateGeofences));
       }
       if (data.removeGeofences) {
-        dispatch(geofencesActions.remove(data.updateGeofences));
+        dispatch(geofencesActions.remove(data.removeGeofences));
       }
     };
   };
