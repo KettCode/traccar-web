@@ -108,6 +108,9 @@ const SocketController = () => {
       if (data.logs) {
         dispatch(sessionActions.updateLogs(data.logs));
       }
+      if (data.refreshGeofences) {
+        dispatch(geofencesActions.refresh(data.refreshGeofences));
+      }
       if (data.updateGeofences) {
         dispatch(geofencesActions.update(data.updateGeofences));
       }
