@@ -72,6 +72,7 @@ import LocationRequestPage from './settings/LocationRequestPage';
 import CurrentManhuntPage from './manhunt/CurrentManhuntPage';
 import JokersPage from './settings/JokersPage';
 import JokerPage from './settings/JokerPage';
+import GameReplayPage from './manhunt/GameReplayPage';
 
 const Navigation = () => {
   const dispatch = useDispatch();
@@ -211,6 +212,7 @@ const Navigation = () => {
         <Route path="manhunt">
           <Route path="current" element={<CurrentManhuntPage />} />
           <Route path="route" element={<PositionsReportPage />} />
+          <Route path="replay" element={<GameReplayPage />} />
         </Route>
       </Route>
     </Routes>

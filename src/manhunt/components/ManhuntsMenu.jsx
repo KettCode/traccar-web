@@ -31,6 +31,14 @@ const ManhuntsMenu = () => {
                         selected={location.pathname === '/manhunt/route'}
                     />
                 )}
+                {triggerManhuntActions && (
+                    <MenuItem
+                        title={'Replay'}
+                        link="/manhunt/replay"
+                        icon={<TimelineIcon />}
+                        selected={location.pathname === '/manhunt/replay'}
+                    />
+                )}
             </List>
         </>
     );
