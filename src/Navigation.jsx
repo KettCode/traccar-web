@@ -62,6 +62,8 @@ const AnnouncementPage = lazy(() => import('./settings/AnnouncementPage'));
 const EmulatorPage = lazy(() => import('./other/EmulatorPage'));
 const StreamPage = lazy(() => import('./other/StreamPage'));
 const AuditPage = lazy(() => import('./reports/AuditPage'));
+const CurrentGamePage = lazy(() => import('./game/runtime/CurrentGamePage'));
+const GamePage = lazy(() => import('./game/runtime/GamePage'));
 
 const Navigation = () => {
   const dispatch = useDispatch();
@@ -136,6 +138,8 @@ const Navigation = () => {
           <Route path="geofences" element={<GeofencesPage />} />
           <Route path="emulator" element={<EmulatorPage />} />
           <Route path="stream" element={<StreamPage />} />
+          <Route path="game" element={<CurrentGamePage />} />
+          <Route path="game/:gameId" element={<GamePage />} />
 
           <Route path="settings">
             <Route path=":type/:id/share" element={<SharePage />} />
