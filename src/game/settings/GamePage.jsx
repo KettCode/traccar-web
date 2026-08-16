@@ -12,8 +12,8 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from '../../common/components/LocalizationProvider';
 import EditItemView from '../../settings/components/EditItemView';
+import SettingsMenu from '../../settings/components/SettingsMenu';
 import useSettingsStyles from '../../settings/common/useSettingsStyles';
-import GameSettingsMenu from './components/GameSettingsMenu';
 import GameLookupSelectField from './common/GameLookupSelectField';
 
 const defaultItem = {
@@ -50,7 +50,7 @@ const GamePage = () => {
       setItem={setItem}
       defaultItem={defaultItem}
       validate={validate}
-      menu={<GameSettingsMenu />}
+      menu={<SettingsMenu />}
       breadcrumbs={['settingsTitle', 'gameGame']}
     >
       {item && (

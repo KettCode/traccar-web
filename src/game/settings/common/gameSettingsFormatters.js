@@ -20,7 +20,7 @@ export const jokerTitle = (item, typeLabels = {}) => {
 
 export const pingTitle = (item, sourceLabels = {}) => {
   const source = sourceLabels[item.source] || item.source;
-  return `Ping #${item.id}: ${source}` ;
+  return `Ping #${item.id}: ${source}`;
 };
 
 export const relationTitle = (prefix, item, ...parts) =>

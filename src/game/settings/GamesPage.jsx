@@ -9,9 +9,9 @@ import TableShimmer from '../../common/components/TableShimmer';
 import SearchHeader from '../../settings/components/SearchHeader';
 import { formatTime } from '../../common/util/formatter';
 import useSettingsStyles from '../../settings/common/useSettingsStyles';
+import SettingsMenu from '../../settings/components/SettingsMenu';
 import fetchOrThrow from '../../common/util/fetchOrThrow';
 import GameStatusChip from '../common/GameStatusChip';
-import GameSettingsMenu from './components/GameSettingsMenu';
 import useGameLookupLabels from './common/useGameLookupLabels';
 
 const GamesPage = () => {
@@ -50,7 +50,7 @@ const GamesPage = () => {
   );
 
   return (
-    <PageLayout menu={<GameSettingsMenu />} breadcrumbs={['settingsTitle', 'gameTitle']}>
+    <PageLayout menu={<SettingsMenu />} breadcrumbs={['settingsTitle', 'gameTitle']}>
       <SearchHeader keyword={searchKeyword} setKeyword={setSearchKeyword} />
       <Table className={classes.table}>
         <TableHead>
