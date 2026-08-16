@@ -63,7 +63,27 @@ const EmulatorPage = lazy(() => import('./other/EmulatorPage'));
 const StreamPage = lazy(() => import('./other/StreamPage'));
 const AuditPage = lazy(() => import('./reports/AuditPage'));
 const CurrentGamePage = lazy(() => import('./game/runtime/CurrentGamePage'));
-const GamePage = lazy(() => import('./game/runtime/GamePage'));
+const GameRuntimePage = lazy(() => import('./game/runtime/GamePage'));
+const GamesPage = lazy(() => import('./game/settings/GamesPage'));
+const GameSettingsPage = lazy(() => import('./game/settings/GamePage'));
+const PlayersPage = lazy(() => import('./game/settings/PlayersPage'));
+const PlayerPage = lazy(() => import('./game/settings/PlayerPage'));
+const GameMembersPage = lazy(() => import('./game/settings/GameMembersPage'));
+const GameMemberPage = lazy(() => import('./game/settings/GameMemberPage'));
+const GameGeofencesPage = lazy(() => import('./game/settings/GameGeofencesPage'));
+const GameGeofencePage = lazy(() => import('./game/settings/GameGeofencePage'));
+const SpeedhuntsPage = lazy(() => import('./game/settings/SpeedhuntsPage'));
+const SpeedhuntPage = lazy(() => import('./game/settings/SpeedhuntPage'));
+const PingsPage = lazy(() => import('./game/settings/PingsPage'));
+const PingPage = lazy(() => import('./game/settings/PingPage'));
+const JokersPage = lazy(() => import('./game/settings/JokersPage'));
+const JokerPage = lazy(() => import('./game/settings/JokerPage'));
+const RevealsPage = lazy(() => import('./game/settings/RevealsPage'));
+const RevealPage = lazy(() => import('./game/settings/RevealPage'));
+const CatchesPage = lazy(() => import('./game/settings/CatchesPage'));
+const CatchPage = lazy(() => import('./game/settings/CatchPage'));
+const PendingEffectsPage = lazy(() => import('./game/settings/PendingEffectsPage'));
+const PendingEffectPage = lazy(() => import('./game/settings/PendingEffectPage'));
 
 const Navigation = () => {
   const dispatch = useDispatch();
@@ -139,7 +159,7 @@ const Navigation = () => {
           <Route path="emulator" element={<EmulatorPage />} />
           <Route path="stream" element={<StreamPage />} />
           <Route path="game" element={<CurrentGamePage />} />
-          <Route path="game/:gameId" element={<GamePage />} />
+          <Route path="game/:gameId" element={<GameRuntimePage />} />
 
           <Route path="settings">
             <Route path=":type/:id/share" element={<SharePage />} />
@@ -164,6 +184,36 @@ const Navigation = () => {
             <Route path="driver" element={<DriverPage />} />
             <Route path="geofence/:id" element={<GeofencePage />} />
             <Route path="geofence" element={<GeofencePage />} />
+            <Route path="games" element={<GamesPage />} />
+            <Route path="game/:id" element={<GameSettingsPage />} />
+            <Route path="game" element={<GameSettingsPage />} />
+            <Route path="game-players" element={<PlayersPage />} />
+            <Route path="game-player/:id" element={<PlayerPage />} />
+            <Route path="game-player" element={<PlayerPage />} />
+            <Route path="game-members" element={<GameMembersPage />} />
+            <Route path="game-member/:id" element={<GameMemberPage />} />
+            <Route path="game-member" element={<GameMemberPage />} />
+            <Route path="game-geofences" element={<GameGeofencesPage />} />
+            <Route path="game-geofence/:id" element={<GameGeofencePage />} />
+            <Route path="game-geofence" element={<GameGeofencePage />} />
+            <Route path="game-speedhunts" element={<SpeedhuntsPage />} />
+            <Route path="game-speedhunt/:id" element={<SpeedhuntPage />} />
+            <Route path="game-speedhunt" element={<SpeedhuntPage />} />
+            <Route path="game-pings" element={<PingsPage />} />
+            <Route path="game-ping/:id" element={<PingPage />} />
+            <Route path="game-ping" element={<PingPage />} />
+            <Route path="game-jokers" element={<JokersPage />} />
+            <Route path="game-joker/:id" element={<JokerPage />} />
+            <Route path="game-joker" element={<JokerPage />} />
+            <Route path="game-reveals" element={<RevealsPage />} />
+            <Route path="game-reveal/:id" element={<RevealPage />} />
+            <Route path="game-reveal" element={<RevealPage />} />
+            <Route path="game-catches" element={<CatchesPage />} />
+            <Route path="game-catch/:id" element={<CatchPage />} />
+            <Route path="game-catch" element={<CatchPage />} />
+            <Route path="game-pending-effects" element={<PendingEffectsPage />} />
+            <Route path="game-pending-effect/:id" element={<PendingEffectPage />} />
+            <Route path="game-pending-effect" element={<PendingEffectPage />} />
             <Route path="groups" element={<GroupsPage />} />
             <Route path="group/:id/connections" element={<GroupConnectionsPage />} />
             <Route path="group/:id/command" element={<CommandGroupPage />} />

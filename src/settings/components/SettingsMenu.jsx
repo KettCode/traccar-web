@@ -14,6 +14,7 @@ import HelpIcon from '@mui/icons-material/Help';
 import PaymentIcon from '@mui/icons-material/Payment';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import CalculateIcon from '@mui/icons-material/Calculate';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from '../../common/components/LocalizationProvider';
@@ -33,6 +34,14 @@ const SettingsMenu = () => {
   const billingLink = useSelector((state) => state.session.user.attributes.billingLink);
 
   const features = useFeatures();
+
+  const isGameSettings =
+    location.pathname === '/settings/games' ||
+    location.pathname === '/settings/game' ||
+    location.pathname.startsWith('/settings/game/');
+
+  const isGameResource = (path) =>
+    location.pathname === `/settings/${path}` || location.pathname.startsWith(`/settings/${path}/`);
 
   return (
     <>
@@ -137,12 +146,76 @@ const SettingsMenu = () => {
               selected={location.pathname === '/settings/announcement'}
             />
             {admin && (
-              <MenuItem
-                title={t('settingsServer')}
-                link="/settings/server"
-                icon={<SettingsIcon />}
-                selected={location.pathname === '/settings/server'}
-              />
+              <>
+                <MenuItem
+                  title={t('gameTitle')}
+                  link="/settings/games"
+                  icon={<SportsEsportsIcon />}
+                  selected={isGameSettings}
+                />
+                <MenuItem
+                  title={t('gamePlayers')}
+                  link="/settings/game-players"
+                  icon={<PeopleIcon />}
+                  selected={isGameResource('game-player') || isGameResource('game-players')}
+                />
+                <MenuItem
+                  title={t('gameMembers')}
+                  link="/settings/game-members"
+                  icon={<PeopleIcon />}
+                  selected={isGameResource('game-member') || isGameResource('game-members')}
+                />
+                <MenuItem
+                  title={t('gameGeofences')}
+                  link="/settings/game-geofences"
+                  icon={<DrawIcon />}
+                  selected={isGameResource('game-geofence') || isGameResource('game-geofences')}
+                />
+                <MenuItem
+                  title={t('gameSpeedhunts')}
+                  link="/settings/game-speedhunts"
+                  icon={<SendIcon />}
+                  selected={isGameResource('game-speedhunt') || isGameResource('game-speedhunts')}
+                />
+                <MenuItem
+                  title={t('gamePings')}
+                  link="/settings/game-pings"
+                  icon={<NotificationsIcon />}
+                  selected={isGameResource('game-ping') || isGameResource('game-pings')}
+                />
+                <MenuItem
+                  title={t('gameJokers')}
+                  link="/settings/game-jokers"
+                  icon={<SportsEsportsIcon />}
+                  selected={isGameResource('game-joker') || isGameResource('game-jokers')}
+                />
+                <MenuItem
+                  title={t('gameReveals')}
+                  link="/settings/game-reveals"
+                  icon={<TuneIcon />}
+                  selected={isGameResource('game-reveal') || isGameResource('game-reveals')}
+                />
+                <MenuItem
+                  title={t('gameCatches')}
+                  link="/settings/game-catches"
+                  icon={<BuildIcon />}
+                  selected={isGameResource('game-catch') || isGameResource('game-catches')}
+                />
+                <MenuItem
+                  title={t('gamePendingEffects')}
+                  link="/settings/game-pending-effects"
+                  icon={<BuildIcon />}
+                  selected={
+                    isGameResource('game-pending-effect') || isGameResource('game-pending-effects')
+                  }
+                />
+                <MenuItem
+                  title={t('settingsServer')}
+                  link="/settings/server"
+                  icon={<SettingsIcon />}
+                  selected={location.pathname === '/settings/server'}
+                />
+              </>
             )}
             <MenuItem
               title={t('settingsUsers')}

@@ -7,13 +7,15 @@ const statusColors = {
   finished: 'info',
 };
 
-const GameStatusChip = ({ status }) => {
+const GameStatusChip = ({ status, label }) => {
   const t = useTranslation();
   return (
     <Chip
       size="small"
       color={statusColors[status] || 'default'}
-      label={status ? t(`gameStatus${status.replace(/^\w/, (c) => c.toUpperCase())}`) : '-'}
+      label={
+        label || (status ? t(`gameStatus${status.replace(/^\w/, (c) => c.toUpperCase())}`) : '-')
+      }
     />
   );
 };
