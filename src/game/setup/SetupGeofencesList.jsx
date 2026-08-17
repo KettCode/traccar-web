@@ -38,7 +38,7 @@ const SetupGeofencesList = ({ onGeofenceSelected }) => {
             <ListItemText primary={item.name} />
             <CollectionActions
               itemId={item.id}
-              editPath="/settings/geofence"
+              editPath="/game/setup/geofence"
               endpoint="setup/geofences"
               onReload={refreshGeofences}
             />

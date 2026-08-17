@@ -67,6 +67,7 @@ const GameRuntimePage = lazy(() => import('./game/runtime/GamePage'));
 const SetupGamesPage = lazy(() => import('./game/setup/SetupGamesPage'));
 const SetupPlayersPage = lazy(() => import('./game/setup/SetupPlayersPage'));
 const SetupGeofencesPage = lazy(() => import('./game/setup/SetupGeofencesPage'));
+const SetupGeofencePage = lazy(() => import('./game/setup/SetupGeofencePage'));
 const SetupWizardPage = lazy(() => import('./game/setup/SetupWizardPage'));
 const GamesPage = lazy(() => import('./game/settings/GamesPage'));
 const GameSettingsPage = lazy(() => import('./game/settings/GamePage'));
@@ -167,6 +168,8 @@ const Navigation = () => {
           <Route path="game/setup/game" element={<SetupGamesPage />} />
           <Route path="game/setup/players" element={<SetupPlayersPage />} />
           <Route path="game/setup/geofences" element={<SetupGeofencesPage />} />
+          <Route path="game/setup/geofence/:id" element={<SetupGeofencePage />} />
+          <Route path="game/setup/geofence" element={<SetupGeofencePage />} />
           <Route path="game/setup/wizard" element={<SetupWizardPage />} />
           <Route path="game/setup/:gameId" element={<SetupWizardPage />} />
           <Route path="game/setup/:gameId/players" element={<SetupPlayersPage />} />

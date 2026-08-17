@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import DrawIcon from '@mui/icons-material/Draw';
 import EditIcon from '@mui/icons-material/Edit';
 import CollectionActions from '../../../settings/components/CollectionActions';
 import { useTranslation } from '../../../common/components/LocalizationProvider';
@@ -52,16 +53,24 @@ const SetupGeofencesStep = ({ wizard }) => {
       {!wizard.gameId && <Alert severity="info">{t('gameSetupSaveGameFirst')}</Alert>}
       {!!wizard.gameId && (
         <>
-          <Box>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
             <Button
               variant="contained"
               startIcon={<AddIcon />}
               onClick={wizard.openNewGeofence}
               disabled={!wizard.editable}
             >
-              {t('sharedAdd')}
+              {t('gameSetupAddExistingGeofence')}
             </Button>
-          </Box>
+            <Button
+              variant="outlined"
+              startIcon={<DrawIcon />}
+              onClick={wizard.openDrawGeofence}
+              disabled={!wizard.editable}
+            >
+              {t('gameSetupDrawGeofence')}
+            </Button>
+          </Stack>
           {!geofences.length && <Alert severity="info">{t('gameSetupNoGeofences')}</Alert>}
           <Box
             sx={{

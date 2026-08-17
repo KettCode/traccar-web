@@ -162,6 +162,10 @@ const useSetupWizard = (gameId, navigate) => {
     setGeofenceDialog(true);
   };
 
+  const openDrawGeofence = () => {
+    navigate(`/game/setup/geofences?returnGameId=${gameId}`);
+  };
+
   const openEditGeofence = (gameGeofenceId) => {
     const current = state.geofences.find((item) => item.id === gameGeofenceId);
     setEditingGeofenceId(gameGeofenceId);
@@ -226,6 +230,7 @@ const useSetupWizard = (gameId, navigate) => {
     editingGeofenceId,
     setGeofenceDialog,
     openNewGeofence,
+    openDrawGeofence,
     openEditGeofence,
     saveGeofence,
     startGame,

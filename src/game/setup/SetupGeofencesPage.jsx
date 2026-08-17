@@ -7,7 +7,6 @@ import { makeStyles } from 'tss-react/mui';
 import { useNavigate } from 'react-router-dom';
 import MapView from '../../map/core/MapView';
 import MapCurrentLocation from '../../map/MapCurrentLocation';
-import MapGeofenceEdit from '../../map/draw/MapGeofenceEdit';
 import MapGeocoder from '../../map/control/MapGeocoder';
 import MapScale from '../../map/MapScale';
 import { useTranslation } from '../../common/components/LocalizationProvider';
@@ -16,6 +15,7 @@ import fetchOrThrow from '../../common/util/fetchOrThrow';
 import { errorsActions } from '../../store';
 import GameSetupMenu from './GameSetupMenu';
 import SetupGeofencesList from './SetupGeofencesList';
+import SetupMapGeofenceEdit from './SetupMapGeofenceEdit';
 
 const useStyles = makeStyles()((theme) => ({
   root: {
@@ -80,7 +80,7 @@ const SetupGeofencesPage = () => {
           body: JSON.stringify(newItem),
         });
         const item = await response.json();
-        navigate(`/settings/geofence/${item.id}`);
+        navigate(`/game/setup/geofence/${item.id}`);
       } catch (error) {
         dispatch(errorsActions.push(error.message));
       }
@@ -120,7 +120,7 @@ const SetupGeofencesPage = () => {
           </Paper>
           <div className={classes.mapContainer}>
             <MapView>
-              <MapGeofenceEdit selectedGeofenceId={selectedGeofenceId} />
+              <SetupMapGeofenceEdit selectedGeofenceId={selectedGeofenceId} />
             </MapView>
             <MapScale />
             <MapCurrentLocation />

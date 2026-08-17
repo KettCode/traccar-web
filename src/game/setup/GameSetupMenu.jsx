@@ -35,7 +35,7 @@ const GameSetupMenu = () => {
         title={t('sharedGeofence')}
         link="/game/setup/geofences"
         icon={<DrawIcon />}
-        selected={path === '/game/setup/geofences' || path.endsWith('/geofences')}
+        selected={path === '/game/setup/geofences' || path.startsWith('/game/setup/geofence')}
       />
     </List>
   );

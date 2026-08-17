@@ -57,6 +57,8 @@
     "gameSetupGeneralDescription": "Define the game name and runtime settings.",
     "gameSetupPlayersDescription": "Add generated player accounts or link existing players.",
     "gameSetupGeofencesDescription": "Link existing geofences as playfields and game zones.",
+    "gameSetupAddExistingGeofence": "Add existing geofence",
+    "gameSetupDrawGeofence": "Draw new geofence",
     "gameSetupReviewDescription": "Check the setup state before starting the game.",
     "gameSetupNewPlayer": "New player",
     "gameSetupExistingPlayer": "Existing player",

@@ -57,6 +57,8 @@
     "gameSetupGeneralDescription": "Lege Spielname und Laufzeit-Einstellungen fest.",
     "gameSetupPlayersDescription": "Erstelle neue Spieler-Accounts oder verknüpfe bestehende Spieler.",
     "gameSetupGeofencesDescription": "Verknüpfe vorhandene Geozäune als Spielfelder und Spielzonen.",
+    "gameSetupAddExistingGeofence": "Bestehenden Geofence hinzufügen",
+    "gameSetupDrawGeofence": "Neue Geofence zeichnen",
     "gameSetupReviewDescription": "Prüfe den Setup-Status vor dem Spielstart.",
     "gameSetupNewPlayer": "Neuer Spieler",
     "gameSetupExistingPlayer": "Bestehender Spieler",

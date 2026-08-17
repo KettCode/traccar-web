@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import PageLayout from '../../common/components/PageLayout';
 import { useTranslation } from '../../common/components/LocalizationProvider';
 import GameSetupMenu from './GameSetupMenu';
@@ -16,10 +16,11 @@ const SetupWizardPage = () => {
   const t = useTranslation();
   const navigate = useNavigate();
   const { gameId } = useParams();
+  const [searchParams] = useSearchParams();
   const numericGameId = gameId ? Number(gameId) : 0;
 
   const wizard = useSetupWizard(numericGameId, navigate);
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(searchParams.get('step') === 'geofences' ? 2 : 0);
 
   const steps = [
     {
