@@ -64,7 +64,10 @@ const StreamPage = lazy(() => import('./other/StreamPage'));
 const AuditPage = lazy(() => import('./reports/AuditPage'));
 const CurrentGamePage = lazy(() => import('./game/runtime/CurrentGamePage'));
 const GameRuntimePage = lazy(() => import('./game/runtime/GamePage'));
-const GameSetupPage = lazy(() => import('./game/setup/GameSetupPlaceholderPage'));
+const SetupGamesPage = lazy(() => import('./game/setup/SetupGamesPage'));
+const SetupPlayersPage = lazy(() => import('./game/setup/SetupPlayersPage'));
+const SetupGeofencesPage = lazy(() => import('./game/setup/SetupGeofencesPage'));
+const SetupWizardPage = lazy(() => import('./game/setup/SetupWizardPage'));
 const GamesPage = lazy(() => import('./game/settings/GamesPage'));
 const GameSettingsPage = lazy(() => import('./game/settings/GamePage'));
 const PlayersPage = lazy(() => import('./game/settings/PlayersPage'));
@@ -160,27 +163,15 @@ const Navigation = () => {
           <Route path="emulator" element={<EmulatorPage />} />
           <Route path="stream" element={<StreamPage />} />
           <Route path="game" element={<CurrentGamePage />} />
-          <Route path="game/setup" element={<GameSetupPage title="gameSetupGames" />} />
-          <Route path="game/setup/game" element={<GameSetupPage title="gameSetupGames" />} />
-          <Route path="game/setup/players" element={<GameSetupPage title="gameSetupPlayers" />} />
-          <Route
-            path="game/setup/geofences"
-            element={<GameSetupPage title="gameSetupGeofences" />}
-          />
-          <Route path="game/setup/wizard" element={<GameSetupPage title="gameSetupWizard" />} />
-          <Route path="game/setup/:gameId" element={<GameSetupPage title="gameSetupGames" />} />
-          <Route
-            path="game/setup/:gameId/players"
-            element={<GameSetupPage title="gameSetupPlayers" />}
-          />
-          <Route
-            path="game/setup/:gameId/geofences"
-            element={<GameSetupPage title="gameSetupGeofences" />}
-          />
-          <Route
-            path="game/setup/:gameId/wizard"
-            element={<GameSetupPage title="gameSetupWizard" />}
-          />
+          <Route path="game/setup" element={<SetupGamesPage />} />
+          <Route path="game/setup/game" element={<SetupGamesPage />} />
+          <Route path="game/setup/players" element={<SetupPlayersPage />} />
+          <Route path="game/setup/geofences" element={<SetupGeofencesPage />} />
+          <Route path="game/setup/wizard" element={<SetupWizardPage />} />
+          <Route path="game/setup/:gameId" element={<SetupWizardPage />} />
+          <Route path="game/setup/:gameId/players" element={<SetupPlayersPage />} />
+          <Route path="game/setup/:gameId/geofences" element={<SetupGeofencesPage />} />
+          <Route path="game/setup/:gameId/wizard" element={<SetupWizardPage />} />
           <Route path="game/:gameId" element={<GameRuntimePage />} />
 
           <Route path="settings">
