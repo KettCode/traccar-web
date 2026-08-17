@@ -13,8 +13,10 @@ import EventsDrawer from './EventsDrawer';
 import useFilter from './useFilter';
 import MainToolbar from './MainToolbar';
 import { useAttributePreference } from '../common/util/preferences';
+import useGameRuntimeUser from '../game/runtime/hooks/useGameRuntimeUser';
 
 const MainMap = lazy(() => import('./MainMap'));
+const GameMap = lazy(() => import('../game/map/GameMap'));
 
 const useStyles = makeStyles()((theme) => ({
   root: {
@@ -70,6 +72,7 @@ const MainPage = () => {
   const theme = useTheme();
 
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
+  const gameRuntimeUser = useGameRuntimeUser();
 
   const mapOnSelect = useAttributePreference('mapOnSelect', true);
 
@@ -116,11 +119,15 @@ const MainPage = () => {
     <div className={classes.root}>
       {desktop && (
         <Suspense fallback={null}>
-          <MainMap
-            filteredPositions={filteredPositions}
-            selectedPosition={selectedPosition}
-            onEventsClick={onEventsClick}
-          />
+          {gameRuntimeUser ? (
+            <GameMap />
+          ) : (
+            <MainMap
+              filteredPositions={filteredPositions}
+              selectedPosition={selectedPosition}
+              onEventsClick={onEventsClick}
+            />
+          )}
         </Suspense>
       )}
       <div className={classes.sidebar}>
@@ -143,11 +150,15 @@ const MainPage = () => {
           {!desktop && (
             <div className={classes.contentMap}>
               <Suspense fallback={null}>
-                <MainMap
-                  filteredPositions={filteredPositions}
-                  selectedPosition={selectedPosition}
-                  onEventsClick={onEventsClick}
-                />
+                {gameRuntimeUser ? (
+                  <GameMap />
+                ) : (
+                  <MainMap
+                    filteredPositions={filteredPositions}
+                    selectedPosition={selectedPosition}
+                    onEventsClick={onEventsClick}
+                  />
+                )}
               </Suspense>
             </div>
           )}

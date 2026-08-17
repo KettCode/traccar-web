@@ -4,6 +4,7 @@ import { useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import AppMenu from './common/components/AppMenu';
 import SocketController from './SocketController';
+import GameSocketController from './game/runtime/GameSocketController';
 import CachingController from './CachingController';
 import { useCatch, useAsyncTask } from './reactHelper';
 import { sessionActions } from './store';
@@ -75,6 +76,7 @@ const App = () => {
   return (
     <>
       <SocketController />
+      <GameSocketController />
       <CachingController />
       <UpdateController />
       <MotionController />

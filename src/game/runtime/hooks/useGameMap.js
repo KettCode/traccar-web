@@ -1,28 +1,34 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { errorsActions } from '../../../store';
-import { getGameState } from '../../api/gameRuntimeApi';
+import { getGameMap } from '../../api/gameRuntimeApi';
 
-const useGameState = (gameId, include) => {
+const emptyMap = {
+  memberMarkers: [],
+  geofences: [],
+  revealedMarkers: [],
+};
+
+const useGameMap = (gameId, include, enabled = true) => {
   const dispatch = useDispatch();
 
-  const [state, setState] = useState(null);
-  const [loading, setLoading] = useState(Boolean(gameId));
+  const [gameMap, setGameMap] = useState(emptyMap);
+  const [loading, setLoading] = useState(Boolean(gameId && enabled));
   const [reloadToken, setReloadToken] = useState(0);
 
   const reload = useCallback(() => setReloadToken((value) => value + 1), []);
 
   useEffect(() => {
-    if (!gameId) {
-      setState(null);
+    if (!gameId || !enabled) {
+      setGameMap(emptyMap);
       setLoading(false);
       return undefined;
     }
 
     const controller = new AbortController();
     setLoading(true);
-    getGameState(gameId, include, { signal: controller.signal })
-      .then((gameState) => setState(gameState))
+    getGameMap(gameId, include, { signal: controller.signal })
+      .then((map) => setGameMap(map || emptyMap))
       .catch((error) => {
         if (error.name !== 'AbortError') {
           dispatch(errorsActions.push(error.message));
@@ -34,9 +40,9 @@ const useGameState = (gameId, include) => {
         }
       });
     return () => controller.abort();
-  }, [dispatch, gameId, include, reloadToken]);
+  }, [dispatch, enabled, gameId, include, reloadToken]);
 
-  return { state, loading, reload };
+  return { gameMap, setGameMap, loading, reload };
 };
 
-export default useGameState;
+export default useGameMap;

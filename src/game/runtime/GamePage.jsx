@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   Alert,
   Card,
@@ -38,9 +39,11 @@ const GamePage = () => {
   const navigate = useNavigate();
   const t = useTranslation();
   const gameRuntimeUser = useGameRuntimeUser();
+  const stateRefreshGameId = useSelector((state) => state.gameRuntime.stateRefreshGameId);
+  const stateRefreshToken = useSelector((state) => state.gameRuntime.stateRefreshToken);
   const { currentGame, loading: currentGameLoading } = useCurrentGame(gameRuntimeUser && !gameId);
 
-  const { state, loading } = useGameState(gameId, 'members');
+  const { state, loading, reload } = useGameState(gameId, 'members');
 
   const allowedActions = useMemo(
     () => actionLabels.filter(([key]) => state?.allowedActions?.[key]),
@@ -52,6 +55,13 @@ const GamePage = () => {
       navigate(`/game/${currentGame.id}`, { replace: true });
     }
   }, [currentGame?.id, gameId, navigate]);
+
+  useEffect(() => {
+    const id = Number(gameId);
+    if (id && stateRefreshToken > 0 && (stateRefreshGameId == null || stateRefreshGameId === id)) {
+      reload();
+    }
+  }, [gameId, reload, stateRefreshGameId, stateRefreshToken]);
 
   let content;
 
