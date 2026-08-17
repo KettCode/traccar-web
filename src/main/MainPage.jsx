@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useDispatch, useSelector } from 'react-redux';
 import DeviceList from './DeviceList';
-import BottomMenu from '../common/components/BottomMenu';
+import AppMenu from '../common/components/AppMenu';
 import StatusCard from '../common/components/StatusCard';
 import { devicesActions } from '../store';
 import usePersistedState from '../common/util/usePersistedState';
@@ -161,7 +161,7 @@ const MainPage = () => {
         </div>
         {desktop && (
           <div className={classes.footer}>
-            <BottomMenu />
+            <AppMenu />
           </div>
         )}
       </div>

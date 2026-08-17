@@ -3,13 +3,19 @@ import { useDispatch } from 'react-redux';
 import { errorsActions } from '../../../store';
 import { getCurrentGame } from '../../api/gameRuntimeApi';
 
-const useCurrentGame = () => {
+const useCurrentGame = (enabled = true) => {
   const dispatch = useDispatch();
 
   const [currentGame, setCurrentGame] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!enabled) {
+      setCurrentGame(null);
+      setLoading(false);
+      return undefined;
+    }
+
     const controller = new AbortController();
     setLoading(true);
     getCurrentGame({ signal: controller.signal })
@@ -25,7 +31,7 @@ const useCurrentGame = () => {
         }
       });
     return () => controller.abort();
-  }, [dispatch]);
+  }, [dispatch, enabled]);
 
   return { currentGame, loading };
 };

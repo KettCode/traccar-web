@@ -62,7 +62,6 @@ const AnnouncementPage = lazy(() => import('./settings/AnnouncementPage'));
 const EmulatorPage = lazy(() => import('./other/EmulatorPage'));
 const StreamPage = lazy(() => import('./other/StreamPage'));
 const AuditPage = lazy(() => import('./reports/AuditPage'));
-const CurrentGamePage = lazy(() => import('./game/runtime/CurrentGamePage'));
 const GameRuntimePage = lazy(() => import('./game/runtime/GamePage'));
 const SetupGamesPage = lazy(() => import('./game/setup/SetupGamesPage'));
 const SetupPlayersPage = lazy(() => import('./game/setup/SetupPlayersPage'));
@@ -163,7 +162,7 @@ const Navigation = () => {
           <Route path="geofences" element={<GeofencesPage />} />
           <Route path="emulator" element={<EmulatorPage />} />
           <Route path="stream" element={<StreamPage />} />
-          <Route path="game" element={<CurrentGamePage />} />
+          <Route path="game" element={<GameRuntimePage />} />
           <Route path="game/setup" element={<SetupGamesPage />} />
           <Route path="game/setup/game" element={<SetupGamesPage />} />
           <Route path="game/setup/players" element={<SetupPlayersPage />} />
