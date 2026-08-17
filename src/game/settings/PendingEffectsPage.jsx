@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { useAsyncTask } from '../../reactHelper';
 import { useTranslation } from '../../common/components/LocalizationProvider';
 import PageLayout from '../../common/components/PageLayout';
-import SettingsMenu from '../../settings/components/SettingsMenu';
+import GameMaintenanceMenu from './common/GameMaintenanceMenu';
 import CollectionFab from '../../settings/components/CollectionFab';
 import CollectionActions from '../../settings/components/CollectionActions';
 import TableShimmer from '../../common/components/TableShimmer';
@@ -33,7 +33,10 @@ const PendingEffectsPage = () => {
   );
 
   return (
-    <PageLayout menu={<SettingsMenu />} breadcrumbs={['settingsTitle', 'gamePendingEffects']}>
+    <PageLayout
+      menu={<GameMaintenanceMenu />}
+      breadcrumbs={['settingsTitle', 'gamePendingEffects']}
+    >
       <Table className={classes.table}>
         <TableHead>
           <TableRow>

@@ -12,7 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from '../../common/components/LocalizationProvider';
 import SelectField from '../../common/components/SelectField';
 import EditItemView from '../../settings/components/EditItemView';
-import SettingsMenu from '../../settings/components/SettingsMenu';
+import GameMaintenanceMenu from './common/GameMaintenanceMenu';
 import useSettingsStyles from '../../settings/common/useSettingsStyles';
 import GameLookupSelectField from './common/GameLookupSelectField';
 import { fromDateTimeInput, toDateTimeInput, toNumber } from './common/gameSettingsFormatters';
@@ -42,7 +42,7 @@ const GameMemberPage = () => {
       setItem={setItem}
       defaultItem={defaultItem}
       validate={validate}
-      menu={<SettingsMenu />}
+      menu={<GameMaintenanceMenu />}
       breadcrumbs={['settingsTitle', 'gameMember']}
     >
       {item && (
