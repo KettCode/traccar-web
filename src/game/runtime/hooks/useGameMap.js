@@ -9,17 +9,17 @@ const emptyMap = {
   revealedMarkers: [],
 };
 
-const useGameMap = (gameId, include, enabled = true) => {
+const useGameMap = (gameId, include) => {
   const dispatch = useDispatch();
 
   const [gameMap, setGameMap] = useState(emptyMap);
-  const [loading, setLoading] = useState(Boolean(gameId && enabled));
+  const [loading, setLoading] = useState(Boolean(gameId));
   const [reloadToken, setReloadToken] = useState(0);
 
   const reload = useCallback(() => setReloadToken((value) => value + 1), []);
 
   useEffect(() => {
-    if (!gameId || !enabled) {
+    if (!gameId) {
       setGameMap(emptyMap);
       setLoading(false);
       return undefined;
@@ -40,7 +40,7 @@ const useGameMap = (gameId, include, enabled = true) => {
         }
       });
     return () => controller.abort();
-  }, [dispatch, enabled, gameId, include, reloadToken]);
+  }, [dispatch, gameId, include, reloadToken]);
 
   return { gameMap, setGameMap, loading, reload };
 };

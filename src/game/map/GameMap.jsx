@@ -49,31 +49,30 @@ const GameMap = () => {
   const mapRefreshToken = useSelector((state) => state.gameRuntime.mapRefreshToken);
 
   const { currentGame, loading: currentGameLoading } = useCurrentGame();
-  const runningGame = currentGame?.status === 'running';
   const {
     gameMap,
     setGameMap,
     loading: gameMapLoading,
     reload,
-  } = useGameMap(currentGame?.id, null, runningGame);
+  } = useGameMap(currentGame?.id, null);
 
   useEffect(() => {
-    if (!runningGame || !currentGame?.id || mapUpdateToken === 0) {
+    if (!currentGame?.id || mapUpdateToken === 0) {
       return;
     }
     mapUpdates
       .filter((update) => update.gameId === currentGame.id)
       .forEach((update) => setGameMap((current) => applyGameMapUpdate(current, update)));
-  }, [currentGame?.id, mapUpdateToken, mapUpdates, runningGame, setGameMap]);
+  }, [currentGame?.id, mapUpdateToken, mapUpdates, setGameMap]);
 
   useEffect(() => {
-    if (!runningGame || !currentGame?.id || mapRefreshToken === 0) {
+    if (!currentGame?.id || mapRefreshToken === 0) {
       return;
     }
     if (mapRefreshGameId == null || mapRefreshGameId === currentGame.id) {
       reload();
     }
-  }, [currentGame?.id, mapRefreshGameId, mapRefreshToken, reload, runningGame]);
+  }, [currentGame?.id, mapRefreshGameId, mapRefreshToken, reload]);
 
   const markers = useMemo(
     () => [...(gameMap.memberMarkers || []), ...(gameMap.revealedMarkers || [])],
