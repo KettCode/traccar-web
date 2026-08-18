@@ -25,6 +25,7 @@ const GameSocketController = () => {
 
   const refreshRuntime = useCallback(
     (gameId = null) => {
+      dispatch(gameRuntimeActions.refreshCurrentGame());
       dispatch(gameRuntimeActions.refreshMap({ gameId }));
       dispatch(gameRuntimeActions.refreshState({ gameId }));
     },
@@ -71,8 +72,14 @@ const GameSocketController = () => {
         }
       }
       data.gameNotifications
-        ?.filter((notification) => notification.stateRefresh)
-        .forEach((notification) => refreshRuntime(notification.gameId));
+        ?.filter((notification) => notification.currentGameRefresh || notification.stateRefresh)
+        .forEach((notification) => {
+          if (notification.stateRefresh) {
+            refreshRuntime(notification.gameId);
+          } else {
+            dispatch(gameRuntimeActions.refreshCurrentGame());
+          }
+        });
     };
   }, [clearReconnectTimeout, dispatch, refreshRuntime]);
 

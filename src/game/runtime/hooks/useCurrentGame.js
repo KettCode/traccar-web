@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { errorsActions } from '../../../store';
 import { getCurrentGame } from '../../api/gameRuntimeApi';
 
 const useCurrentGame = (enabled = true) => {
   const dispatch = useDispatch();
+  const currentGameRefreshToken = useSelector((state) => state.gameRuntime.currentGameRefreshToken);
 
   const [currentGame, setCurrentGame] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,7 +32,7 @@ const useCurrentGame = (enabled = true) => {
         }
       });
     return () => controller.abort();
-  }, [dispatch, enabled]);
+  }, [currentGameRefreshToken, dispatch, enabled]);
 
   return { currentGame, loading };
 };

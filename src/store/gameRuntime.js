@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const { reducer, actions } = createSlice({
   name: 'gameRuntime',
   initialState: {
+    currentGameRefreshToken: 0,
     mapUpdates: [],
     mapUpdateToken: 0,
     mapRefreshGameId: null,
@@ -11,6 +12,9 @@ const { reducer, actions } = createSlice({
     stateRefreshToken: 0,
   },
   reducers: {
+    refreshCurrentGame(state) {
+      state.currentGameRefreshToken += 1;
+    },
     updateMap(state, action) {
       state.mapUpdates = action.payload || [];
       state.mapUpdateToken += 1;

@@ -55,7 +55,7 @@ const GameMap = () => {
     setGameMap,
     loading: gameMapLoading,
     reload,
-  } = useGameMap(currentGame?.id, 'reveals', runningGame);
+  } = useGameMap(currentGame?.id, null, runningGame);
 
   useEffect(() => {
     if (!runningGame || !currentGame?.id || mapUpdateToken === 0) {
