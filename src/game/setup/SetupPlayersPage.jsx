@@ -11,6 +11,7 @@ import {
   TableRow,
 } from '@mui/material';
 import KeyIcon from '@mui/icons-material/Key';
+import QrCodeIcon from '@mui/icons-material/QrCode';
 import { useAsyncTask, useCatch } from '../../reactHelper';
 import { useTranslation } from '../../common/components/LocalizationProvider';
 import PageLayout from '../../common/components/PageLayout';
@@ -21,6 +22,7 @@ import { formatBoolean } from '../../common/util/formatter';
 import useSettingsStyles from '../../settings/common/useSettingsStyles';
 import fetchOrThrow from '../../common/util/fetchOrThrow';
 import GameSetupMenu from './GameSetupMenu';
+import SetupClientLinkDialog from './components/SetupClientLinkDialog';
 
 const SetupPlayersPage = () => {
   const { classes } = useSettingsStyles();
@@ -30,6 +32,7 @@ const SetupPlayersPage = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [passwordItem, setPasswordItem] = useState(null);
+  const [linkItem, setLinkItem] = useState(null);
   const [password, setPassword] = useState('');
 
   useAsyncTask(
@@ -46,6 +49,10 @@ const SetupPlayersPage = () => {
   const handleOpenPassword = (itemId) => {
     setPasswordItem(items.find((item) => item.playerId === itemId));
     setPassword('');
+  };
+
+  const handleOpenLink = (itemId) => {
+    setLinkItem(items.find((item) => item.playerId === itemId));
   };
 
   const handlePassword = useCatch(async () => {
@@ -82,6 +89,16 @@ const SetupPlayersPage = () => {
                   endpoint="setup/players"
                   onReload={reload}
                   customActions={[
+                    ...(item.clientSetupLink
+                      ? [
+                          {
+                            key: 'setupLink',
+                            title: t('sharedQrCode'),
+                            icon: <QrCodeIcon fontSize="small" />,
+                            handler: handleOpenLink,
+                          },
+                        ]
+                      : []),
                     {
                       key: 'password',
                       title: t('userPassword'),
@@ -112,6 +129,7 @@ const SetupPlayersPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <SetupClientLinkDialog item={linkItem} onClose={() => setLinkItem(null)} />
     </PageLayout>
   );
 };

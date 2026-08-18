@@ -53,6 +53,7 @@ const SetupGameStep = ({ wizard }) => {
           label={t('gamePingIntervalSeconds')}
           disabled={disabled}
           fullWidth
+          slotProps={{ htmlInput: { min: 300 } }}
         />
         <TextField
           type="number"
@@ -63,6 +64,7 @@ const SetupGameStep = ({ wizard }) => {
           label={t('gameMaxPositionAgeSeconds')}
           disabled={disabled}
           fullWidth
+          slotProps={{ htmlInput: { min: 60 } }}
         />
         <TextField
           type="number"
@@ -71,6 +73,7 @@ const SetupGameStep = ({ wizard }) => {
           label={t('gameSpeedhuntLimit')}
           disabled={disabled}
           fullWidth
+          slotProps={{ htmlInput: { min: 0 } }}
         />
         <TextField
           type="number"
@@ -81,6 +84,7 @@ const SetupGameStep = ({ wizard }) => {
           label={t('gameSpeedhuntPingLimit')}
           disabled={disabled}
           fullWidth
+          slotProps={{ htmlInput: { min: 0 } }}
         />
         <TextField
           type="number"
@@ -91,6 +95,7 @@ const SetupGameStep = ({ wizard }) => {
           label={t('gameLocationReminderIntervalSeconds')}
           disabled={disabled}
           fullWidth
+          slotProps={{ htmlInput: { min: 120 } }}
         />
       </Box>
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>

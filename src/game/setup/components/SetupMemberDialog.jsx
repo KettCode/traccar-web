@@ -4,7 +4,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
   Stack,
+  Switch,
   TextField,
 } from '@mui/material';
 import { useTranslation } from '../../../common/components/LocalizationProvider';
@@ -17,6 +19,7 @@ const SetupMemberDialog = ({ wizard }) => {
   const open = !!wizard.memberMode;
   const existing = wizard.memberMode === 'existing';
   const editing = wizard.memberMode === 'edit';
+  const hunter = wizard.member.role === 'hunter';
   const title = editing
     ? t('sharedEdit')
     : existing
@@ -65,9 +68,47 @@ const SetupMemberDialog = ({ wizard }) => {
             keyGetter={(item) => item.value}
             titleGetter={(item) => item.label}
             value={wizard.member.role}
-            onChange={(event) => wizard.setMember({ ...wizard.member, role: event.target.value })}
+            onChange={(event) => {
+              const role = event.target.value;
+              wizard.setMember({
+                ...wizard.member,
+                role,
+                canStartSpeedhunt: role === 'hunter' && wizard.member.canStartSpeedhunt,
+                canRequestSpeedhuntPing: role === 'hunter' && wizard.member.canRequestSpeedhuntPing,
+              });
+            }}
             label={t('gameRole')}
             fullWidth
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={hunter && !!wizard.member.canStartSpeedhunt}
+                disabled={!hunter}
+                onChange={(event) =>
+                  wizard.setMember({
+                    ...wizard.member,
+                    canStartSpeedhunt: event.target.checked,
+                  })
+                }
+              />
+            }
+            label={t('gameCanStartSpeedhunt')}
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={hunter && !!wizard.member.canRequestSpeedhuntPing}
+                disabled={!hunter}
+                onChange={(event) =>
+                  wizard.setMember({
+                    ...wizard.member,
+                    canRequestSpeedhuntPing: event.target.checked,
+                  })
+                }
+              />
+            }
+            label={t('gameCanRequestSpeedhuntPing')}
           />
           {!editing && !existing && (
             <PasswordField

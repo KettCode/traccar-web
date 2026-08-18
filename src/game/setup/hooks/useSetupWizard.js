@@ -23,7 +23,14 @@ const defaultMember = {
   password: '',
   role: 'hunted',
   playerId: 0,
+  canStartSpeedhunt: false,
+  canRequestSpeedhuntPing: false,
 };
+
+const getMemberActionFlags = (member) => ({
+  canStartSpeedhunt: member.role === 'hunter' && !!member.canStartSpeedhunt,
+  canRequestSpeedhuntPing: member.role === 'hunter' && !!member.canRequestSpeedhuntPing,
+});
 
 const defaultGeofence = {
   geofenceId: 0,
@@ -115,6 +122,8 @@ const useSetupWizard = (gameId, navigate) => {
       ...defaultMember,
       displayName: current.displayName || '',
       role: current.role || 'hunted',
+      canStartSpeedhunt: !!current.canStartSpeedhunt,
+      canRequestSpeedhuntPing: !!current.canRequestSpeedhuntPing,
     });
     setMemberMode('edit');
   };
@@ -127,14 +136,23 @@ const useSetupWizard = (gameId, navigate) => {
         await fetchOrThrow(`/api/setup/games/${gameId}/members/${editingMemberId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ displayName: member.displayName, role: member.role }),
+          body: JSON.stringify({
+            displayName: member.displayName,
+            role: member.role,
+            ...getMemberActionFlags(member),
+          }),
         });
       } else if (memberMode === 'existing') {
         await fetchOrThrow(`/api/setup/games/${gameId}/members/existingPlayers`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify([
-            { playerId: member.playerId, displayName: member.displayName, role: member.role },
+            {
+              playerId: member.playerId,
+              displayName: member.displayName,
+              role: member.role,
+              ...getMemberActionFlags(member),
+            },
           ]),
         });
       } else {
@@ -147,6 +165,7 @@ const useSetupWizard = (gameId, navigate) => {
               displayName: member.displayName,
               password: member.password,
               role: member.role,
+              ...getMemberActionFlags(member),
             },
           ]),
         });

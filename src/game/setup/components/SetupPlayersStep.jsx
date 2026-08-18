@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Alert,
   Box,
@@ -12,13 +13,20 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import EditIcon from '@mui/icons-material/Edit';
+import QrCodeIcon from '@mui/icons-material/QrCode';
 import CollectionActions from '../../../settings/components/CollectionActions';
 import { useTranslation } from '../../../common/components/LocalizationProvider';
 import { getLookupLabel } from './setupWizardUtils';
+import SetupClientLinkDialog from './SetupClientLinkDialog';
 
 const SetupPlayersStep = ({ wizard }) => {
   const t = useTranslation();
   const members = wizard.state?.members || [];
+  const [linkItem, setLinkItem] = useState(null);
+
+  const openLink = (memberId) => {
+    setLinkItem(members.find((item) => item.memberId === memberId));
+  };
 
   const memberActions = (item) => (
     <CollectionActions
@@ -26,8 +34,18 @@ const SetupPlayersStep = ({ wizard }) => {
       endpoint={`setup/games/${wizard.gameId}/members`}
       onReload={wizard.reload}
       readonly={!wizard.editable}
-      customActions={
-        wizard.editable
+      customActions={[
+        ...(item.clientSetupLink
+          ? [
+              {
+                key: 'setupLink',
+                title: t('sharedQrCode'),
+                icon: <QrCodeIcon fontSize="small" />,
+                handler: openLink,
+              },
+            ]
+          : []),
+        ...(wizard.editable
           ? [
               {
                 key: 'edit',
@@ -36,8 +54,8 @@ const SetupPlayersStep = ({ wizard }) => {
                 handler: wizard.openEditMember,
               },
             ]
-          : undefined
-      }
+          : []),
+      ]}
     />
   );
 
@@ -96,6 +114,20 @@ const SetupPlayersStep = ({ wizard }) => {
                   <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                     {item.deviceName || item.deviceUniqueId || item.deviceId}
                   </Typography>
+                  {item.role === 'hunter' && (
+                    <Stack direction="row" spacing={1} sx={{ mt: 1 }} flexWrap="wrap" useFlexGap>
+                      {item.canStartSpeedhunt && (
+                        <Chip size="small" color="primary" label={t('gameCanStartSpeedhunt')} />
+                      )}
+                      {item.canRequestSpeedhuntPing && (
+                        <Chip
+                          size="small"
+                          color="primary"
+                          label={t('gameCanRequestSpeedhuntPing')}
+                        />
+                      )}
+                    </Stack>
+                  )}
                 </CardContent>
                 <CardActions>{memberActions(item)}</CardActions>
               </Card>
@@ -103,6 +135,7 @@ const SetupPlayersStep = ({ wizard }) => {
           </Box>
         </>
       )}
+      <SetupClientLinkDialog item={linkItem} onClose={() => setLinkItem(null)} />
     </Stack>
   );
 };
