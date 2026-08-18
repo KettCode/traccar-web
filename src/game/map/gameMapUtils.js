@@ -13,6 +13,19 @@ export const markerColor = (marker) => {
   }
 };
 
+export const markerIcon = (marker) => {
+  switch (marker.role) {
+    case 'hunter':
+      return 'hunter';
+    case 'hunted':
+      return 'hunted';
+    case 'game_management':
+      return 'gameManagement';
+    default:
+      return 'person';
+  }
+};
+
 export const markerToPosition = (marker, position) => ({
   ...marker,
   latitude: position?.latitude ?? marker.latitude,

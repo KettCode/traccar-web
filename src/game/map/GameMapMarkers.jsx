@@ -6,7 +6,7 @@ import { map } from '../../map/core/MapView';
 import { formatTime } from '../../common/util/formatter';
 import { findFonts, toMapCoordinates } from '../../map/core/mapUtil';
 import { useAttributePreference } from '../../common/util/preferences';
-import { isValidCoordinate, markerColor, markerToPosition } from './gameMapUtils';
+import { isValidCoordinate, markerColor, markerIcon, markerToPosition } from './gameMapUtils';
 
 const GameMapMarkers = ({ markers }) => {
   const id = useId();
@@ -33,7 +33,7 @@ const GameMapMarkers = ({ markers }) => {
       source: id,
       filter: ['!has', 'point_count'],
       layout: {
-        'icon-image': 'person-{color}',
+        'icon-image': '{icon}-{color}',
         'icon-size': iconScale,
         'icon-allow-overlap': true,
         'text-field': '{name}',
@@ -95,6 +95,7 @@ const GameMapMarkers = ({ markers }) => {
             sortKey: marker.memberId || marker.revealId,
             name: marker.displayName,
             fixTime: marker.fixTime ? formatTime(marker.fixTime, 'seconds') : null,
+            icon: markerIcon(marker),
             color: markerColor(marker),
           },
         })),

@@ -14,7 +14,10 @@ import craneSvg from '../../resources/images/icon/crane.svg';
 import defaultSvg from '../../resources/images/icon/default.svg';
 import startSvg from '../../resources/images/icon/start.svg';
 import finishSvg from '../../resources/images/icon/finish.svg';
+import gameManagementSvg from '../../resources/images/icon/gameManagement.svg';
 import helicopterSvg from '../../resources/images/icon/helicopter.svg';
+import huntedSvg from '../../resources/images/icon/hunted.svg';
+import hunterSvg from '../../resources/images/icon/hunter.svg';
 import motorcycleSvg from '../../resources/images/icon/motorcycle.svg';
 import personSvg from '../../resources/images/icon/person.svg';
 import planeSvg from '../../resources/images/icon/plane.svg';
@@ -37,7 +40,10 @@ export const mapIcons = {
   crane: craneSvg,
   default: defaultSvg,
   finish: finishSvg,
+  gameManagement: gameManagementSvg,
   helicopter: helicopterSvg,
+  hunted: huntedSvg,
+  hunter: hunterSvg,
   motorcycle: motorcycleSvg,
   person: personSvg,
   plane: planeSvg,
