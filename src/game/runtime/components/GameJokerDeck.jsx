@@ -1,0 +1,139 @@
+import { Box, Button, Chip, Stack, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
+import BoltIcon from '@mui/icons-material/Bolt';
+import CasinoIcon from '@mui/icons-material/Casino';
+import { formatGameJokerStatus, formatGameJokerType } from '../../common/gameFormatters';
+import {
+  getJokerActivationMessage,
+  jokerStatusColor,
+  terminalJokerStatuses,
+} from './gameRuntimeUi';
+
+const GameJokerDeck = ({
+  jokers,
+  summary,
+  canUseJoker,
+  canManageRuntime,
+  actionLoading,
+  onActivate,
+  onCancel,
+  t,
+}) => {
+  if (!jokers || jokers.length === 0) {
+    return (
+      <Box
+        sx={(theme) => ({
+          p: 2,
+          borderRadius: 3,
+          bgcolor: theme.palette.background.default,
+        })}
+      >
+        <Typography color="text.secondary">{t('gameNoJokersAvailable')}</Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <Stack spacing={1.25}>
+      {jokers.map((joker) => {
+        const activationMessage = getJokerActivationMessage(t, joker, summary);
+        return (
+          <Box
+            key={joker.id}
+            sx={(theme) => ({
+              p: 1.5,
+              borderRadius: 3,
+              border: `1px solid ${alpha(theme.palette[jokerStatusColor(joker.status)]?.main || theme.palette.divider, 0.3)}`,
+              bgcolor: alpha(
+                theme.palette[jokerStatusColor(joker.status)]?.main ||
+                  theme.palette.background.default,
+                0.06,
+              ),
+            })}
+          >
+            <Stack spacing={1.25}>
+              <Stack
+                direction="row"
+                spacing={1.25}
+                alignItems="flex-start"
+                justifyContent="space-between"
+                sx={{ width: '100%' }}
+              >
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  alignItems="center"
+                  sx={{ minWidth: 0, flexGrow: 1 }}
+                >
+                  <Box
+                    sx={(theme) => ({
+                      width: 36,
+                      height: 36,
+                      borderRadius: 2,
+                      display: 'grid',
+                      placeItems: 'center',
+                      color: theme.palette.primary.main,
+                      bgcolor: alpha(theme.palette.primary.main, 0.1),
+                      flexShrink: 0,
+                    })}
+                  >
+                    <CasinoIcon fontSize="small" />
+                  </Box>
+                  <Box sx={{ minWidth: 0 }}>
+                    <Typography variant="subtitle2">
+                      {formatGameJokerType(t, joker.type)}
+                    </Typography>
+                    {joker.memberDisplayName && (
+                      <Typography variant="body2" color="text.secondary" noWrap>
+                        {joker.memberDisplayName}
+                      </Typography>
+                    )}
+                  </Box>
+                </Stack>
+                <Chip
+                  size="small"
+                  color={jokerStatusColor(joker.status)}
+                  label={formatGameJokerStatus(t, joker.status)}
+                  sx={{ flexShrink: 0 }}
+                />
+              </Stack>
+
+              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                {canUseJoker && joker.status === 'unlocked' && (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    startIcon={<BoltIcon />}
+                    disabled={Boolean(activationMessage) || Boolean(actionLoading)}
+                    onClick={() => onActivate(joker)}
+                  >
+                    {t('gameActionActivateJoker')}
+                  </Button>
+                )}
+                {canManageRuntime && !terminalJokerStatuses.includes(joker.status) && (
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    color="warning"
+                    disabled={Boolean(actionLoading)}
+                    onClick={() => onCancel(joker)}
+                  >
+                    {t('gameActionCancelJoker')}
+                  </Button>
+                )}
+              </Stack>
+
+              {activationMessage && joker.status === 'unlocked' && (
+                <Typography variant="caption" color="text.secondary">
+                  {activationMessage}
+                </Typography>
+              )}
+            </Stack>
+          </Box>
+        );
+      })}
+    </Stack>
+  );
+};
+
+export default GameJokerDeck;
