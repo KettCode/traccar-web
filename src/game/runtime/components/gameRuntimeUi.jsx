@@ -1,9 +1,9 @@
 import { alpha } from '@mui/material/styles';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import CasinoIcon from '@mui/icons-material/Casino';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import GroupsIcon from '@mui/icons-material/Groups';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 
 export const jokerTypes = [
   'skip_ping',
@@ -85,7 +85,7 @@ export const jokerStatusColor = (status) => {
 export const roleIcon = (role, props) => {
   switch (role) {
     case 'game_management':
-      return <SportsEsportsIcon {...props} />;
+      return <AdminPanelSettingsIcon {...props} />;
     case 'hunter':
       return <GpsFixedIcon {...props} />;
     case 'hunted':
@@ -102,6 +102,9 @@ export const getActiveHuntedMembers = (members) =>
 
 export const getCaughtHuntedMembers = (members) =>
   (members || []).filter((member) => member.role === 'hunted' && member.status === 'caught');
+
+export const getHunterMembers = (members) =>
+  (members || []).filter((member) => member.role === 'hunter');
 
 export const getMemberJokers = (jokers, memberId) =>
   (jokers || []).filter((joker) => joker.memberId === memberId);

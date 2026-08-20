@@ -1,18 +1,9 @@
-import {
-  Avatar,
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  Chip,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Avatar, Box, CardActionArea, CardContent, Chip, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import CasinoIcon from '@mui/icons-material/Casino';
-import EditIcon from '@mui/icons-material/Edit';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import GroupsIcon from '@mui/icons-material/Groups';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import GameMemberIdentity from './GameMemberIdentity';
 import { getMemberJokers } from './gameRuntimeUi';
 
@@ -20,29 +11,6 @@ const roleOrder = {
   hunted: 0,
   hunter: 1,
   game_management: 2,
-};
-
-const filterOptions = [
-  ['all', 'gameFilterAllPlayers'],
-  ['activeHunted', 'gameFilterActiveHunted'],
-  ['caughtHunted', 'gameFilterCaughtHunted'],
-  ['hunter', 'gameFilterHunters'],
-  ['management', 'gameFilterManagement'],
-];
-
-const filterMembers = (members, filter) => {
-  switch (filter) {
-    case 'activeHunted':
-      return members.filter((member) => member.role === 'hunted' && member.status === 'active');
-    case 'caughtHunted':
-      return members.filter((member) => member.role === 'hunted' && member.status === 'caught');
-    case 'hunter':
-      return members.filter((member) => member.role === 'hunter');
-    case 'management':
-      return members.filter((member) => member.role === 'game_management');
-    default:
-      return members;
-  }
 };
 
 const sortMembers = (members) =>
@@ -54,31 +22,42 @@ const sortMembers = (members) =>
     return (a.displayName || '').localeCompare(b.displayName || '');
   });
 
-const PlayerCard = ({ member, jokerCount, management, selected, onSelect, t }) => {
+const PlayerRow = ({ member, jokerCount, management, selected, current, last, onSelect, t }) => {
   const content = (
-    <CardContent sx={{ p: 1.5, '&:last-child': { pb: 1.5 } }}>
+    <CardContent sx={{ p: 1.25, '&:last-child': { pb: 1.25 } }}>
       <Stack direction="row" spacing={1} alignItems="center">
         <GameMemberIdentity
           member={member}
           t={t}
-          avatarSize={48}
+          avatarSize={40}
           titleFontWeight={800}
-          chipSx={{ mt: 0.75 }}
+          chipSx={{ mt: 0.5 }}
         >
+          {current && <Chip size="small" label={t('gameYou')} />}
           {jokerCount > 0 && <Chip size="small" icon={<CasinoIcon />} label={jokerCount} />}
         </GameMemberIdentity>
-        {management && <EditIcon color="action" fontSize="small" sx={{ flexShrink: 0 }} />}
+        {management && <ChevronRightIcon color="action" fontSize="small" sx={{ flexShrink: 0 }} />}
       </Stack>
     </CardContent>
   );
 
   return (
-    <Card
-      variant="outlined"
+    <Box
       sx={(theme) => ({
-        borderRadius: 3,
-        borderColor: selected ? theme.palette.primary.main : undefined,
+        position: 'relative',
         bgcolor: selected ? alpha(theme.palette.primary.main, 0.06) : undefined,
+        borderBottom: last ? 'none' : `1px solid ${theme.palette.divider}`,
+        '&:before': selected
+          ? {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: 0,
+              width: 3,
+              bgcolor: theme.palette.primary.main,
+            }
+          : undefined,
       })}
     >
       {management ? (
@@ -86,57 +65,57 @@ const PlayerCard = ({ member, jokerCount, management, selected, onSelect, t }) =
       ) : (
         content
       )}
-    </Card>
+    </Box>
   );
 };
 
 const GameMemberList = ({ state, selectedMemberId, onSelectMember, t }) => {
-  const [filter, setFilter] = useState('all');
   const management = state.currentMember.role === 'game_management';
-  const visibleMembers = useMemo(
-    () => sortMembers(filterMembers(state.members || [], filter)),
-    [filter, state.members],
-  );
+  const visibleMembers = useMemo(() => sortMembers(state.members || []), [state.members]);
+  const totalMembers = state.members?.length || 0;
 
   return (
-    <Card variant="outlined" sx={{ borderRadius: 4 }}>
+    <Box
+      sx={(theme) => ({
+        borderRadius: 4,
+        border: `1px solid ${theme.palette.divider}`,
+        bgcolor: theme.palette.background.paper,
+        overflow: 'hidden',
+      })}
+    >
       <CardContent>
-        <Stack spacing={2}>
+        <Stack spacing={1.5}>
           <Stack direction="row" spacing={1.25} alignItems="center">
             <Avatar variant="rounded" sx={{ bgcolor: 'primary.main' }}>
               <GroupsIcon />
             </Avatar>
             <Box sx={{ minWidth: 0 }}>
-              <Typography variant="h6">{t('gamePlayers')}</Typography>
+              <Typography variant="h6">
+                {t('gamePlayers')} ({totalMembers})
+              </Typography>
               <Typography variant="body2" color="text.secondary">
                 {management ? t('gamePlayersManagementDescription') : t('gamePlayersDescription')}
               </Typography>
             </Box>
           </Stack>
 
-          {management && (
-            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-              {filterOptions.map(([value, label]) => (
-                <Chip
-                  key={value}
-                  clickable
-                  color={filter === value ? 'primary' : 'default'}
-                  label={t(label)}
-                  onClick={() => setFilter(value)}
-                />
-              ))}
-            </Stack>
-          )}
-
-          <Stack spacing={1}>
+          <Box
+            sx={(theme) => ({
+              borderRadius: 3,
+              border: `1px solid ${theme.palette.divider}`,
+              overflow: 'hidden',
+            })}
+          >
             {visibleMembers.length > 0 ? (
-              visibleMembers.map((member) => (
-                <PlayerCard
+              visibleMembers.map((member, index) => (
+                <PlayerRow
                   key={member.id}
                   member={member}
                   jokerCount={getMemberJokers(state.jokers, member.id).length}
                   management={management}
                   selected={selectedMemberId === member.id}
+                  current={state.currentMember.id === member.id}
+                  last={index === visibleMembers.length - 1}
                   onSelect={onSelectMember}
                   t={t}
                 />
@@ -144,10 +123,10 @@ const GameMemberList = ({ state, selectedMemberId, onSelectMember, t }) => {
             ) : (
               <Typography color="text.secondary">{t('gameNoPlayersForFilter')}</Typography>
             )}
-          </Stack>
+          </Box>
         </Stack>
       </CardContent>
-    </Card>
+    </Box>
   );
 };
 

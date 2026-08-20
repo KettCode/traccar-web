@@ -1,18 +1,19 @@
-import { useEffect, useState } from 'react';
-import { Box, Card, CardContent, Grid, Stack, Typography } from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
+import { Box, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
-import RadarIcon from '@mui/icons-material/Radar';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { formatGameDurationSeconds } from '../../common/gameFormatters';
 import GameStatusChip from '../../common/GameStatusChip';
-import GameMetricBox from './GameMetricBox';
 
-const useCountdown = (value) => {
+const useCountdown = (value, onExpired) => {
   const [seconds, setSeconds] = useState(value);
+  const expiredRef = useRef(false);
 
   useEffect(() => {
     setSeconds(value);
+    expiredRef.current = false;
   }, [value]);
 
   useEffect(() => {
@@ -25,14 +26,38 @@ const useCountdown = (value) => {
     return () => clearInterval(interval);
   }, [value]);
 
+  useEffect(() => {
+    if (value > 0 && seconds === 0 && !expiredRef.current) {
+      expiredRef.current = true;
+      onExpired?.();
+    }
+  }, [onExpired, seconds, value]);
+
   return seconds;
 };
 
-const GameLiveHeader = ({ state, t }) => {
+const HeaderMetric = ({ icon, label, value, color = 'primary' }) => (
+  <Box sx={{ minWidth: 0, flex: 1 }}>
+    <Stack direction="row" spacing={0.75} alignItems="center" color={`${color}.main`}>
+      {icon}
+      <Typography variant="caption" color="text.secondary" noWrap>
+        {label}
+      </Typography>
+    </Stack>
+    <Typography variant="h6" sx={{ mt: 0.25, fontWeight: 800, lineHeight: 1.15 }} noWrap>
+      {value}
+    </Typography>
+  </Box>
+);
+
+const GameLiveHeader = ({ state, onNextRegularPingExpired, t }) => {
   const { game, summary } = state;
   const danger = summary.speedhuntActive;
   const remainingSeconds = useCountdown(game.remainingSeconds);
-  const nextRegularPingInSeconds = useCountdown(summary.nextRegularPingInSeconds);
+  const nextRegularPingInSeconds = useCountdown(
+    summary.nextRegularPingInSeconds,
+    onNextRegularPingExpired,
+  );
 
   return (
     <Card
@@ -74,53 +99,35 @@ const GameLiveHeader = ({ state, t }) => {
             <GameStatusChip status={game.status} />
           </Stack>
 
-          <Grid container spacing={1.25}>
-            <Grid size={{ xs: 12, sm: 4 }}>
-              <GameMetricBox
-                icon={<AccessTimeIcon fontSize="small" />}
-                label={t('gameRemainingTime')}
-                value={formatGameDurationSeconds(t, remainingSeconds)}
-                color={danger ? 'error' : 'primary'}
-                p={1.25}
-                borderRadius={2.5}
-                height="100%"
-                valueVariant="h6"
-                valueMt={0.5}
-                valueFontWeight={800}
-                backgroundAlpha={0.1}
-              />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 4 }}>
-              <GameMetricBox
-                icon={<PersonPinCircleIcon fontSize="small" />}
-                label={t('gameNextRegularPing')}
-                value={formatGameDurationSeconds(t, nextRegularPingInSeconds)}
-                color="info"
-                p={1.25}
-                borderRadius={2.5}
-                height="100%"
-                valueVariant="h6"
-                valueMt={0.5}
-                valueFontWeight={800}
-                backgroundAlpha={0.1}
-              />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 4 }}>
-              <GameMetricBox
-                icon={<RadarIcon fontSize="small" />}
-                label={t('gameSpeedhunt')}
-                value={summary.speedhuntActive ? t('gameSpeedhuntActiveShort') : '-'}
-                color={danger ? 'error' : 'success'}
-                p={1.25}
-                borderRadius={2.5}
-                height="100%"
-                valueVariant="h6"
-                valueMt={0.5}
-                valueFontWeight={800}
-                backgroundAlpha={0.1}
-              />
-            </Grid>
-          </Grid>
+          <Stack
+            direction="row"
+            spacing={{ xs: 1, sm: 1.5 }}
+            divider={<Divider orientation="vertical" flexItem />}
+            sx={{ minWidth: 0 }}
+          >
+            <HeaderMetric
+              icon={<AccessTimeIcon fontSize="small" />}
+              label={t('gameRemainingTime')}
+              value={formatGameDurationSeconds(t, remainingSeconds)}
+              color={danger ? 'error' : 'primary'}
+            />
+            <HeaderMetric
+              icon={<PersonPinCircleIcon fontSize="small" />}
+              label={t('gameNextRegularPing')}
+              value={formatGameDurationSeconds(t, nextRegularPingInSeconds)}
+              color="info"
+            />
+            <HeaderMetric
+              icon={<VisibilityIcon fontSize="small" />}
+              label={t('gameSpeedhunt')}
+              value={
+                summary.speedhuntActive
+                  ? t('gameSpeedhuntActiveShort')
+                  : t('gameSpeedhuntInactiveShort')
+              }
+              color={danger ? 'error' : 'success'}
+            />
+          </Stack>
         </Stack>
       </CardContent>
     </Card>

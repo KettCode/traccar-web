@@ -15,18 +15,45 @@ import { alpha } from '@mui/material/styles';
 import FlagIcon from '@mui/icons-material/Flag';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import RadarIcon from '@mui/icons-material/Radar';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useEffect, useState } from 'react';
 import GameSectionHeader from './GameSectionHeader';
+
+const SpeedhuntProgressDots = ({ current, limit }) => (
+  <Stack direction="row" spacing={0.75} alignItems="center">
+    {Array.from({ length: limit }).map((_, index) => {
+      const completed = index < current;
+      return (
+        <Box
+          key={index}
+          sx={(theme) => ({
+            width: 18,
+            height: 18,
+            borderRadius: '50%',
+            border: `2px solid ${completed ? theme.palette.error.main : theme.palette.divider}`,
+            bgcolor: completed
+              ? alpha(theme.palette.error.main, 0.18)
+              : theme.palette.background.paper,
+          })}
+        />
+      );
+    })}
+  </Stack>
+);
 
 const GameSpeedhuntPanel = ({ state, targets, actionLoading, onStart, onPing, onFinish, t }) => {
   const [targetMemberId, setTargetMemberId] = useState('');
   const { summary, allowedActions } = state;
   const active = summary.speedhuntActive;
+  const showStart = !active && allowedActions.canStartSpeedhunt;
+  const showPing = active && allowedActions.canRequestSpeedhuntPing;
+  const showFinish = active && allowedActions.canManageRuntime;
+  const hasActions = showStart || showPing || showFinish;
+  const fullWidthPing = showPing && !showFinish;
+  const progressLimit = summary.speedhuntPingLimit || 0;
   const progress =
-    summary.speedhuntPingLimit > 0
-      ? Math.min(100, (summary.speedhuntPingNumber / summary.speedhuntPingLimit) * 100)
-      : 0;
+    progressLimit > 0 ? Math.min(100, (summary.speedhuntPingNumber / progressLimit) * 100) : 0;
+  const showProgressDots = progressLimit > 0 && progressLimit <= 6;
 
   useEffect(() => {
     if (targets.length === 0) {
@@ -40,15 +67,23 @@ const GameSpeedhuntPanel = ({ state, targets, actionLoading, onStart, onPing, on
     <Card
       variant="outlined"
       sx={(theme) => ({
+        position: 'relative',
+        overflow: 'hidden',
         borderRadius: 4,
-        borderColor: active ? alpha(theme.palette.error.main, 0.28) : undefined,
-        bgcolor: active ? alpha(theme.palette.error.main, 0.035) : undefined,
+        borderColor: active ? alpha(theme.palette.error.main, 0.32) : undefined,
+        bgcolor: active ? alpha(theme.palette.error.main, 0.035) : theme.palette.background.paper,
+        background: active
+          ? `linear-gradient(135deg, ${alpha(theme.palette.error.main, 0.11)}, ${alpha(
+              theme.palette.error.main,
+              0.025,
+            )} 58%, ${theme.palette.background.paper})`
+          : undefined,
       })}
     >
-      <CardContent>
+      <CardContent sx={{ pb: hasActions ? 1 : 2 }}>
         <Stack spacing={2}>
           <GameSectionHeader
-            icon={<RadarIcon />}
+            icon={<VisibilityIcon />}
             title={t('gameSpeedhunt')}
             color={active ? 'error' : 'primary'}
             action={
@@ -65,13 +100,14 @@ const GameSpeedhuntPanel = ({ state, targets, actionLoading, onStart, onPing, on
                 sx={(theme) => ({
                   p: 1.5,
                   borderRadius: 3,
-                  bgcolor: theme.palette.background.default,
+                  bgcolor: alpha(theme.palette.background.paper, 0.78),
+                  border: `1px solid ${alpha(theme.palette.error.main, 0.1)}`,
                 })}
               >
                 <Typography variant="caption" color="text.secondary">
                   {t('gameSpeedhuntTarget')}
                 </Typography>
-                <Typography variant="h5" sx={{ fontWeight: 800 }}>
+                <Typography variant="h6" sx={{ fontWeight: 800 }}>
                   {summary.speedhuntTargetRevealed
                     ? summary.speedhuntTargetDisplayName || t('gameUnknownTarget')
                     : t('gameSpeedhuntTargetHidden')}
@@ -88,20 +124,27 @@ const GameSpeedhuntPanel = ({ state, targets, actionLoading, onStart, onPing, on
                     {t('gameSpeedhuntPingProgress')}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {summary.speedhuntPingNumber} / {summary.speedhuntPingLimit || '-'}
+                    {summary.speedhuntPingNumber} / {progressLimit || '-'}
                   </Typography>
                 </Stack>
-                <LinearProgress
-                  variant="determinate"
-                  value={progress}
-                  color="error"
-                  sx={{ height: 10, borderRadius: 99 }}
-                />
+                {showProgressDots ? (
+                  <SpeedhuntProgressDots
+                    current={summary.speedhuntPingNumber}
+                    limit={progressLimit}
+                  />
+                ) : (
+                  <LinearProgress
+                    variant="determinate"
+                    value={progress}
+                    color="error"
+                    sx={{ height: 10, borderRadius: 99 }}
+                  />
+                )}
               </Box>
             </Stack>
           ) : (
             <Stack spacing={1.5}>
-              <Box>
+              <Box sx={{ lineHeight: 0 }}>
                 <Chip label={`${t('gameSpeedhuntsRemaining')}: ${summary.speedhuntsRemaining}`} />
               </Box>
               <Typography color="text.secondary">
@@ -130,46 +173,51 @@ const GameSpeedhuntPanel = ({ state, targets, actionLoading, onStart, onPing, on
           )}
         </Stack>
       </CardContent>
-      <CardActions sx={{ px: 2, pb: 2, pt: 0, flexWrap: 'wrap', gap: 1 }}>
-        {!active && allowedActions.canStartSpeedhunt && (
-          <Button
-            variant="contained"
-            startIcon={<PlayArrowIcon />}
-            disabled={
-              targets.length === 0 ||
-              !targetMemberId ||
-              summary.speedhuntsRemaining <= 0 ||
-              Boolean(actionLoading)
-            }
-            onClick={() => onStart(Number(targetMemberId))}
-          >
-            {t('gameActionStartSpeedhunt')}
-          </Button>
-        )}
-        {active && allowedActions.canRequestSpeedhuntPing && (
-          <Button
-            variant="contained"
-            color="error"
-            size="large"
-            startIcon={<GpsFixedIcon />}
-            disabled={!summary.speedhuntId || Boolean(actionLoading)}
-            onClick={() => onPing(summary.speedhuntId)}
-          >
-            {t('gameActionRequestSpeedhuntPing')}
-          </Button>
-        )}
-        {active && allowedActions.canManageRuntime && (
-          <Button
-            variant="outlined"
-            color="error"
-            startIcon={<FlagIcon />}
-            disabled={!summary.speedhuntId || Boolean(actionLoading)}
-            onClick={() => onFinish(summary.speedhuntId)}
-          >
-            {t('gameActionFinishSpeedhunt')}
-          </Button>
-        )}
-      </CardActions>
+      {hasActions && (
+        <CardActions sx={{ px: 2, pb: 2, pt: 0, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+          {showStart && (
+            <Button
+              variant="contained"
+              startIcon={<PlayArrowIcon />}
+              sx={{ flex: '1 1 100%' }}
+              disabled={
+                targets.length === 0 ||
+                !targetMemberId ||
+                summary.speedhuntsRemaining <= 0 ||
+                Boolean(actionLoading)
+              }
+              onClick={() => onStart(Number(targetMemberId))}
+            >
+              {t('gameActionStartSpeedhunt')}
+            </Button>
+          )}
+          {showPing && (
+            <Button
+              variant="contained"
+              color="error"
+              size="large"
+              startIcon={<GpsFixedIcon />}
+              sx={{ flex: fullWidthPing ? '1 1 100%' : '1 1 auto' }}
+              disabled={!summary.speedhuntId || Boolean(actionLoading)}
+              onClick={() => onPing(summary.speedhuntId)}
+            >
+              {t('gameActionRequestSpeedhuntPing')}
+            </Button>
+          )}
+          {showFinish && (
+            <Button
+              variant="outlined"
+              color="error"
+              startIcon={<FlagIcon />}
+              sx={{ flex: { xs: '1 1 auto', sm: '0 0 auto' } }}
+              disabled={!summary.speedhuntId || Boolean(actionLoading)}
+              onClick={() => onFinish(summary.speedhuntId)}
+            >
+              {t('gameActionFinishSpeedhunt')}
+            </Button>
+          )}
+        </CardActions>
+      )}
     </Card>
   );
 };

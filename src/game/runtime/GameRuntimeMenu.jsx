@@ -1,12 +1,14 @@
 import { BottomNavigation, BottomNavigationAction, Badge } from '@mui/material';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import MapIcon from '@mui/icons-material/Map';
+import PersonIcon from '@mui/icons-material/Person';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { sessionActions } from '../../store';
 import { nativePostMessage } from '../../common/components/NativeInterface';
 import { useTranslation } from '../../common/components/LocalizationProvider';
+import GameRuntimeUserSheet from './components/GameRuntimeUserSheet';
 
 const GameRuntimeMenu = ({ currentGame }) => {
   const navigate = useNavigate();
@@ -16,6 +18,7 @@ const GameRuntimeMenu = ({ currentGame }) => {
 
   const user = useSelector((state) => state.session.user);
   const socket = useSelector((state) => state.session.socket);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const currentSelection = () => {
     if (location.pathname === '/') {
@@ -28,6 +31,7 @@ const GameRuntimeMenu = ({ currentGame }) => {
   };
 
   const handleLogout = async () => {
+    setUserMenuOpen(false);
     const notificationToken = window.localStorage.getItem('notificationToken');
     if (notificationToken && !user.readonly) {
       window.localStorage.removeItem('notificationToken');
@@ -65,8 +69,8 @@ const GameRuntimeMenu = ({ currentGame }) => {
       case 'game':
         navigate(currentGame?.id ? `/game/${currentGame.id}` : '/game');
         break;
-      case 'logout':
-        handleLogout();
+      case 'profile':
+        setUserMenuOpen(true);
         break;
       default:
         break;
@@ -74,23 +78,34 @@ const GameRuntimeMenu = ({ currentGame }) => {
   };
 
   return (
-    <BottomNavigation
-      value={currentSelection()}
-      onChange={(event, value) => handleSelection(value)}
-      showLabels
-    >
-      <BottomNavigationAction
-        label={t('mapTitle')}
-        icon={
-          <Badge color="error" variant="dot" overlap="circular" invisible={socket !== false}>
-            <MapIcon />
-          </Badge>
-        }
-        value="map"
+    <>
+      <BottomNavigation
+        value={currentSelection()}
+        onChange={(event, value) => handleSelection(value)}
+        showLabels
+      >
+        <BottomNavigationAction
+          label={t('mapTitle')}
+          icon={
+            <Badge color="error" variant="dot" overlap="circular" invisible={socket !== false}>
+              <MapIcon />
+            </Badge>
+          }
+          value="map"
+        />
+        <BottomNavigationAction label={t('gameGame')} icon={<SportsEsportsIcon />} value="game" />
+        <BottomNavigationAction label={t('gameProfile')} icon={<PersonIcon />} value="profile" />
+      </BottomNavigation>
+      <GameRuntimeUserSheet
+        open={userMenuOpen}
+        currentGame={currentGame}
+        user={user}
+        socket={socket}
+        onClose={() => setUserMenuOpen(false)}
+        onLogout={handleLogout}
+        t={t}
       />
-      <BottomNavigationAction label={t('gameGame')} icon={<SportsEsportsIcon />} value="game" />
-      <BottomNavigationAction label={t('loginLogout')} icon={<ExitToAppIcon />} value="logout" />
-    </BottomNavigation>
+    </>
   );
 };
 

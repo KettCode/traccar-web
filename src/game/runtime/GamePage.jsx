@@ -19,12 +19,12 @@ import {
   startSpeedhunt,
   unlockJoker,
 } from '../api/gameRuntimeApi';
-import GameCommandCenter from './components/GameCommandCenter';
 import GameLiveHeader from './components/GameLiveHeader';
-import GameManagementDetails from './components/GameManagementDetails';
+import GameManagementMetricsPanel from './components/GameManagementMetricsPanel';
+import GameManagementPanel from './components/GameManagementPanel';
 import GameMemberActionSheet from './components/GameMemberActionSheet';
 import GameMemberList from './components/GameMemberList';
-import GamePlayerStatusCard from './components/GamePlayerStatusCard';
+import GameOwnJokerCard from './components/GameOwnJokerCard';
 import GameSpeedhuntPanel from './components/GameSpeedhuntPanel';
 import { getActiveHuntedMembers, getMemberJokers } from './components/gameRuntimeUi';
 import GameRuntimePageMenu from './GameRuntimePageMenu';
@@ -144,7 +144,7 @@ const GamePage = () => {
     } else {
       content = <NoCurrentGame t={t} />;
     }
-  } else if (loading) {
+  } else if (loading && !state) {
     content = <Loader />;
   } else if (!state) {
     content = (
@@ -153,6 +153,7 @@ const GamePage = () => {
       </Container>
     );
   } else {
+    const management = state.currentMember.role === 'game_management';
     const selectedMemberJokers = selectedMember
       ? getMemberJokers(state.jokers, selectedMember.id)
       : [];
@@ -160,16 +161,18 @@ const GamePage = () => {
     content = (
       <Container maxWidth="lg" sx={{ py: { xs: 1.5, sm: 3 }, px: { xs: 1.25, sm: 3 } }}>
         <Stack spacing={2}>
-          <GameLiveHeader state={state} t={t} />
-          <GamePlayerStatusCard
-            member={state.currentMember}
-            jokers={ownJokers}
-            summary={state.summary}
-            canUseJoker={state.allowedActions.canUseJoker}
-            actionLoading={actionLoading}
-            onActivateJoker={handleActivateJoker}
-            t={t}
-          />
+          <GameLiveHeader state={state} onNextRegularPingExpired={reload} t={t} />
+          {management && <GameManagementMetricsPanel state={state} t={t} />}
+          {state.currentMember.role === 'hunted' && (
+            <GameOwnJokerCard
+              jokers={ownJokers}
+              summary={state.summary}
+              canUseJoker={state.allowedActions.canUseJoker}
+              actionLoading={actionLoading}
+              onActivateJoker={handleActivateJoker}
+              t={t}
+            />
+          )}
           <Grid container spacing={2} alignItems="flex-start">
             <Grid size={{ xs: 12, md: 7 }}>
               <Stack spacing={2}>
@@ -182,19 +185,12 @@ const GamePage = () => {
                   onFinish={handleFinishSpeedhunt}
                   t={t}
                 />
-                {state.currentMember.role === 'game_management' && (
-                  <GameCommandCenter
+                {management && (
+                  <GameManagementPanel
                     state={state}
                     actionLoading={actionLoading}
                     onActivateGeofence={handleActivateGeofence}
                     onDeactivateGeofence={handleDeactivateGeofence}
-                    t={t}
-                  />
-                )}
-                {state.currentMember.role === 'game_management' && (
-                  <GameManagementDetails
-                    state={state}
-                    actionLoading={actionLoading}
                     onActivateJoker={handleActivateJoker}
                     onCancelJoker={handleCancelJoker}
                     t={t}
