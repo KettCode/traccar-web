@@ -35,6 +35,17 @@ const SetupGameStep = ({ wizard }) => {
         />
         <TextField
           type="datetime-local"
+          value={toDateTimeInput(game.startedAt)}
+          onChange={(event) =>
+            setGame({ ...game, startedAt: fromDateTimeInput(event.target.value) })
+          }
+          label={t('gameStartAt')}
+          disabled={disabled}
+          fullWidth
+          slotProps={{ inputLabel: { shrink: true } }}
+        />
+        <TextField
+          type="datetime-local"
           value={toDateTimeInput(game.plannedEndAt)}
           onChange={(event) =>
             setGame({ ...game, plannedEndAt: fromDateTimeInput(event.target.value) })

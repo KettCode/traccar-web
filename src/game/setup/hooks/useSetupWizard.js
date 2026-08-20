@@ -15,6 +15,7 @@ export const defaultGame = {
   maxPositionAgeSeconds: 120,
   locationReminderIntervalSeconds: 300,
   plannedEndAt: null,
+  startedAt: null,
 };
 
 const defaultMember = {
@@ -37,6 +38,7 @@ const defaultGeofence = {
   name: '',
   type: 'playfield',
   role: null,
+  active: true,
 };
 
 const useSetupWizard = (gameId, navigate) => {
@@ -193,6 +195,7 @@ const useSetupWizard = (gameId, navigate) => {
       name: current.name || '',
       type: current.type || 'playfield',
       role: current.role || null,
+      active: !!current.active,
     });
     setGeofenceDialog(true);
   };

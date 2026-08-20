@@ -16,6 +16,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import CollectionActions from '../../../settings/components/CollectionActions';
 import { useTranslation } from '../../../common/components/LocalizationProvider';
+import { formatGameMemberStatus } from '../../common/gameFormatters';
+import { memberStatusColor } from '../../runtime/components/gameRuntimeUi';
 import { getLookupLabel } from './setupWizardUtils';
 import SetupClientLinkDialog from './SetupClientLinkDialog';
 
@@ -106,10 +108,25 @@ const SetupPlayersStep = ({ wizard }) => {
                         {item.userDisplayName || item.userLogin || item.userId}
                       </Typography>
                     </Box>
-                    <Chip
-                      size="small"
-                      label={getLookupLabel(wizard.state.availableRoles, item.role)}
-                    />
+                    <Stack
+                      direction="row"
+                      spacing={0.75}
+                      flexWrap="wrap"
+                      justifyContent="flex-end"
+                      useFlexGap
+                    >
+                      <Chip
+                        size="small"
+                        label={getLookupLabel(wizard.state.availableRoles, item.role)}
+                      />
+                      {item.status && item.status !== 'active' && (
+                        <Chip
+                          size="small"
+                          color={memberStatusColor(item.status)}
+                          label={formatGameMemberStatus(t, item.status)}
+                        />
+                      )}
+                    </Stack>
                   </Stack>
                   <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                     {item.deviceName || item.deviceUniqueId || item.deviceId}

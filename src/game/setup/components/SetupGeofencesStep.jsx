@@ -14,7 +14,6 @@ import DrawIcon from '@mui/icons-material/Draw';
 import EditIcon from '@mui/icons-material/Edit';
 import CollectionActions from '../../../settings/components/CollectionActions';
 import { useTranslation } from '../../../common/components/LocalizationProvider';
-import { formatBoolean } from '../../../common/util/formatter';
 import { getLookupLabel } from './setupWizardUtils';
 
 const SetupGeofencesStep = ({ wizard }) => {
@@ -89,14 +88,24 @@ const SetupGeofencesStep = ({ wizard }) => {
                         {getLookupLabel(wizard.state.availableRoles, item.role) || t('sharedAll')}
                       </Typography>
                     </Box>
-                    <Chip
-                      size="small"
-                      label={getLookupLabel(wizard.state.availableGeofenceTypes, item.type)}
-                    />
+                    <Stack
+                      direction="row"
+                      spacing={0.75}
+                      flexWrap="wrap"
+                      justifyContent="flex-end"
+                      useFlexGap
+                    >
+                      <Chip
+                        size="small"
+                        label={getLookupLabel(wizard.state.availableGeofenceTypes, item.type)}
+                      />
+                      <Chip
+                        size="small"
+                        color={item.active ? 'success' : 'default'}
+                        label={item.active ? t('sharedActive') : t('sharedDisabled')}
+                      />
+                    </Stack>
                   </Stack>
-                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                    {formatBoolean(item.active, t)}
-                  </Typography>
                 </CardContent>
                 <CardActions>{geofenceActions(item)}</CardActions>
               </Card>

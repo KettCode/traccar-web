@@ -163,6 +163,15 @@ const GamePage = () => {
             <AccordionDetails className={classes.details}>
               <TextField
                 type="datetime-local"
+                value={toDateTimeInput(item.startedAt)}
+                onChange={(event) =>
+                  setItem({ ...item, startedAt: fromDateTimeInput(event.target.value) })
+                }
+                label={t('gameStartAt')}
+                slotProps={{ inputLabel: { shrink: true } }}
+              />
+              <TextField
+                type="datetime-local"
                 value={toDateTimeInput(item.plannedEndAt)}
                 onChange={(event) =>
                   setItem({ ...item, plannedEndAt: fromDateTimeInput(event.target.value) })
@@ -172,11 +181,11 @@ const GamePage = () => {
               />
               <TextField
                 type="datetime-local"
-                value={toDateTimeInput(item.startedAt)}
+                value={toDateTimeInput(item.activatedAt)}
                 onChange={(event) =>
-                  setItem({ ...item, startedAt: fromDateTimeInput(event.target.value) })
+                  setItem({ ...item, activatedAt: fromDateTimeInput(event.target.value) })
                 }
-                label={t('gameStartedAt')}
+                label={t('gameActivatedAt')}
                 slotProps={{ inputLabel: { shrink: true } }}
               />
               <TextField

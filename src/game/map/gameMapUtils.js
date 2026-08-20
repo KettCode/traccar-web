@@ -1,6 +1,9 @@
 export const isValidCoordinate = (marker) =>
   Number.isFinite(marker?.latitude) && Number.isFinite(marker?.longitude);
 
+export const markerKey = (marker) =>
+  `${marker.source || 'marker'}:${marker.memberId || marker.revealId || marker.pingId || marker.positionId}`;
+
 export const markerColor = (marker) => {
   switch (marker.source) {
     case 'speedhunt':

@@ -66,7 +66,17 @@ const SetupGeofenceDialog = ({ wizard }) => {
             label={t('gameRole')}
             fullWidth
           />
-          <FormControlLabel control={<Checkbox checked readOnly />} label={t('sharedActive')} />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={!!wizard.geofence.active}
+                onChange={(event) =>
+                  wizard.setGeofence({ ...wizard.geofence, active: event.target.checked })
+                }
+              />
+            }
+            label={t('sharedActive')}
+          />
         </Stack>
       </DialogContent>
       <DialogActions>

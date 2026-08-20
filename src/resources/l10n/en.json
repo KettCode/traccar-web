@@ -90,6 +90,7 @@
     "gameLocationReminderEnabled": "Location reminder enabled",
     "gameMaxPositionAgeSeconds": "Max position age (seconds)",
     "gameLocationReminderIntervalSeconds": "Location reminder interval (seconds)",
+    "gameStartAt": "Start time",
     "gamePlannedEndAt": "Planned end",
     "gameStartedAt": "Started at",
     "gameFinishedAt": "Finished at",

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Alert, Paper } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
@@ -18,8 +18,9 @@ import { useTranslation } from '../../common/components/LocalizationProvider';
 import useCurrentGame from '../runtime/hooks/useCurrentGame';
 import useGameMap from '../runtime/hooks/useGameMap';
 import GameMapGeofences from './GameMapGeofences';
+import GameMapMarkerCard from './GameMapMarkerCard';
 import GameMapMarkers from './GameMapMarkers';
-import { applyGameMapUpdate, isValidCoordinate, markerToPosition } from './gameMapUtils';
+import { applyGameMapUpdate, isValidCoordinate, markerKey, markerToPosition } from './gameMapUtils';
 
 const useStyles = makeStyles()((theme) => ({
   message: {
@@ -47,6 +48,8 @@ const GameMap = () => {
   const mapUpdateToken = useSelector((state) => state.gameRuntime.mapUpdateToken);
   const mapRefreshGameId = useSelector((state) => state.gameRuntime.mapRefreshGameId);
   const mapRefreshToken = useSelector((state) => state.gameRuntime.mapRefreshToken);
+  const positions = useSelector((state) => state.session.positions);
+  const [selectedMarkerKey, setSelectedMarkerKey] = useState(null);
 
   const { currentGame, loading: currentGameLoading } = useCurrentGame();
   const {
@@ -84,17 +87,40 @@ const GameMap = () => {
     [markers],
   );
 
+  const selectedMarker = useMemo(
+    () =>
+      markers
+        .map((marker) =>
+          markerToPosition(marker, marker.deviceId ? positions[marker.deviceId] : null),
+        )
+        .find((marker) => markerKey(marker) === selectedMarkerKey),
+    [markers, positions, selectedMarkerKey],
+  );
+
+  useEffect(() => {
+    if (selectedMarkerKey && !selectedMarker) {
+      setSelectedMarkerKey(null);
+    }
+  }, [selectedMarker, selectedMarkerKey]);
+
   return (
     <>
       <MapView>
         <MapOverlay />
         <GameMapGeofences geofences={gameMap.geofences} />
         <MapAccuracy positions={cameraPositions} />
-        <GameMapMarkers markers={markers} />
+        <GameMapMarkers markers={markers} onMarkerClick={setSelectedMarkerKey} />
         <MapDefaultCamera filteredPositions={cameraPositions} />
         <MapRuler positions={cameraPositions} onActiveChange={noop} />
       </MapView>
       <MapScale />
+      {selectedMarker && (
+        <GameMapMarkerCard
+          marker={selectedMarker}
+          onClose={() => setSelectedMarkerKey(null)}
+          t={t}
+        />
+      )}
       <MapCurrentLocation />
       <MapGeocoder />
       {desktop && (

@@ -112,8 +112,9 @@ const SetupGamesPage = () => {
           <TableRow>
             <TableCell>{t('sharedName')}</TableCell>
             <TableCell>{t('gameStatus')}</TableCell>
+            <TableCell>{t('gameStartAt')}</TableCell>
+            <TableCell>{t('gameActivatedAt')}</TableCell>
             <TableCell>{t('gamePlannedEndAt')}</TableCell>
-            <TableCell>{t('gameStartedAt')}</TableCell>
             <TableCell>{t('gameFinishedAt')}</TableCell>
             <TableCell className={classes.columnAction} />
           </TableRow>
@@ -125,8 +126,9 @@ const SetupGamesPage = () => {
               <TableCell>
                 <GameStatusChip status={item.status} label={statusLabels[item.status]} />
               </TableCell>
-              <TableCell>{formatTime(item.plannedEndAt, 'minutes')}</TableCell>
               <TableCell>{formatTime(item.startedAt, 'minutes')}</TableCell>
+              <TableCell>{formatTime(item.activatedAt, 'minutes')}</TableCell>
+              <TableCell>{formatTime(item.plannedEndAt, 'minutes')}</TableCell>
               <TableCell>{formatTime(item.finishedAt, 'minutes')}</TableCell>
               <TableCell className={classes.columnAction} padding="none">
                 <CollectionActions
@@ -174,7 +176,7 @@ const SetupGamesPage = () => {
             </TableRow>
           ))}
           {hasMore && (
-            <TableShimmer ref={items.length > 0 ? sentinelRef : null} columns={6} endAction />
+            <TableShimmer ref={items.length > 0 ? sentinelRef : null} columns={7} endAction />
           )}
         </TableBody>
       </Table>

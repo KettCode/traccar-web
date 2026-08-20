@@ -1,4 +1,4 @@
-import { useId, useEffect } from 'react';
+import { useCallback, useId, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -6,15 +6,35 @@ import { map } from '../../map/core/MapView';
 import { formatTime } from '../../common/util/formatter';
 import { findFonts, toMapCoordinates } from '../../map/core/mapUtil';
 import { useAttributePreference } from '../../common/util/preferences';
-import { isValidCoordinate, markerColor, markerIcon, markerToPosition } from './gameMapUtils';
+import {
+  isValidCoordinate,
+  markerColor,
+  markerIcon,
+  markerKey,
+  markerToPosition,
+} from './gameMapUtils';
 
-const GameMapMarkers = ({ markers }) => {
+const GameMapMarkers = ({ markers, onMarkerClick }) => {
   const id = useId();
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const iconScale = useAttributePreference('iconScale', desktop ? 0.75 : 1);
 
   const positions = useSelector((state) => state.session.positions);
+
+  const onMouseEnter = () => (map.getCanvas().style.cursor = 'pointer');
+  const onMouseLeave = () => (map.getCanvas().style.cursor = '');
+
+  const onMarkerClickCallback = useCallback(
+    (event) => {
+      event.preventDefault();
+      const feature = event.features[0];
+      if (onMarkerClick) {
+        onMarkerClick(feature.properties.markerKey);
+      }
+    },
+    [onMarkerClick],
+  );
 
   useEffect(() => {
     map.addSource(id, {
@@ -63,7 +83,14 @@ const GameMapMarkers = ({ markers }) => {
       },
     });
 
+    map.on('mouseenter', id, onMouseEnter);
+    map.on('mouseleave', id, onMouseLeave);
+    map.on('click', id, onMarkerClickCallback);
+
     return () => {
+      map.off('mouseenter', id, onMouseEnter);
+      map.off('mouseleave', id, onMouseLeave);
+      map.off('click', id, onMarkerClickCallback);
       if (map.getLayer(`${id}-clusters`)) {
         map.removeLayer(`${id}-clusters`);
       }
@@ -74,7 +101,7 @@ const GameMapMarkers = ({ markers }) => {
         map.removeSource(id);
       }
     };
-  }, [iconScale, id]);
+  }, [iconScale, id, onMarkerClickCallback]);
 
   useEffect(() => {
     map.getSource(id)?.setData({
@@ -92,6 +119,7 @@ const GameMapMarkers = ({ markers }) => {
           },
           properties: {
             id: marker.positionId || marker.pingId || marker.memberId || marker.revealId,
+            markerKey: markerKey(marker),
             sortKey: marker.memberId || marker.revealId,
             name: marker.displayName,
             fixTime: marker.fixTime ? formatTime(marker.fixTime, 'seconds') : null,
