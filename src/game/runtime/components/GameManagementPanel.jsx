@@ -117,7 +117,7 @@ const GameZonesList = ({ state, actionLoading, onActivateGeofence, onDeactivateG
               geofence.active ? onDeactivateGeofence(geofence.id) : onActivateGeofence(geofence.id)
             }
           >
-            {geofence.active ? t('gameActionDeactivateZones') : t('gameActionActivateZones')}
+            {geofence.active ? t('gameActionDeactivateZone') : t('gameActionActivateZone')}
           </Button>
         </ManagementItem>
       ))}

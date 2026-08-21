@@ -7,6 +7,7 @@ import Loader from '../../common/components/Loader';
 import { useTranslation } from '../../common/components/LocalizationProvider';
 import PageLayout from '../../common/components/PageLayout';
 import { errorsActions } from '../../store';
+import { formatGameJokerType } from '../common/gameFormatters';
 import {
   activateGameGeofence,
   activateJoker,
@@ -20,6 +21,7 @@ import {
   startSpeedhunt,
   unlockJoker,
 } from '../api/gameRuntimeApi';
+import GameActionConfirmDialog from './components/GameActionConfirmDialog';
 import GameLiveHeader from './components/GameLiveHeader';
 import GameManagementMetricsPanel from './components/GameManagementMetricsPanel';
 import GameManagementPanel from './components/GameManagementPanel';
@@ -61,6 +63,7 @@ const GamePage = () => {
   const [revealLoading, setRevealLoading] = useState(null);
   const [revealedLocationsByJoker, setRevealedLocationsByJoker] = useState({});
   const [selectedMember, setSelectedMember] = useState(null);
+  const [confirmAction, setConfirmAction] = useState(null);
 
   const activeHuntedMembers = useMemo(
     () => getActiveHuntedMembers(state?.members),
@@ -107,23 +110,105 @@ const GamePage = () => {
     }
   };
 
+  const getMemberDisplayName = (memberId) =>
+    state?.members?.find((member) => member.id === memberId)?.displayName || t('gameUnknownTarget');
+
+  const getGeofenceName = (gameGeofenceId) =>
+    state?.geofences?.find((geofence) => geofence.id === gameGeofenceId)?.name || gameGeofenceId;
+
+  const getActivateJokerConfirmTitle = (joker) => {
+    switch (joker.type) {
+      case 'skip_ping':
+        return t('gameConfirmSkipPingTitle');
+      case 'reveal_speedhunt':
+        return t('gameConfirmRevealSpeedhuntTitle');
+      case 'request_hunter_locations':
+        return t('gameConfirmRequestHunterLocationsTitle');
+      default:
+        return t('gameConfirmActivateJokerTitle');
+    }
+  };
+
+  const getJokerConfirmDetails = (joker, memberId) => {
+    const details = [{ label: t('gameJoker'), value: formatGameJokerType(t, joker.type) }];
+    const memberDisplayName =
+      joker.memberDisplayName || (memberId ? getMemberDisplayName(memberId) : null);
+    if (memberDisplayName) {
+      details.push({ label: t('gamePlayer'), value: memberDisplayName });
+    }
+    return details;
+  };
+
+  const requestConfirm = (action) => setConfirmAction(action);
+
+  const handleConfirmAction = async () => {
+    const success = await confirmAction.action();
+    if (success !== false) {
+      setConfirmAction(null);
+    }
+  };
+
   const handleStartSpeedhunt = (targetMemberId, closeSheet = false) =>
-    runAction('startSpeedhunt', () => startSpeedhunt(gameId, targetMemberId), closeSheet);
+    requestConfirm({
+      title: t('gameConfirmStartSpeedhuntTitle'),
+      details: [{ label: t('gameSpeedhuntTarget'), value: getMemberDisplayName(targetMemberId) }],
+      confirmLabel: t('gameActionStartSpeedhunt'),
+      confirmColor: 'error',
+      action: () =>
+        runAction('startSpeedhunt', () => startSpeedhunt(gameId, targetMemberId), closeSheet),
+    });
 
   const handleRequestSpeedhuntPing = (speedhuntId) =>
-    runAction('requestSpeedhuntPing', () => requestSpeedhuntPing(gameId, speedhuntId));
+    requestConfirm({
+      title: t('gameConfirmRequestSpeedhuntPingTitle'),
+      message: t('gameConfirmRequestSpeedhuntPingMessage'),
+      confirmLabel: t('gameActionRequestSpeedhuntPing'),
+      confirmColor: 'error',
+      action: () =>
+        runAction('requestSpeedhuntPing', () => requestSpeedhuntPing(gameId, speedhuntId)),
+    });
 
   const handleFinishSpeedhunt = (speedhuntId) =>
-    runAction('finishSpeedhunt', () => finishSpeedhunt(gameId, speedhuntId));
+    requestConfirm({
+      title: t('gameConfirmFinishSpeedhuntTitle'),
+      message: t('gameConfirmFinishSpeedhuntMessage'),
+      confirmLabel: t('gameActionFinishSpeedhunt'),
+      confirmColor: 'warning',
+      action: () => runAction('finishSpeedhunt', () => finishSpeedhunt(gameId, speedhuntId)),
+    });
 
   const handleUnlockJoker = (memberId, type) =>
-    runAction('unlockJoker', () => unlockJoker(gameId, memberId, type));
+    requestConfirm({
+      title: t('gameConfirmUnlockJokerTitle'),
+      details: [
+        { label: t('gameJoker'), value: formatGameJokerType(t, type) },
+        { label: t('gamePlayer'), value: getMemberDisplayName(memberId) },
+      ],
+      confirmLabel: t('gameActionUnlockJoker'),
+      action: () => runAction('unlockJoker', () => unlockJoker(gameId, memberId, type)),
+    });
 
-  const handleActivateJoker = (joker, payload) =>
-    runAction('activateJoker', () => activateJoker(gameId, joker.id, payload));
+  const handleActivateJoker = (joker, payload) => {
+    if (joker.type === 'fake_ping' && payload) {
+      return runAction('activateJoker', () => activateJoker(gameId, joker.id, payload));
+    }
+    return requestConfirm({
+      title: getActivateJokerConfirmTitle(joker),
+      details: getJokerConfirmDetails(joker),
+      confirmLabel: t('gameActionActivateJoker'),
+      confirmColor: joker.type === 'skip_ping' ? 'warning' : 'primary',
+      action: () => runAction('activateJoker', () => activateJoker(gameId, joker.id, payload)),
+    });
+  };
 
   const handleCancelJoker = (joker) =>
-    runAction('cancelJoker', () => cancelJoker(gameId, joker.id));
+    requestConfirm({
+      title: t('gameConfirmCancelJokerTitle'),
+      details: getJokerConfirmDetails(joker),
+      confirmLabel: t('gameActionCancelJoker'),
+      confirmColor: 'warning',
+      action: () => runAction('cancelJoker', () => cancelJoker(gameId, joker.id)),
+    });
 
   const handleShowRevealLocations = async (joker) => {
     setRevealLoading(joker.id);
@@ -146,20 +231,46 @@ const GamePage = () => {
   };
 
   const handleCreateCatch = (memberId, note) =>
-    runAction('createCatch', () => createCatch(gameId, memberId, note), true);
+    requestConfirm({
+      title: t('gameConfirmCreateCatchTitle'),
+      details: [{ label: t('gamePlayer'), value: getMemberDisplayName(memberId) }],
+      confirmLabel: t('gameActionCreateCatch'),
+      confirmColor: 'error',
+      action: () => runAction('createCatch', () => createCatch(gameId, memberId, note), true),
+    });
 
   const handleConvertToHunter = (memberId) =>
-    runAction('convertMemberToHunter', () => convertMemberToHunter(gameId, memberId), true);
+    requestConfirm({
+      title: t('gameConfirmConvertToHunterTitle'),
+      details: [{ label: t('gamePlayer'), value: getMemberDisplayName(memberId) }],
+      confirmLabel: t('gameActionConvertToHunter'),
+      confirmColor: 'error',
+      action: () =>
+        runAction('convertMemberToHunter', () => convertMemberToHunter(gameId, memberId), true),
+    });
 
   const handleActivateGeofence = (gameGeofenceId) =>
-    runAction(`activateGeofence-${gameGeofenceId}`, () =>
-      activateGameGeofence(gameId, gameGeofenceId),
-    );
+    requestConfirm({
+      title: t('gameConfirmActivateZoneTitle'),
+      details: [{ label: t('gameZone'), value: getGeofenceName(gameGeofenceId) }],
+      confirmLabel: t('gameActionActivateZone'),
+      action: () =>
+        runAction(`activateGeofence-${gameGeofenceId}`, () =>
+          activateGameGeofence(gameId, gameGeofenceId),
+        ),
+    });
 
   const handleDeactivateGeofence = (gameGeofenceId) =>
-    runAction(`deactivateGeofence-${gameGeofenceId}`, () =>
-      deactivateGameGeofence(gameId, gameGeofenceId),
-    );
+    requestConfirm({
+      title: t('gameConfirmDeactivateZoneTitle'),
+      details: [{ label: t('gameZone'), value: getGeofenceName(gameGeofenceId) }],
+      confirmLabel: t('gameActionDeactivateZone'),
+      confirmColor: 'warning',
+      action: () =>
+        runAction(`deactivateGeofence-${gameGeofenceId}`, () =>
+          deactivateGameGeofence(gameId, gameGeofenceId),
+        ),
+    });
 
   let content;
 
@@ -251,6 +362,13 @@ const GamePage = () => {
           onCancelJoker={handleCancelJoker}
           onCreateCatch={handleCreateCatch}
           onConvertToHunter={handleConvertToHunter}
+          t={t}
+        />
+        <GameActionConfirmDialog
+          action={confirmAction}
+          loading={Boolean(actionLoading)}
+          onCancel={() => setConfirmAction(null)}
+          onConfirm={handleConfirmAction}
           t={t}
         />
       </Container>
