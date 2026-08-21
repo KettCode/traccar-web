@@ -6,10 +6,9 @@ import { getGameMap } from '../../api/gameRuntimeApi';
 const emptyMap = {
   memberMarkers: [],
   geofences: [],
-  revealedMarkers: [],
 };
 
-const useGameMap = (gameId, include) => {
+const useGameMap = (gameId) => {
   const dispatch = useDispatch();
 
   const [gameMap, setGameMap] = useState(emptyMap);
@@ -27,7 +26,7 @@ const useGameMap = (gameId, include) => {
 
     const controller = new AbortController();
     setLoading(true);
-    getGameMap(gameId, include, { signal: controller.signal })
+    getGameMap(gameId, { signal: controller.signal })
       .then((map) => setGameMap(map || emptyMap))
       .catch((error) => {
         if (error.name !== 'AbortError') {
@@ -40,7 +39,7 @@ const useGameMap = (gameId, include) => {
         }
       });
     return () => controller.abort();
-  }, [dispatch, gameId, include, reloadToken]);
+  }, [dispatch, gameId, reloadToken]);
 
   return { gameMap, setGameMap, loading, reload };
 };

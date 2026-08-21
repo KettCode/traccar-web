@@ -30,13 +30,8 @@ export const getGameState = async (gameId, include, init) => {
   return response.json();
 };
 
-export const getGameMap = async (gameId, include, init) => {
-  const query = new URLSearchParams();
-  if (include) {
-    query.set('include', include);
-  }
-  const suffix = query.size ? `?${query.toString()}` : '';
-  const response = await fetchOrThrow(`/api/games/${gameId}/map${suffix}`, init);
+export const getGameMap = async (gameId, init) => {
+  const response = await fetchOrThrow(`/api/games/${gameId}/map`, init);
   return response.json();
 };
 
@@ -57,6 +52,14 @@ export const activateJoker = (gameId, jokerId, payload) =>
 
 export const cancelJoker = (gameId, jokerId) =>
   postGameAction(`/api/games/${gameId}/jokers/${jokerId}/cancel`);
+
+export const getJokerRevealedLocations = async (gameId, jokerId, init) => {
+  const response = await fetchOrThrow(
+    `/api/games/${gameId}/jokers/${jokerId}/revealed-locations`,
+    init,
+  );
+  return response.json();
+};
 
 export const createCatch = (gameId, caughtMemberId, note) =>
   postGameAction(`/api/games/${gameId}/catches`, { caughtMemberId, note });

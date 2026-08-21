@@ -3,7 +3,18 @@ import { alpha } from '@mui/material/styles';
 import { formatGameJokerType } from '../../common/gameFormatters';
 import GameJokerDeck from './GameJokerDeck';
 
-const GameOwnJokerCard = ({ jokers, summary, canUseJoker, actionLoading, onActivateJoker, t }) => {
+const GameOwnJokerCard = ({
+  jokers,
+  summary,
+  canUseJoker,
+  actionLoading,
+  revealedLocationsByJoker,
+  revealLoading,
+  onActivateJoker,
+  onShowRevealLocations,
+  onHideRevealLocations,
+  t,
+}) => {
   return (
     <Card variant="outlined" sx={{ width: '100%', borderRadius: 4 }}>
       <CardContent sx={{ p: { xs: 1.25, sm: 1.5 }, '&:last-child': { pb: { xs: 1.25, sm: 1.5 } } }}>
@@ -41,7 +52,11 @@ const GameOwnJokerCard = ({ jokers, summary, canUseJoker, actionLoading, onActiv
             summary={summary}
             canUseJoker={canUseJoker}
             actionLoading={actionLoading}
+            revealedLocationsByJoker={revealedLocationsByJoker}
+            revealLoading={revealLoading}
             onActivate={onActivateJoker}
+            onShowRevealLocations={onShowRevealLocations}
+            onHideRevealLocations={onHideRevealLocations}
             t={t}
           />
         </Stack>

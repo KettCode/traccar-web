@@ -52,12 +52,7 @@ const GameMap = () => {
   const [selectedMarkerKey, setSelectedMarkerKey] = useState(null);
 
   const { currentGame, loading: currentGameLoading } = useCurrentGame();
-  const {
-    gameMap,
-    setGameMap,
-    loading: gameMapLoading,
-    reload,
-  } = useGameMap(currentGame?.id, null);
+  const { gameMap, setGameMap, loading: gameMapLoading, reload } = useGameMap(currentGame?.id);
 
   useEffect(() => {
     if (!currentGame?.id || mapUpdateToken === 0) {
@@ -77,10 +72,7 @@ const GameMap = () => {
     }
   }, [currentGame?.id, mapRefreshGameId, mapRefreshToken, reload]);
 
-  const markers = useMemo(
-    () => [...(gameMap.memberMarkers || []), ...(gameMap.revealedMarkers || [])],
-    [gameMap.memberMarkers, gameMap.revealedMarkers],
-  );
+  const markers = useMemo(() => gameMap.memberMarkers || [], [gameMap.memberMarkers]);
 
   const cameraPositions = useMemo(
     () => markers.map((marker) => markerToPosition(marker)).filter(isValidCoordinate),

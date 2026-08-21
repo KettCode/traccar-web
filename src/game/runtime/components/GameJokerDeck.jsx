@@ -2,7 +2,9 @@ import { Box, Button, Chip, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import BoltIcon from '@mui/icons-material/Bolt';
 import CasinoIcon from '@mui/icons-material/Casino';
+import MapIcon from '@mui/icons-material/Map';
 import { formatGameJokerStatus, formatGameJokerType } from '../../common/gameFormatters';
+import GameJokerRevealLocations from './GameJokerRevealLocations';
 import {
   getJokerActivationMessage,
   jokerStatusColor,
@@ -15,8 +17,12 @@ const GameJokerDeck = ({
   canUseJoker,
   canManageRuntime,
   actionLoading,
+  revealedLocationsByJoker,
+  revealLoading,
   onActivate,
   onCancel,
+  onShowRevealLocations,
+  onHideRevealLocations,
   t,
 }) => {
   if (!jokers || jokers.length === 0) {
@@ -37,6 +43,11 @@ const GameJokerDeck = ({
     <Stack spacing={1.25}>
       {jokers.map((joker) => {
         const activationMessage = getJokerActivationMessage(t, joker, summary);
+        const revealedLocations = revealedLocationsByJoker?.[joker.id];
+        const canShowRevealLocations =
+          joker.type === 'request_hunter_locations' &&
+          joker.status === 'used' &&
+          Boolean(onShowRevealLocations);
         return (
           <Box
             key={joker.id}
@@ -121,7 +132,26 @@ const GameJokerDeck = ({
                     {t('gameActionCancelJoker')}
                   </Button>
                 )}
+                {canShowRevealLocations && !revealedLocations && (
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    startIcon={<MapIcon />}
+                    disabled={Boolean(revealLoading)}
+                    onClick={() => onShowRevealLocations(joker)}
+                  >
+                    {t('gameActionShowHunterLocations')}
+                  </Button>
+                )}
               </Stack>
+
+              {revealedLocations && (
+                <GameJokerRevealLocations
+                  reveal={revealedLocations}
+                  onHide={() => onHideRevealLocations(joker)}
+                  t={t}
+                />
+              )}
 
               {activationMessage && joker.status === 'unlocked' && (
                 <Typography variant="caption" color="text.secondary">

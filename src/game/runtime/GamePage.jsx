@@ -15,6 +15,7 @@ import {
   createCatch,
   deactivateGameGeofence,
   finishSpeedhunt,
+  getJokerRevealedLocations,
   requestSpeedhuntPing,
   startSpeedhunt,
   unlockJoker,
@@ -57,6 +58,8 @@ const GamePage = () => {
   const { currentGame, loading: currentGameLoading } = useCurrentGame(gameRuntimeUser && !gameId);
   const { state, loading, reload } = useGameState(gameId, 'management');
   const [actionLoading, setActionLoading] = useState(null);
+  const [revealLoading, setRevealLoading] = useState(null);
+  const [revealedLocationsByJoker, setRevealedLocationsByJoker] = useState({});
   const [selectedMember, setSelectedMember] = useState(null);
 
   const activeHuntedMembers = useMemo(
@@ -120,6 +123,26 @@ const GamePage = () => {
   const handleCancelJoker = (joker) =>
     runAction('cancelJoker', () => cancelJoker(gameId, joker.id));
 
+  const handleShowRevealLocations = async (joker) => {
+    setRevealLoading(joker.id);
+    try {
+      const reveal = await getJokerRevealedLocations(gameId, joker.id);
+      setRevealedLocationsByJoker({ [joker.id]: reveal });
+    } catch (error) {
+      dispatch(errorsActions.push(error.message));
+    } finally {
+      setRevealLoading(null);
+    }
+  };
+
+  const handleHideRevealLocations = (joker) => {
+    setRevealedLocationsByJoker((current) => {
+      const next = { ...current };
+      delete next[joker.id];
+      return next;
+    });
+  };
+
   const handleCreateCatch = (memberId, note) =>
     runAction('createCatch', () => createCatch(gameId, memberId, note), true);
 
@@ -169,7 +192,11 @@ const GamePage = () => {
               summary={state.summary}
               canUseJoker={state.allowedActions.canUseJoker}
               actionLoading={actionLoading}
+              revealedLocationsByJoker={revealedLocationsByJoker}
+              revealLoading={revealLoading}
               onActivateJoker={handleActivateJoker}
+              onShowRevealLocations={handleShowRevealLocations}
+              onHideRevealLocations={handleHideRevealLocations}
               t={t}
             />
           )}
