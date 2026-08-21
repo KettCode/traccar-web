@@ -3,7 +3,10 @@ import { alpha } from '@mui/material/styles';
 import BoltIcon from '@mui/icons-material/Bolt';
 import CasinoIcon from '@mui/icons-material/Casino';
 import MapIcon from '@mui/icons-material/Map';
+import PlaceIcon from '@mui/icons-material/Place';
+import { useState } from 'react';
 import { formatGameJokerStatus, formatGameJokerType } from '../../common/gameFormatters';
+import GameFakePingDialog from './GameFakePingDialog';
 import GameJokerRevealLocations from './GameJokerRevealLocations';
 import {
   getJokerActivationMessage,
@@ -12,6 +15,7 @@ import {
 } from './gameRuntimeUi';
 
 const GameJokerDeck = ({
+  gameId,
   jokers,
   summary,
   canUseJoker,
@@ -25,6 +29,8 @@ const GameJokerDeck = ({
   onHideRevealLocations,
   t,
 }) => {
+  const [fakePingJoker, setFakePingJoker] = useState(null);
+
   if (!jokers || jokers.length === 0) {
     return (
       <Box
@@ -48,6 +54,7 @@ const GameJokerDeck = ({
           joker.type === 'request_hunter_locations' &&
           joker.status === 'used' &&
           Boolean(onShowRevealLocations);
+        const canChooseFakePing = joker.type === 'fake_ping' && joker.status === 'unlocked';
         return (
           <Box
             key={joker.id}
@@ -110,7 +117,7 @@ const GameJokerDeck = ({
               </Stack>
 
               <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                {canUseJoker && joker.status === 'unlocked' && (
+                {canUseJoker && joker.status === 'unlocked' && !canChooseFakePing && (
                   <Button
                     size="small"
                     variant="contained"
@@ -119,6 +126,17 @@ const GameJokerDeck = ({
                     onClick={() => onActivate(joker)}
                   >
                     {t('gameActionActivateJoker')}
+                  </Button>
+                )}
+                {canUseJoker && canChooseFakePing && (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    startIcon={<PlaceIcon />}
+                    disabled={Boolean(actionLoading)}
+                    onClick={() => setFakePingJoker(joker)}
+                  >
+                    {t('gameActionChooseFakePingLocation')}
                   </Button>
                 )}
                 {canManageRuntime && !terminalJokerStatuses.includes(joker.status) && (
@@ -162,6 +180,22 @@ const GameJokerDeck = ({
           </Box>
         );
       })}
+      {fakePingJoker && (
+        <GameFakePingDialog
+          open
+          gameId={gameId}
+          joker={fakePingJoker}
+          actionLoading={actionLoading}
+          onClose={() => setFakePingJoker(null)}
+          onActivate={async (joker, position) => {
+            const success = await onActivate(joker, position);
+            if (success !== false) {
+              setFakePingJoker(null);
+            }
+          }}
+          t={t}
+        />
+      )}
     </Stack>
   );
 };

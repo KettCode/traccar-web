@@ -98,8 +98,10 @@ const GamePage = () => {
       if (closeSheet) {
         setSelectedMember(null);
       }
+      return true;
     } catch (error) {
       dispatch(errorsActions.push(error.message));
+      return false;
     } finally {
       setActionLoading(null);
     }
@@ -117,8 +119,8 @@ const GamePage = () => {
   const handleUnlockJoker = (memberId, type) =>
     runAction('unlockJoker', () => unlockJoker(gameId, memberId, type));
 
-  const handleActivateJoker = (joker) =>
-    runAction('activateJoker', () => activateJoker(gameId, joker.id));
+  const handleActivateJoker = (joker, payload) =>
+    runAction('activateJoker', () => activateJoker(gameId, joker.id, payload));
 
   const handleCancelJoker = (joker) =>
     runAction('cancelJoker', () => cancelJoker(gameId, joker.id));
@@ -188,6 +190,7 @@ const GamePage = () => {
           {management && <GameManagementMetricsPanel state={state} t={t} />}
           {state.currentMember.role === 'hunted' && (
             <GameOwnJokerCard
+              gameId={gameId}
               jokers={ownJokers}
               summary={state.summary}
               canUseJoker={state.allowedActions.canUseJoker}

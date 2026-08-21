@@ -8,6 +8,8 @@ export const markerColor = (marker) => {
   switch (marker.source) {
     case 'speedhunt':
       return 'error';
+    case 'fake_ping':
+      return 'warning';
     case 'regular':
     case 'hunter_locations':
       return 'info';
@@ -17,6 +19,9 @@ export const markerColor = (marker) => {
 };
 
 export const markerIcon = (marker) => {
+  if (marker.source === 'fake_ping') {
+    return 'fakePing';
+  }
   switch (marker.role) {
     case 'hunter':
       return 'hunter';

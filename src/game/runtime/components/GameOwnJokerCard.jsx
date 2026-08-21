@@ -4,6 +4,7 @@ import { formatGameJokerType } from '../../common/gameFormatters';
 import GameJokerDeck from './GameJokerDeck';
 
 const GameOwnJokerCard = ({
+  gameId,
   jokers,
   summary,
   canUseJoker,
@@ -48,6 +49,7 @@ const GameOwnJokerCard = ({
             </Box>
           )}
           <GameJokerDeck
+            gameId={gameId}
             jokers={jokers}
             summary={summary}
             canUseJoker={canUseJoker}

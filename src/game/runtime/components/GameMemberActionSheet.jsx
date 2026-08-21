@@ -200,6 +200,7 @@ const GameMemberActionSheet = ({
                 <Typography variant="subtitle2">{t('gamePlayerJokers')}</Typography>
               </Stack>
               <GameJokerDeck
+                gameId={state.game.id}
                 jokers={memberJokers}
                 summary={state.summary}
                 canUseJoker={state.allowedActions.canUseJoker}

@@ -12,6 +12,7 @@ import carSvg from '../../resources/images/icon/car.svg';
 import camperSvg from '../../resources/images/icon/camper.svg';
 import craneSvg from '../../resources/images/icon/crane.svg';
 import defaultSvg from '../../resources/images/icon/default.svg';
+import fakePingSvg from '../../resources/images/icon/fakePing.svg';
 import startSvg from '../../resources/images/icon/start.svg';
 import finishSvg from '../../resources/images/icon/finish.svg';
 import gameManagementSvg from '../../resources/images/icon/gameManagement.svg';
@@ -39,6 +40,7 @@ export const mapIcons = {
   camper: camperSvg,
   crane: craneSvg,
   default: defaultSvg,
+  fakePing: fakePingSvg,
   finish: finishSvg,
   gameManagement: gameManagementSvg,
   helicopter: helicopterSvg,
@@ -85,7 +87,7 @@ export default async () => {
   await Promise.all(
     Object.keys(mapIcons).map(async (category) => {
       const results = [];
-      ['info', 'success', 'error', 'neutral'].forEach((color) => {
+      ['info', 'success', 'error', 'warning', 'neutral'].forEach((color) => {
         results.push(
           loadImage(mapIcons[category]).then((icon) => {
             mapImages[`${category}-${color}`] = prepareIcon(

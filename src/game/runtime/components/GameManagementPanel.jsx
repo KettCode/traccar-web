@@ -160,6 +160,7 @@ const GameManagementPanel = ({
         count={jokers.length}
       >
         <GameJokerDeck
+          gameId={state.game.id}
           jokers={jokers}
           summary={state.summary}
           canUseJoker={state.allowedActions.canUseJoker}

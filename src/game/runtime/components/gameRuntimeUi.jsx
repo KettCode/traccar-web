@@ -113,9 +113,6 @@ export const getJokerActivationMessage = (t, joker, summary) => {
   if (joker.status !== 'unlocked') {
     return t('gameJokerActivationUnavailable');
   }
-  if (joker.type === 'fake_ping') {
-    return t('gameFakePingNeedsMap');
-  }
   if (joker.type === 'reveal_speedhunt' && !summary.speedhuntActive) {
     return t('gameRevealSpeedhuntNeedsActive');
   }
