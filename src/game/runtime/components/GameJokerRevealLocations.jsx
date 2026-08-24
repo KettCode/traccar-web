@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Fade,
   IconButton,
   Stack,
   Typography,
@@ -30,7 +31,15 @@ const GameJokerRevealLocations = ({ reveal, onHide, t }) => {
   );
 
   return (
-    <Dialog open onClose={onHide} fullScreen={fullScreen} fullWidth maxWidth="lg">
+    <Dialog
+      open
+      onClose={onHide}
+      fullScreen={fullScreen}
+      fullWidth
+      maxWidth="lg"
+      TransitionComponent={Fade}
+      transitionDuration={420}
+    >
       <DialogTitle sx={{ pr: 7 }}>
         <Stack spacing={0.25}>
           <Typography variant="h6">{t('gameHunterLocations')}</Typography>

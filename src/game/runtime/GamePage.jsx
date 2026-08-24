@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Alert, Card, CardContent, Container, Grid, Stack, Typography } from '@mui/material';
@@ -22,6 +22,7 @@ import {
   unlockJoker,
 } from '../api/gameRuntimeApi';
 import GameActionConfirmDialog from './components/GameActionConfirmDialog';
+import GameJokerAnimationOverlay from './components/GameJokerAnimationOverlay';
 import GameLiveHeader from './components/GameLiveHeader';
 import GameManagementMetricsPanel from './components/GameManagementMetricsPanel';
 import GameManagementPanel from './components/GameManagementPanel';
@@ -64,6 +65,10 @@ const GamePage = () => {
   const [revealedLocationsByJoker, setRevealedLocationsByJoker] = useState({});
   const [selectedMember, setSelectedMember] = useState(null);
   const [confirmAction, setConfirmAction] = useState(null);
+  const [jokerAnimation, setJokerAnimation] = useState(null);
+  const [pendingJokerAnimation, setPendingJokerAnimation] = useState(null);
+  const pendingRevealLocationsRef = useRef({});
+  const revealLocationsAfterAnimationRef = useRef(null);
 
   const activeHuntedMembers = useMemo(
     () => getActiveHuntedMembers(state?.members),
@@ -92,6 +97,29 @@ const GamePage = () => {
       reload();
     }
   }, [gameId, reload, stateRefreshGameId, stateRefreshToken]);
+
+  useEffect(() => {
+    if (!pendingJokerAnimation) {
+      return undefined;
+    }
+
+    const targetName = state?.summary?.speedhuntTargetDisplayName;
+    if (pendingJokerAnimation.type === 'reveal_speedhunt' && targetName) {
+      setJokerAnimation({ ...pendingJokerAnimation, targetName });
+      setPendingJokerAnimation(null);
+      return undefined;
+    }
+
+    const timeout = setTimeout(() => {
+      setJokerAnimation({
+        ...pendingJokerAnimation,
+        targetName: targetName || t('gameJokerAnimationTargetUnavailable'),
+      });
+      setPendingJokerAnimation(null);
+    }, 8000);
+
+    return () => clearTimeout(timeout);
+  }, [pendingJokerAnimation, state?.summary?.speedhuntTargetDisplayName, t]);
 
   const runAction = async (key, action, closeSheet = false) => {
     setActionLoading(key);
@@ -137,6 +165,41 @@ const GamePage = () => {
       details.push({ label: t('gamePlayer'), value: memberDisplayName });
     }
     return details;
+  };
+
+  const showJokerAnimation = (joker) => {
+    const animation = {
+      key: `${joker.id}-${Date.now()}`,
+      type: joker.type,
+      jokerName: formatGameJokerType(t, joker.type),
+      memberName: joker.memberDisplayName,
+    };
+
+    if (joker.type === 'reveal_speedhunt') {
+      const targetName = state?.summary?.speedhuntTargetDisplayName;
+      if (targetName) {
+        setJokerAnimation({ ...animation, targetName });
+      } else {
+        setPendingJokerAnimation(animation);
+      }
+      return;
+    }
+
+    setJokerAnimation(animation);
+    if (joker.type === 'request_hunter_locations') {
+      revealLocationsAfterAnimationRef.current = joker;
+      handleShowRevealLocations(joker, true);
+    }
+  };
+
+  const runActivateJoker = async (joker, payload) => {
+    const success = await runAction('activateJoker', () =>
+      activateJoker(gameId, joker.id, payload),
+    );
+    if (success) {
+      showJokerAnimation(joker);
+    }
+    return success;
   };
 
   const requestConfirm = (action) => setConfirmAction(action);
@@ -190,14 +253,14 @@ const GamePage = () => {
 
   const handleActivateJoker = (joker, payload) => {
     if (joker.type === 'fake_ping' && payload) {
-      return runAction('activateJoker', () => activateJoker(gameId, joker.id, payload));
+      return runActivateJoker(joker, payload);
     }
     return requestConfirm({
       title: getActivateJokerConfirmTitle(joker),
       details: getJokerConfirmDetails(joker),
       confirmLabel: t('gameActionActivateJoker'),
       confirmColor: joker.type === 'skip_ping' ? 'warning' : 'primary',
-      action: () => runAction('activateJoker', () => activateJoker(gameId, joker.id, payload)),
+      action: () => runActivateJoker(joker, payload),
     });
   };
 
@@ -210,11 +273,22 @@ const GamePage = () => {
       action: () => runAction('cancelJoker', () => cancelJoker(gameId, joker.id)),
     });
 
-  const handleShowRevealLocations = async (joker) => {
+  const handleShowRevealLocations = async (joker, deferUntilAnimationEnds = false) => {
     setRevealLoading(joker.id);
     try {
       const reveal = await getJokerRevealedLocations(gameId, joker.id);
-      setRevealedLocationsByJoker({ [joker.id]: reveal });
+      if (deferUntilAnimationEnds) {
+        if (revealLocationsAfterAnimationRef.current?.id === joker.id) {
+          pendingRevealLocationsRef.current = {
+            ...pendingRevealLocationsRef.current,
+            [joker.id]: reveal,
+          };
+        } else {
+          setRevealedLocationsByJoker({ [joker.id]: reveal });
+        }
+      } else {
+        setRevealedLocationsByJoker({ [joker.id]: reveal });
+      }
     } catch (error) {
       dispatch(errorsActions.push(error.message));
     } finally {
@@ -228,6 +302,21 @@ const GamePage = () => {
       delete next[joker.id];
       return next;
     });
+  };
+
+  const handleCloseJokerAnimation = () => {
+    const revealJoker = revealLocationsAfterAnimationRef.current;
+    setJokerAnimation(null);
+    if (revealJoker) {
+      const reveal = pendingRevealLocationsRef.current[revealJoker.id];
+      revealLocationsAfterAnimationRef.current = null;
+      if (reveal) {
+        const nextPending = { ...pendingRevealLocationsRef.current };
+        delete nextPending[revealJoker.id];
+        pendingRevealLocationsRef.current = nextPending;
+        setRevealedLocationsByJoker({ [revealJoker.id]: reveal });
+      }
+    }
   };
 
   const handleCreateCatch = (memberId, note) =>
@@ -369,6 +458,12 @@ const GamePage = () => {
           loading={Boolean(actionLoading)}
           onCancel={() => setConfirmAction(null)}
           onConfirm={handleConfirmAction}
+          t={t}
+        />
+        <GameJokerAnimationOverlay
+          key={jokerAnimation?.key}
+          animation={jokerAnimation}
+          onClose={handleCloseJokerAnimation}
           t={t}
         />
       </Container>
