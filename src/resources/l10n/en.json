@@ -165,6 +165,7 @@
     "gameProfileGame": "Game",
     "gameConnectionLost": "Connection lost",
     "gameYourJokers": "Your jokers",
+    "gameActionConfirmOk": "Ok",
     "gameActionStartSpeedhunt": "Start speedhunt",
     "gameActionRequestSpeedhuntPing": "Request speedhunt ping",
     "gameSummary": "Summary",

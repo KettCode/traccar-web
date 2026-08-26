@@ -61,7 +61,7 @@ const GameActionConfirmDialog = ({ action, loading, onCancel, onConfirm, t }) =>
           disabled={loading}
           onClick={onConfirm}
         >
-          {action.confirmLabel}
+          {t('gameActionConfirmOk')}
         </Button>
       </DialogActions>
     </Dialog>

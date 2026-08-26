@@ -215,7 +215,6 @@ const GamePage = () => {
     requestConfirm({
       title: t('gameConfirmStartSpeedhuntTitle'),
       details: [{ label: t('gameSpeedhuntTarget'), value: getMemberDisplayName(targetMemberId) }],
-      confirmLabel: t('gameActionStartSpeedhunt'),
       confirmColor: 'error',
       action: () =>
         runAction('startSpeedhunt', () => startSpeedhunt(gameId, targetMemberId), closeSheet),
@@ -225,7 +224,6 @@ const GamePage = () => {
     requestConfirm({
       title: t('gameConfirmRequestSpeedhuntPingTitle'),
       message: t('gameConfirmRequestSpeedhuntPingMessage'),
-      confirmLabel: t('gameActionRequestSpeedhuntPing'),
       confirmColor: 'error',
       action: () =>
         runAction('requestSpeedhuntPing', () => requestSpeedhuntPing(gameId, speedhuntId)),
@@ -235,7 +233,6 @@ const GamePage = () => {
     requestConfirm({
       title: t('gameConfirmFinishSpeedhuntTitle'),
       message: t('gameConfirmFinishSpeedhuntMessage'),
-      confirmLabel: t('gameActionFinishSpeedhunt'),
       confirmColor: 'warning',
       action: () => runAction('finishSpeedhunt', () => finishSpeedhunt(gameId, speedhuntId)),
     });
@@ -247,7 +244,6 @@ const GamePage = () => {
         { label: t('gameJoker'), value: formatGameJokerType(t, type) },
         { label: t('gamePlayer'), value: getMemberDisplayName(memberId) },
       ],
-      confirmLabel: t('gameActionUnlockJoker'),
       action: () => runAction('unlockJoker', () => unlockJoker(gameId, memberId, type)),
     });
 
@@ -258,7 +254,6 @@ const GamePage = () => {
     return requestConfirm({
       title: getActivateJokerConfirmTitle(joker),
       details: getJokerConfirmDetails(joker),
-      confirmLabel: t('gameActionActivateJoker'),
       confirmColor: joker.type === 'skip_ping' ? 'warning' : 'primary',
       action: () => runActivateJoker(joker, payload),
     });
@@ -268,7 +263,6 @@ const GamePage = () => {
     requestConfirm({
       title: t('gameConfirmCancelJokerTitle'),
       details: getJokerConfirmDetails(joker),
-      confirmLabel: t('gameActionCancelJoker'),
       confirmColor: 'warning',
       action: () => runAction('cancelJoker', () => cancelJoker(gameId, joker.id)),
     });
@@ -323,7 +317,6 @@ const GamePage = () => {
     requestConfirm({
       title: t('gameConfirmCreateCatchTitle'),
       details: [{ label: t('gamePlayer'), value: getMemberDisplayName(memberId) }],
-      confirmLabel: t('gameActionCreateCatch'),
       confirmColor: 'error',
       action: () => runAction('createCatch', () => createCatch(gameId, memberId, note), true),
     });
@@ -332,7 +325,6 @@ const GamePage = () => {
     requestConfirm({
       title: t('gameConfirmConvertToHunterTitle'),
       details: [{ label: t('gamePlayer'), value: getMemberDisplayName(memberId) }],
-      confirmLabel: t('gameActionConvertToHunter'),
       confirmColor: 'error',
       action: () =>
         runAction('convertMemberToHunter', () => convertMemberToHunter(gameId, memberId), true),
@@ -342,7 +334,6 @@ const GamePage = () => {
     requestConfirm({
       title: t('gameConfirmActivateZoneTitle'),
       details: [{ label: t('gameZone'), value: getGeofenceName(gameGeofenceId) }],
-      confirmLabel: t('gameActionActivateZone'),
       action: () =>
         runAction(`activateGeofence-${gameGeofenceId}`, () =>
           activateGameGeofence(gameId, gameGeofenceId),
@@ -353,7 +344,6 @@ const GamePage = () => {
     requestConfirm({
       title: t('gameConfirmDeactivateZoneTitle'),
       details: [{ label: t('gameZone'), value: getGeofenceName(gameGeofenceId) }],
-      confirmLabel: t('gameActionDeactivateZone'),
       confirmColor: 'warning',
       action: () =>
         runAction(`deactivateGeofence-${gameGeofenceId}`, () =>
