@@ -117,6 +117,7 @@
     "gameMaxPings": "Maximale Pings",
     "gameEndedAt": "Beendet um",
     "gamePing": "Ping",
+    "gameKnownRegularPingMarker": "Bekannter Standort",
     "gamePings": "Pings",
     "gameSource": "Quelle",
     "gameSkipped": "Übersprungen",

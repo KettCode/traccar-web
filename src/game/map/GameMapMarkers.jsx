@@ -4,10 +4,12 @@ import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { map } from '../../map/core/MapView';
 import { formatTime } from '../../common/util/formatter';
+import { useTranslation } from '../../common/components/LocalizationProvider';
 import { findFonts, toMapCoordinates } from '../../map/core/mapUtil';
 import { useAttributePreference } from '../../common/util/preferences';
 import {
   isValidCoordinate,
+  markerDisplayName,
   markerColor,
   markerIcon,
   markerKey,
@@ -17,6 +19,7 @@ import {
 const GameMapMarkers = ({ markers, onMarkerClick }) => {
   const id = useId();
   const theme = useTheme();
+  const t = useTranslation();
   const desktop = useMediaQuery(theme.breakpoints.up('md'));
   const iconScale = useAttributePreference('iconScale', desktop ? 0.75 : 1);
 
@@ -121,14 +124,14 @@ const GameMapMarkers = ({ markers, onMarkerClick }) => {
             id: marker.positionId || marker.pingId || marker.memberId || marker.revealId,
             markerKey: markerKey(marker),
             sortKey: marker.memberId || marker.revealId,
-            name: marker.displayName,
+            name: markerDisplayName(t, marker),
             fixTime: marker.fixTime ? formatTime(marker.fixTime, 'seconds') : null,
             icon: markerIcon(marker),
             color: markerColor(marker),
           },
         })),
     });
-  }, [id, markers, positions]);
+  }, [id, markers, positions, t]);
 
   return null;
 };

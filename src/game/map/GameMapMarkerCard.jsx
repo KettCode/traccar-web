@@ -17,7 +17,7 @@ import {
 import { makeStyles } from 'tss-react/mui';
 import CloseIcon from '@mui/icons-material/Close';
 import PendingIcon from '@mui/icons-material/Pending';
-import { formatCoordinate, formatDistance, formatTime } from '../../common/util/formatter';
+import { formatCoordinate, formatTime } from '../../common/util/formatter';
 import { useAttributePreference, usePreference } from '../../common/util/preferences';
 
 const useStyles = makeStyles()((theme) => ({
@@ -75,6 +75,8 @@ const markerSourceLabel = (t, source) => {
       return t('gameSpeedhunt');
     case 'regular':
       return t('gamePing');
+    case 'known_regular_ping':
+      return t('gameKnownRegularPingMarker');
     case 'hunter_locations':
       return t('gameReveal');
     default:
@@ -106,7 +108,6 @@ const StatusRow = ({ name, content }) => {
 const GameMapMarkerCard = ({ marker, onClose, t }) => {
   const { classes } = useStyles();
   const coordinateFormat = usePreference('coordinateFormat');
-  const distanceUnit = useAttributePreference('distanceUnit');
   const navigationAppLink = useAttributePreference('navigationAppLink');
   const navigationAppTitle = useAttributePreference('navigationAppTitle');
   const [anchorEl, setAnchorEl] = useState(null);
@@ -133,14 +134,6 @@ const GameMapMarkerCard = ({ marker, onClose, t }) => {
               <StatusRow
                 name={t('positionFixTime')}
                 content={formatTime(marker.fixTime, 'seconds')}
-              />
-              <StatusRow
-                name={t('positionAccuracy')}
-                content={
-                  Number.isFinite(marker.accuracy)
-                    ? formatDistance(marker.accuracy, distanceUnit, t)
-                    : null
-                }
               />
               <StatusRow
                 name={t('positionLatitude')}

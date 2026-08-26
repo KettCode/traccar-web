@@ -16,7 +16,6 @@ import { useTheme } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import MapView, { map } from '../../../map/core/MapView';
 import MapDefaultCamera from '../../../map/main/MapDefaultCamera';
-import MapAccuracy from '../../../map/main/MapAccuracy';
 import Loader from '../../../common/components/Loader';
 import { formatCoordinate } from '../../../common/util/formatter';
 import { usePreference } from '../../../common/util/preferences';
@@ -135,7 +134,6 @@ const GameFakePingDialog = ({ open, gameId, joker, actionLoading, onClose, onAct
           >
             <MapView>
               <GameMapGeofences geofences={gameMap.geofences} />
-              <MapAccuracy positions={cameraPositions} />
               <GameMapMarkers markers={selectedMarkers} />
               <MapDefaultCamera filteredPositions={cameraPositions} />
               <MapClickSelector onSelect={setSelectedPosition} />

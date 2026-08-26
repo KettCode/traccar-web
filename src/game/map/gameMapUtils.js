@@ -10,6 +10,8 @@ export const markerColor = (marker) => {
       return 'error';
     case 'fake_ping':
       return 'warning';
+    case 'known_regular_ping':
+      return 'neutral';
     case 'regular':
     case 'hunter_locations':
       return 'info';
@@ -22,6 +24,9 @@ export const markerIcon = (marker) => {
   if (marker.source === 'fake_ping') {
     return 'fakePing';
   }
+  if (marker.source === 'known_regular_ping') {
+    return 'knownPing';
+  }
   switch (marker.role) {
     case 'hunter':
       return 'hunter';
@@ -32,6 +37,13 @@ export const markerIcon = (marker) => {
     default:
       return 'person';
   }
+};
+
+export const markerDisplayName = (t, marker) => {
+  if (marker.source === 'known_regular_ping') {
+    return t('gameKnownRegularPingMarker');
+  }
+  return marker.displayName;
 };
 
 export const markerToPosition = (marker, position) => ({
@@ -58,6 +70,7 @@ export const applyGameMapUpdate = (current, update) => {
   const next = {
     ...current,
     memberMarkers: mergeByKey(current.memberMarkers, update.markers, 'memberId'),
+    knowledgeMarkers: mergeByKey(current.knowledgeMarkers, update.knowledgeMarkers, 'memberId'),
     geofences: mergeByKey(current.geofences, update.geofences, 'id'),
   };
   next.memberMarkers = removeByKey(next.memberMarkers, update.removedMemberIds, 'memberId');

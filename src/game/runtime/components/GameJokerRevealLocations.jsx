@@ -15,7 +15,6 @@ import { useTheme } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import MapView from '../../../map/core/MapView';
 import MapDefaultCamera from '../../../map/main/MapDefaultCamera';
-import MapAccuracy from '../../../map/main/MapAccuracy';
 import { formatTime } from '../../../common/util/formatter';
 import GameMapMarkers from '../../map/GameMapMarkers';
 import { isValidCoordinate, markerToPosition } from '../../map/gameMapUtils';
@@ -69,7 +68,6 @@ const GameJokerRevealLocations = ({ reveal, onHide, t }) => {
             })}
           >
             <MapView>
-              <MapAccuracy positions={cameraPositions} />
               <GameMapMarkers markers={markers} />
               <MapDefaultCamera filteredPositions={cameraPositions} />
             </MapView>

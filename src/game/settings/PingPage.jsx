@@ -122,12 +122,6 @@ const PingPage = () => {
                 onChange={(event) => setItem({ ...item, longitude: toNumber(event.target.value) })}
                 label={t('positionLongitude')}
               />
-              <TextField
-                type="number"
-                value={item.accuracy ?? 0}
-                onChange={(event) => setItem({ ...item, accuracy: toNumber(event.target.value) })}
-                label={t('positionAccuracy')}
-              />
               <SelectField
                 value={item.speedhuntId || 0}
                 emptyValue={0}

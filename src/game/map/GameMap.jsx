@@ -12,7 +12,6 @@ import MapGeocoder from '../../map/control/MapGeocoder';
 import MapScale from '../../map/MapScale';
 import MapRuler from '../../map/control/MapRuler';
 import MapDefaultCamera from '../../map/main/MapDefaultCamera';
-import MapAccuracy from '../../map/main/MapAccuracy';
 import Loader from '../../common/components/Loader';
 import { useTranslation } from '../../common/components/LocalizationProvider';
 import useCurrentGame from '../runtime/hooks/useCurrentGame';
@@ -72,7 +71,15 @@ const GameMap = () => {
     }
   }, [currentGame?.id, mapRefreshGameId, mapRefreshToken, reload]);
 
-  const markers = useMemo(() => gameMap.memberMarkers || [], [gameMap.memberMarkers]);
+  const memberMarkers = useMemo(() => gameMap.memberMarkers || [], [gameMap.memberMarkers]);
+  const knowledgeMarkers = useMemo(
+    () => gameMap.knowledgeMarkers || [],
+    [gameMap.knowledgeMarkers],
+  );
+  const markers = useMemo(
+    () => [...memberMarkers, ...knowledgeMarkers],
+    [memberMarkers, knowledgeMarkers],
+  );
 
   const cameraPositions = useMemo(
     () => markers.map((marker) => markerToPosition(marker)).filter(isValidCoordinate),
@@ -100,8 +107,8 @@ const GameMap = () => {
       <MapView>
         <MapOverlay />
         <GameMapGeofences geofences={gameMap.geofences} />
-        <MapAccuracy positions={cameraPositions} />
-        <GameMapMarkers markers={markers} onMarkerClick={setSelectedMarkerKey} />
+        <GameMapMarkers markers={memberMarkers} onMarkerClick={setSelectedMarkerKey} />
+        <GameMapMarkers markers={knowledgeMarkers} onMarkerClick={setSelectedMarkerKey} />
         <MapDefaultCamera filteredPositions={cameraPositions} />
         <MapRuler positions={cameraPositions} onActiveChange={noop} />
       </MapView>

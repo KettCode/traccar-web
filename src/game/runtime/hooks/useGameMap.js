@@ -5,6 +5,7 @@ import { getGameMap } from '../../api/gameRuntimeApi';
 
 const emptyMap = {
   memberMarkers: [],
+  knowledgeMarkers: [],
   geofences: [],
 };
 

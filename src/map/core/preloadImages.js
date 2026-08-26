@@ -19,6 +19,7 @@ import gameManagementSvg from '../../resources/images/icon/gameManagement.svg';
 import helicopterSvg from '../../resources/images/icon/helicopter.svg';
 import huntedSvg from '../../resources/images/icon/hunted.svg';
 import hunterSvg from '../../resources/images/icon/hunter.svg';
+import knownPingSvg from '../../resources/images/icon/knownPing.svg';
 import motorcycleSvg from '../../resources/images/icon/motorcycle.svg';
 import personSvg from '../../resources/images/icon/person.svg';
 import planeSvg from '../../resources/images/icon/plane.svg';
@@ -46,6 +47,7 @@ export const mapIcons = {
   helicopter: helicopterSvg,
   hunted: huntedSvg,
   hunter: hunterSvg,
+  knownPing: knownPingSvg,
   motorcycle: motorcycleSvg,
   person: personSvg,
   plane: planeSvg,
