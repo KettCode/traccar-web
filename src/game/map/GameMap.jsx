@@ -82,8 +82,13 @@ const GameMap = () => {
   );
 
   const cameraPositions = useMemo(
-    () => markers.map((marker) => markerToPosition(marker)).filter(isValidCoordinate),
-    [markers],
+    () =>
+      markers
+        .map((marker) =>
+          markerToPosition(marker, marker.deviceId ? positions[marker.deviceId] : null),
+        )
+        .filter(isValidCoordinate),
+    [markers, positions],
   );
 
   const selectedMarker = useMemo(
