@@ -5,15 +5,25 @@ import {
   Box,
   Button,
   Chip,
+  FormControlLabel,
   Stack,
+  Switch,
+  TextField,
   Typography,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CasinoIcon from '@mui/icons-material/Casino';
 import MapIcon from '@mui/icons-material/Map';
+import SettingsIcon from '@mui/icons-material/Settings';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useEffect, useState } from 'react';
 import { formatGameRole } from '../../common/gameFormatters';
+import {
+  fromDateTimeInput,
+  toDateTimeInput,
+  toNumber,
+} from '../../settings/common/gameSettingsFormatters';
 import GameJokerDeck from './GameJokerDeck';
 
 const formatGeofenceType = (type) => (type || '-').replaceAll('_', ' ');
@@ -81,7 +91,7 @@ const ManagementAccordion = ({ icon, title, count, children }) => (
         <Typography variant="subtitle1" sx={{ flexGrow: 1, fontWeight: 800 }}>
           {title}
         </Typography>
-        <Chip size="small" label={count} />
+        {count != null && <Chip size="small" label={count} />}
       </Stack>
     </AccordionSummary>
     <AccordionDetails sx={{ pt: 0 }}>{children}</AccordionDetails>
@@ -125,11 +135,139 @@ const GameZonesList = ({ state, actionLoading, onActivateGeofence, onDeactivateG
   );
 };
 
+const getRuntimeSettings = (game) => ({
+  pingIntervalSeconds: game?.pingIntervalSeconds ?? 900,
+  speedhuntLimit: game?.speedhuntLimit ?? 0,
+  speedhuntPingLimit: game?.speedhuntPingLimit ?? 3,
+  maxPositionAgeSeconds: game?.maxPositionAgeSeconds ?? 120,
+  locationReminderIntervalSeconds: game?.locationReminderIntervalSeconds ?? 300,
+  allowConsecutiveSpeedhuntsSameTarget: !!game?.allowConsecutiveSpeedhuntsSameTarget,
+  locationReminderEnabled: game?.locationReminderEnabled ?? true,
+  plannedEndAt: game?.plannedEndAt || null,
+});
+
+const GameRuntimeSettingsForm = ({ state, actionLoading, onUpdateRuntimeSettings, t }) => {
+  const [settings, setSettings] = useState(() => getRuntimeSettings(state.game));
+  const disabled = !state.allowedActions.canManageRuntimeSettings || Boolean(actionLoading);
+
+  useEffect(() => {
+    setSettings(getRuntimeSettings(state.game));
+  }, [state.game]);
+
+  const updateNumber = (key, value) => {
+    setSettings((current) => ({ ...current, [key]: toNumber(value) }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onUpdateRuntimeSettings(settings);
+  };
+
+  return (
+    <Stack component="form" spacing={1.5} onSubmit={handleSubmit}>
+      <TextField
+        type="number"
+        size="small"
+        disabled={disabled}
+        value={settings.pingIntervalSeconds}
+        onChange={(event) => updateNumber('pingIntervalSeconds', event.target.value)}
+        label={t('gamePingIntervalSeconds')}
+      />
+      <TextField
+        type="number"
+        size="small"
+        disabled={disabled}
+        value={settings.speedhuntLimit}
+        onChange={(event) => updateNumber('speedhuntLimit', event.target.value)}
+        label={t('gameSpeedhuntLimit')}
+      />
+      <TextField
+        type="number"
+        size="small"
+        disabled={disabled}
+        value={settings.speedhuntPingLimit}
+        onChange={(event) => updateNumber('speedhuntPingLimit', event.target.value)}
+        label={t('gameSpeedhuntPingLimit')}
+        helperText={t('gameRuntimeSettingsSpeedhuntPingLimitHint')}
+      />
+      <TextField
+        type="number"
+        size="small"
+        disabled={disabled}
+        value={settings.maxPositionAgeSeconds}
+        onChange={(event) => updateNumber('maxPositionAgeSeconds', event.target.value)}
+        label={t('gameMaxPositionAgeSeconds')}
+      />
+      <TextField
+        type="number"
+        size="small"
+        disabled={disabled}
+        value={settings.locationReminderIntervalSeconds}
+        onChange={(event) => updateNumber('locationReminderIntervalSeconds', event.target.value)}
+        label={t('gameLocationReminderIntervalSeconds')}
+      />
+      <TextField
+        type="datetime-local"
+        size="small"
+        disabled={disabled}
+        value={toDateTimeInput(settings.plannedEndAt)}
+        onChange={(event) =>
+          setSettings((current) => ({
+            ...current,
+            plannedEndAt: fromDateTimeInput(event.target.value),
+          }))
+        }
+        label={t('gamePlannedEndAt')}
+        slotProps={{ inputLabel: { shrink: true } }}
+      />
+      <FormControlLabel
+        control={
+          <Switch
+            checked={settings.locationReminderEnabled}
+            disabled={disabled}
+            onChange={(event) =>
+              setSettings((current) => ({
+                ...current,
+                locationReminderEnabled: event.target.checked,
+              }))
+            }
+          />
+        }
+        label={t('gameLocationReminderEnabled')}
+      />
+      <FormControlLabel
+        control={
+          <Switch
+            checked={settings.allowConsecutiveSpeedhuntsSameTarget}
+            disabled={disabled}
+            onChange={(event) =>
+              setSettings((current) => ({
+                ...current,
+                allowConsecutiveSpeedhuntsSameTarget: event.target.checked,
+              }))
+            }
+          />
+        }
+        label={t('gameAllowConsecutiveSpeedhuntsSameTarget')}
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        disabled={disabled}
+        sx={{ alignSelf: 'flex-start' }}
+      >
+        {t('sharedSave')}
+      </Button>
+    </Stack>
+  );
+};
+
 const GameManagementPanel = ({
   state,
   actionLoading,
   onActivateGeofence,
   onDeactivateGeofence,
+  onUpdateRuntimeSettings,
   onActivateJoker,
   onCancelJoker,
   t,
@@ -150,6 +288,15 @@ const GameManagementPanel = ({
           actionLoading={actionLoading}
           onActivateGeofence={onActivateGeofence}
           onDeactivateGeofence={onDeactivateGeofence}
+          t={t}
+        />
+      </ManagementAccordion>
+
+      <ManagementAccordion icon={<SettingsIcon color="primary" />} title={t('gameRuntimeSettings')}>
+        <GameRuntimeSettingsForm
+          state={state}
+          actionLoading={actionLoading}
+          onUpdateRuntimeSettings={onUpdateRuntimeSettings}
           t={t}
         />
       </ManagementAccordion>

@@ -261,6 +261,7 @@
     "gameSpeedhuntOverview": "Speedhunt overview",
     "gameSpeedhuntFinished": "Speedhunt finished",
     "gameNoSpeedhuntHistory": "No speedhunt history yet",
+    "gameRuntimeSettingsSpeedhuntPingLimitHint": "Applies from the next speedhunt.",
     "gameManagePlayer": "Manage player",
     "gameQuickActions": "Quick actions",
     "gamePlayerActions": "Player actions",

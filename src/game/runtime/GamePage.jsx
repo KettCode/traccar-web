@@ -20,6 +20,7 @@ import {
   requestSpeedhuntPing,
   startSpeedhunt,
   unlockJoker,
+  updateRuntimeSettings,
 } from '../api/gameRuntimeApi';
 import GameActionConfirmDialog from './components/GameActionConfirmDialog';
 import GameJokerAnimationOverlay from './components/GameJokerAnimationOverlay';
@@ -351,6 +352,9 @@ const GamePage = () => {
         ),
     });
 
+  const handleUpdateRuntimeSettings = (settings) =>
+    runAction('runtimeSettings', () => updateRuntimeSettings(gameId, settings));
+
   let content;
 
   if (!gameId) {
@@ -411,6 +415,7 @@ const GamePage = () => {
                     actionLoading={actionLoading}
                     onActivateGeofence={handleActivateGeofence}
                     onDeactivateGeofence={handleDeactivateGeofence}
+                    onUpdateRuntimeSettings={handleUpdateRuntimeSettings}
                     onActivateJoker={handleActivateJoker}
                     onCancelJoker={handleCancelJoker}
                     t={t}

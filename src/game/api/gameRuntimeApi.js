@@ -9,6 +9,15 @@ const postGameAction = async (url, body) => {
   return response.json();
 };
 
+const putGameAction = async (url, body) => {
+  const response = await fetchOrThrow(url, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  return response.json();
+};
+
 export const getCurrentGame = async (init) => {
   const response = await fetch('/api/games/current', init);
   if (response.status === 404) {
@@ -34,6 +43,9 @@ export const getGameMap = async (gameId, init) => {
   const response = await fetchOrThrow(`/api/games/${gameId}/map`, init);
   return response.json();
 };
+
+export const updateRuntimeSettings = (gameId, settings) =>
+  putGameAction(`/api/games/${gameId}/runtime-settings`, settings);
 
 export const startSpeedhunt = (gameId, targetMemberId) =>
   postGameAction(`/api/games/${gameId}/speedhunts`, { targetMemberId });

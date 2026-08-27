@@ -261,6 +261,7 @@
     "gameSpeedhuntOverview": "Speedhunt-Übersicht",
     "gameSpeedhuntFinished": "Speedhunt beendet",
     "gameNoSpeedhuntHistory": "Noch keine Speedhunt-Historie",
+    "gameRuntimeSettingsSpeedhuntPingLimitHint": "Gilt ab dem nächsten Speedhunt.",
     "gameManagePlayer": "Spieler verwalten",
     "gameQuickActions": "Schnellaktionen",
     "gamePlayerActions": "Spieleraktionen",
