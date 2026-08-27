@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -7,13 +7,11 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { formatGameDurationSeconds } from '../../common/gameFormatters';
 import GameStatusChip from '../../common/GameStatusChip';
 
-const useCountdown = (value, onExpired) => {
+const useCountdown = (value) => {
   const [seconds, setSeconds] = useState(value);
-  const expiredRef = useRef(false);
 
   useEffect(() => {
     setSeconds(value);
-    expiredRef.current = false;
   }, [value]);
 
   useEffect(() => {
@@ -25,13 +23,6 @@ const useCountdown = (value, onExpired) => {
     }, 1000);
     return () => clearInterval(interval);
   }, [value]);
-
-  useEffect(() => {
-    if (value > 0 && seconds === 0 && !expiredRef.current) {
-      expiredRef.current = true;
-      onExpired?.();
-    }
-  }, [onExpired, seconds, value]);
 
   return seconds;
 };
@@ -50,14 +41,11 @@ const HeaderMetric = ({ icon, label, value, color = 'primary' }) => (
   </Box>
 );
 
-const GameLiveHeader = ({ state, onNextRegularPingExpired, t }) => {
+const GameLiveHeader = ({ state, t }) => {
   const { game, summary } = state;
   const danger = summary.speedhuntActive;
   const remainingSeconds = useCountdown(game.remainingSeconds);
-  const nextRegularPingInSeconds = useCountdown(
-    summary.nextRegularPingInSeconds,
-    onNextRegularPingExpired,
-  );
+  const nextRegularPingInSeconds = useCountdown(summary.nextRegularPingInSeconds);
 
   return (
     <Card

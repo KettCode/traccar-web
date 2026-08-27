@@ -380,7 +380,7 @@ const GamePage = () => {
     content = (
       <Container maxWidth="lg" sx={{ py: { xs: 1.5, sm: 3 }, px: { xs: 1.25, sm: 3 } }}>
         <Stack spacing={2}>
-          <GameLiveHeader state={state} onNextRegularPingExpired={reload} t={t} />
+          <GameLiveHeader state={state} t={t} />
           {management && <GameManagementMetricsPanel state={state} t={t} />}
           {state.currentMember.role === 'hunted' && (
             <GameOwnJokerCard
