@@ -85,6 +85,7 @@ const GamePage = () => {
                   setItem({ ...item, pingIntervalSeconds: toNumber(event.target.value) })
                 }
                 label={t('gamePingIntervalSeconds')}
+                slotProps={{ htmlInput: { min: 120 } }}
               />
               <TextField
                 type="number"

@@ -172,6 +172,7 @@ const GameRuntimeSettingsForm = ({ state, actionLoading, onUpdateRuntimeSettings
         value={settings.pingIntervalSeconds}
         onChange={(event) => updateNumber('pingIntervalSeconds', event.target.value)}
         label={t('gamePingIntervalSeconds')}
+        slotProps={{ htmlInput: { min: 120 } }}
       />
       <TextField
         type="number"

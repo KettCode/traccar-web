@@ -64,7 +64,7 @@ const SetupGameStep = ({ wizard }) => {
           label={t('gamePingIntervalSeconds')}
           disabled={disabled}
           fullWidth
-          slotProps={{ htmlInput: { min: 300 } }}
+          slotProps={{ htmlInput: { min: 120 } }}
         />
         <TextField
           type="number"
