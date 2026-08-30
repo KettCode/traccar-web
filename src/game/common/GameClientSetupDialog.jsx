@@ -9,9 +9,9 @@ import {
   useTheme,
 } from '@mui/material';
 import { QRCode } from 'react-qr-code';
-import { useTranslation } from '../../../common/components/LocalizationProvider';
+import { useTranslation } from '../../common/components/LocalizationProvider';
 
-const SetupClientLinkDialog = ({ item, onClose }) => {
+const GameClientSetupDialog = ({ item, onClose }) => {
   const theme = useTheme();
   const t = useTranslation();
   const link = item?.clientSetupLink || '';
@@ -48,4 +48,4 @@ const SetupClientLinkDialog = ({ item, onClose }) => {
   );
 };
 
-export default SetupClientLinkDialog;
+export default GameClientSetupDialog;

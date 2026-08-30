@@ -16,10 +16,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import CollectionActions from '../../../settings/components/CollectionActions';
 import { useTranslation } from '../../../common/components/LocalizationProvider';
+import GameClientSetupDialog from '../../common/GameClientSetupDialog';
 import { formatGameMemberStatus } from '../../common/gameFormatters';
 import { memberStatusColor } from '../../runtime/components/gameRuntimeUi';
 import { getLookupLabel } from './setupWizardUtils';
-import SetupClientLinkDialog from './SetupClientLinkDialog';
 
 const SetupPlayersStep = ({ wizard }) => {
   const t = useTranslation();
@@ -152,7 +152,7 @@ const SetupPlayersStep = ({ wizard }) => {
           </Box>
         </>
       )}
-      <SetupClientLinkDialog item={linkItem} onClose={() => setLinkItem(null)} />
+      <GameClientSetupDialog item={linkItem} onClose={() => setLinkItem(null)} />
     </Stack>
   );
 };

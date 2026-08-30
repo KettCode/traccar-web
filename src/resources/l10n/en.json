@@ -163,6 +163,7 @@
     "gameProfile": "Me",
     "gameProfileAccount": "Account",
     "gameProfileGame": "Game",
+    "gameClientSetup": "Set up client",
     "gameConnectionLost": "Connection lost",
     "gameYourJokers": "Your jokers",
     "gameActionConfirmOk": "Ok",

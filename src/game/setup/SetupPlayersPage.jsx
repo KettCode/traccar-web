@@ -21,8 +21,8 @@ import TableShimmer from '../../common/components/TableShimmer';
 import { formatBoolean } from '../../common/util/formatter';
 import useSettingsStyles from '../../settings/common/useSettingsStyles';
 import fetchOrThrow from '../../common/util/fetchOrThrow';
+import GameClientSetupDialog from '../common/GameClientSetupDialog';
 import GameSetupMenu from './GameSetupMenu';
-import SetupClientLinkDialog from './components/SetupClientLinkDialog';
 
 const SetupPlayersPage = () => {
   const { classes } = useSettingsStyles();
@@ -129,7 +129,7 @@ const SetupPlayersPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <SetupClientLinkDialog item={linkItem} onClose={() => setLinkItem(null)} />
+      <GameClientSetupDialog item={linkItem} onClose={() => setLinkItem(null)} />
     </PageLayout>
   );
 };
